@@ -2,6 +2,7 @@ import Banner from "./Components/Banner_Slider";
 import BrandsClient from "./Components/Brands_Client";
 import HowItWorks from "./Components/HowItWorks";
 import OurServices from "./Components/OurServices";
+import WhyChooseUs from "./Components/WhyChooseUs";
 
 const Home = () => {
   return (
@@ -17,6 +18,9 @@ const Home = () => {
       </div>
       <div className="my-10">
         <BrandsClient />
+      </div>
+      <div className="my-10">
+        <WhyChooseUs />
       </div>
     </div>
   );
