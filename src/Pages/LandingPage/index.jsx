@@ -1,5 +1,6 @@
 import Banner from "./Components/Banner_Slider";
 import HowItWorks from "./Components/HowItWorks";
+import OurServices from "./Components/OurServices";
 
 const Home = () => {
   return (
@@ -9,6 +10,9 @@ const Home = () => {
       </div>
       <div>
         <HowItWorks />
+      </div>
+      <div>
+        <OurServices />
       </div>
     </div>
   );
