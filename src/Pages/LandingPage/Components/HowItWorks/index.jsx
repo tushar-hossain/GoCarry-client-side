@@ -1,4 +1,4 @@
-import bookingIcon from "../../../../../public/assets/bookingIcon.png";
+import bookingIcon from "/assets/bookingIcon.png";
 
 const services = [
   {
