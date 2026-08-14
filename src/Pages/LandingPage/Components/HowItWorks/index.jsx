@@ -25,7 +25,7 @@ const services = [
 
 function HowItWorks() {
   return (
-    <section className="w-full bg-[#eef0f1] py-12 sm:py-14">
+    <section className="w-full bg-[#eef0f1]">
       <div className="mx-auto max-w-[1038px] w-full px-4 sm:px-6 lg:px-0">
         {/* Section Heading */}
         <h2 className="mb-5 text-[18px] font-bold leading-[22px] tracking-[-0.4px] text-[#003f46]">

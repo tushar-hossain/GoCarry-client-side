@@ -48,7 +48,7 @@ const services = [
 
 function OurServices() {
   return (
-    <section className="w-full bg-[#eef0f1] py-12">
+    <section className="w-full bg-[#eef0f1]">
       <div className="mx-auto rounded-[32px] bg-[#03373D] px-6 py-14 sm:px-10 lg:px-16">
         {/* Heading */}
         <div className="mx-auto mb-12 text-center">
