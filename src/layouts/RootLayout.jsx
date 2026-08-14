@@ -6,7 +6,7 @@ function RootLayout() {
   return (
     <div>
       <Navbar />
-      <div className="min-h-[calc(100vh-313px)] bg-[#eef0f1]">
+      <div className="min-h-[calc(100vh-308px)] bg-[#eef0f1]">
         <Outlet />
       </div>
       <Footer />

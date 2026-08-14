@@ -1,7 +1,14 @@
+import Banner from "./Components/Banner_Slider";
+
 const Home = () => {
   return (
-    <div className="max-w-6xl mx-auto px-6 text-center rounded-[14px] bg-white sm:px-7 lg:px-6">
-      This is home
+    <div>
+      <div className="mt-8">
+        <Banner />
+      </div>
+      <div className="py-20 px-24 bg-white my-8 rounded-[14px]">
+        This is home
+      </div>
     </div>
   );
 };

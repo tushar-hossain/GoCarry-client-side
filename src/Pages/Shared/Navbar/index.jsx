@@ -13,8 +13,8 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <header className="w-full  px-4 py-3 sm:px-6 lg:px-[26px]">
-      <nav className="mx-auto flex max-w-6xl items-center justify-between rounded-[14px] bg-white px-5 sm:px-7 lg:px-6">
+    <header>
+      <nav className="flex items-center justify-between rounded-[14px] bg-white px-5 sm:px-7 lg:px-6">
         {/* Logo */}
         <a
           href="/"
