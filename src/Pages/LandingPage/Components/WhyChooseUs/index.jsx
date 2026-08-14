@@ -31,7 +31,7 @@ function WhyChooseUs() {
           {features?.map((feature) => (
             <div
               key={feature.title}
-              className="flex min-h-[157px] w-full items-center rounded-[16px] bg-white px-5 py-6 sm:px-6 lg:px-[20px]"
+              className="flex min-h-[157px] w-full items-center rounded-[14px] bg-white px-5 py-6 sm:px-6 lg:px-[20px]"
             >
               {/* Image */}
               <div className="flex h-full w-[145px] shrink-0 items-center justify-center sm:w-[160px]">
