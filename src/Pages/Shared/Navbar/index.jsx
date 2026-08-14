@@ -21,7 +21,7 @@ const Navbar = () => {
           className="flex shrink-0 items-center"
           aria-label="GoCarry Home"
         >
-          <img className="w-40" src="/public/assets/logo.png" alt="logo" />
+          <img className="w-40" src="/assets/logo.png" alt="logo" />
         </a>
 
         {/* Desktop Navigation */}
