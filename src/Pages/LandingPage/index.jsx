@@ -1,4 +1,5 @@
 import Banner from "./Components/Banner_Slider";
+import HowItWorks from "./Components/HowItWorks";
 
 const Home = () => {
   return (
@@ -6,8 +7,8 @@ const Home = () => {
       <div className="mt-8">
         <Banner />
       </div>
-      <div className="py-20 px-24 bg-white my-8 rounded-[14px]">
-        This is home
+      <div>
+        <HowItWorks />
       </div>
     </div>
   );
