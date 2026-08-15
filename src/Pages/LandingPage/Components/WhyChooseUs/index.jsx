@@ -24,34 +24,34 @@ function WhyChooseUs() {
     <section>
       <div className="mx-auto w-full px-4 sm:px-6 lg:px-0">
         {/* Top dashed border */}
-        <div className="mb-12 border-t border-dashed border-[#03464D]" />
+        <div className="mb-8 border-t border-dashed border-[#03464D] sm:mb-10 lg:mb-12" />
 
         {/* Features */}
         <div className="space-y-4">
           {features?.map((feature) => (
             <div
               key={feature.title}
-              className="flex min-h-[157px] w-full items-center rounded-[14px] bg-white px-5 py-6 sm:px-6 lg:px-[20px]"
+              className="flex min-h-[157px] w-full flex-col items-center rounded-[14px] bg-white px-5 py-6 sm:flex-row sm:items-center sm:px-6 lg:px-[20px]"
             >
               {/* Image */}
-              <div className="flex h-full w-[145px] shrink-0 items-center justify-center sm:w-[160px]">
+              <div className="flex h-[100px] w-full shrink-0 items-center justify-center sm:h-full sm:w-[120px] md:w-[135px] lg:w-[145px]">
                 <img
                   src={feature.image}
                   alt={feature.title}
-                  className="max-h-[130px] max-w-[145px] object-contain"
+                  className="max-h-[85px] max-w-[110px] object-contain sm:max-h-[105px] sm:max-w-[125px] lg:max-h-[130px] lg:max-w-[145px]"
                 />
               </div>
 
               {/* Vertical dashed divider */}
-              <div className="mx-5 h-[82px] shrink-0 border-l border-dashed border-[#79a2a6] sm:mx-7 lg:mx-8" />
+              <div className="my-3 h-0 w-full border-t border-dashed border-[#79a2a6] sm:mx-5 sm:my-0 sm:h-[70px] sm:w-0 sm:border-l sm:border-t-0 md:mx-6 lg:mx-8 lg:h-[82px]" />
 
               {/* Content */}
-              <div className="flex-1">
-                <h3 className="mb-3 text-[15px] font-bold leading-[20px] tracking-[-0.2px] text-[#03373D] sm:text-[16px]">
+              <div className="w-full flex-1 text-center sm:text-left">
+                <h3 className="mb-2 text-[15px] font-bold leading-[20px] tracking-[-0.2px] text-[#03373D] sm:mb-3 sm:text-[16px]">
                   {feature.title}
                 </h3>
 
-                <p className="max-w-[700px] text-[10px] font-normal leading-[17px] text-[#666666] sm:text-[11px] sm:leading-[18px]">
+                <p className="mx-auto max-w-[700px] text-[10px] font-normal leading-[17px] text-[#666666] sm:mx-0 sm:text-[11px] sm:leading-[18px]">
                   {feature.description}
                 </p>
               </div>
@@ -60,7 +60,7 @@ function WhyChooseUs() {
         </div>
 
         {/* Bottom dashed border */}
-        <div className="mt-12 border-t border-dashed border-[#79a2a6]" />
+        <div className="mt-8 border-t border-dashed border-[#79a2a6] sm:mt-10 lg:mt-12" />
       </div>
     </section>
   );

@@ -14,7 +14,7 @@ const Navbar = () => {
 
   return (
     <header>
-      <nav className="flex items-center justify-between rounded-[14px] bg-white px-5 sm:px-7 lg:px-6">
+      <nav className="flex items-center justify-between lg:rounded-[14px] bg-white px-5 sm:px-7 lg:px-6">
         {/* Logo */}
         <a
           href="/"

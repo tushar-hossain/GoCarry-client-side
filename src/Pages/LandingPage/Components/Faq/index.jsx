@@ -49,10 +49,10 @@ function FaqItem({ item, isOpen, onToggle }) {
     >
       <button
         onClick={onToggle}
-        className="flex w-full items-center justify-between gap-4 px-6 py-4 text-left"
+        className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left sm:gap-4 sm:px-5 sm:py-4 lg:px-6"
       >
         <span
-          className="text-sm font-semibold"
+          className="text-[13px] font-semibold leading-5 sm:text-sm"
           style={{ color: isOpen ? ACTIVE : HEADING }}
         >
           {item.question}
@@ -71,7 +71,7 @@ function FaqItem({ item, isOpen, onToggle }) {
         ].join(" ")}
       >
         <div className="min-h-0">
-          <p className="px-6 pb-5 text-sm leading-relaxed text-slate-500">
+          <p className="px-4 pb-4 text-[13px] leading-6 text-slate-500 sm:px-5 sm:pb-5 sm:text-sm lg:px-6">
             {item.answer}
           </p>
         </div>
@@ -84,22 +84,25 @@ export default function Faq() {
   const [openId, setOpenId] = useState(FAQS[0].id);
 
   return (
-    <section className="bg-[#ececec]">
+    <section className="bg-[#ececec] px-4 py-10 sm:px-6 sm:py-12 lg:px-0">
+      {/* Heading */}
       <div className="text-center">
         <h2
-          className="text-3xl font-bold md:text-4xl"
+          className="text-2xl font-bold leading-tight sm:text-3xl md:text-4xl"
           style={{ color: HEADING }}
         >
           Frequently Asked Question (FAQ)
         </h2>
-        <p className="mx-auto mt-4 max-w-xl text-sm text-slate-500 md:text-base">
+
+        <p className="mx-auto mt-3 max-w-[90%] text-[13px] leading-5 text-slate-500 sm:mt-4 sm:max-w-xl sm:text-sm md:text-base md:leading-normal">
           Enhance posture, mobility, and well-being effortlessly with Posture
           Pro. Achieve proper alignment, reduce pain, and strengthen your body
           with ease!
         </p>
       </div>
 
-      <div className="mx-auto mt-10 max-w-4xl space-y-3">
+      {/* FAQ */}
+      <div className="mx-auto mt-7 max-w-4xl space-y-3 sm:mt-10">
         {FAQS?.map((item) => (
           <FaqItem
             key={item.id}
@@ -110,17 +113,18 @@ export default function Faq() {
         ))}
       </div>
 
-      <div className="mt-10 flex justify-center">
+      {/* Button */}
+      <div className="mt-8 flex justify-center sm:mt-10">
         <button
-          className="flex items-center gap-3 rounded-full py-1.5 pl-6 pr-1.5 text-sm font-semibold transition hover:brightness-95"
+          className="flex items-center gap-2 rounded-full py-1.5 pl-5 pr-1.5 text-[13px] font-semibold transition hover:brightness-95 sm:gap-3 sm:pl-6 sm:text-sm"
           style={{ backgroundColor: BUTTON, color: HEADING }}
         >
           See More FAQ's
           <span
-            className="flex h-8 w-8 items-center justify-center rounded-full"
+            className="flex h-7 w-7 items-center justify-center rounded-full sm:h-8 sm:w-8"
             style={{ backgroundColor: HEADING }}
           >
-            <ArrowUpRight className="h-4 w-4 text-white" />
+            <ArrowUpRight className="h-3.5 w-3.5 text-white sm:h-4 sm:w-4" />
           </span>
         </button>
       </div>
