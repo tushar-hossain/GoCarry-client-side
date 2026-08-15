@@ -1,7 +1,10 @@
+import useAuth from "@/hooks/useAuth";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router";
 
 export default function Login() {
+  const { signInUser } = useAuth();
+
   const {
     register,
     handleSubmit,
@@ -15,6 +18,7 @@ export default function Login() {
 
   const onSubmit = (data) => {
     console.log("Login data:", data);
+    console.log("signInUser: ", signInUser);
   };
 
   return (
