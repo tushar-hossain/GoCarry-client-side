@@ -1,7 +1,12 @@
+import useAuth from "@/hooks/useAuth";
+import { updateProfile } from "firebase/auth";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 export default function Register() {
+  const { createUser } = useAuth();
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -15,7 +20,20 @@ export default function Register() {
   });
 
   const onSubmit = (data) => {
-    console.log("Register data:", data);
+    createUser(data.email, data.password)
+      .then(async (userCredential) => {
+        const user = userCredential.user;
+
+        // Set display name
+        await updateProfile(user, {
+          displayName: data.name,
+        });
+
+        navigate("/");
+      })
+      .catch((error) => {
+        console.error(error.message);
+      });
   };
 
   return (

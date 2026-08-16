@@ -8,11 +8,11 @@ import Register from "@/Pages/Authentication/Register";
 const router = createBrowserRouter([
   {
     path: "/",
-    Component: <RootLayout />,
+    Component: RootLayout,
     children: [
       {
         index: true,
-        Component: <Home />,
+        Component: Home,
       },
     ],
   },
