@@ -1,11 +1,12 @@
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router";
 
 const navItems = [
-  { label: "Services", href: "#services" },
-  { label: "Coverage", href: "#coverage" },
-  { label: "About Us", href: "#about" },
-  { label: "Pricing", href: "#pricing" },
+  { label: "Services", href: "services" },
+  { label: "Coverage", href: "coverage" },
+  { label: "About Us", href: "about" },
+  { label: "Pricing", href: "pricing" },
   { label: "Be a Rider", href: "#rider" },
 ];
 
@@ -26,33 +27,31 @@ const Navbar = () => {
 
         {/* Desktop Navigation */}
         <div className="hidden items-center gap-[30px] lg:flex">
-          {navItems.map((item) => (
-            <a
+          {navItems?.map((item) => (
+            <Link
               key={item.label}
-              href={item.href}
+              to={item.href}
               className="text-[12px] font-medium text-[#5d5d5d] transition-colors hover:text-[#171717]"
             >
               {item.label}
-            </a>
+            </Link>
           ))}
         </div>
 
         {/* Desktop Actions */}
         <div className="hidden items-center gap-3 lg:flex">
-          <a
-            href="/login"
-            className="flex h-[34px] items-center justify-center rounded-[10px] border border-[#dedede] px-[26px] text-[14px] font-semibold text-[#5a5a5a] transition hover:bg-[#f7f7f7]"
-          >
-            Sign In
-          </a>
+          <Link to="/login">
+            <button className="flex cursor-pointer h-[34px] items-center justify-center rounded-[10px] border border-[#dedede] px-[26px] text-[14px] font-semibold text-[#5a5a5a] transition hover:bg-[#f7f7f7]">
+              Sign In
+            </button>
+          </Link>
 
           <div className="flex align-middle">
-            <a
-              href="#rider"
-              className="flex h-[34px] items-center justify-center rounded-[10px] bg-[#c4f044] px-[27px] text-[14px] font-semibold text-[#171717] transition hover:bg-[#b8e638]"
-            >
-              Be a rider
-            </a>
+            <Link to="rider">
+              <button className="flex cursor-pointer h-[34px] items-center justify-center rounded-[10px] bg-[#c4f044] px-[27px] text-[14px] font-semibold text-[#171717] transition hover:bg-[#b8e638]">
+                Be a rider
+              </button>
+            </Link>
 
             <a
               href="#rider"
@@ -82,15 +81,14 @@ const Navbar = () => {
         {isOpen && (
           <div className="absolute left-4 right-4 top-[96px] z-50 rounded-[14px] bg-white p-5 shadow-lg lg:hidden">
             <div className="flex flex-col gap-1">
-              {navItems.map((item) => (
-                <a
+              {navItems?.map((item) => (
+                <Link
                   key={item.label}
-                  href={item.href}
-                  onClick={() => setIsOpen(false)}
-                  className="rounded-lg px-4 py-3 text-sm font-medium text-[#5d5d5d] hover:bg-[#f5f5f5]"
+                  to={item.href}
+                  className="text-[12px] font-medium text-[#5d5d5d] transition-colors hover:text-[#171717]"
                 >
                   {item.label}
-                </a>
+                </Link>
               ))}
             </div>
 
