@@ -5,6 +5,8 @@ import AuthLauout from "@/layouts/AuthLayout/AuthLauout";
 import Login from "@/Pages/Authentication/Longin";
 import Register from "@/Pages/Authentication/Register";
 import Coverage from "@/Pages/CoverageDistrict";
+import PrivateRoutes from "@/routes/PrivateRoute";
+import SendParcel from "@/Pages/SendParcel";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +23,26 @@ const router = createBrowserRouter([
         loader: async () => {
           const response = await fetch("/public/warehouses.json");
           const data = await response.json();
+          return data;
+        },
+      },
+      {
+        path: "sendParcel",
+        element: (
+          <PrivateRoutes>
+            <SendParcel />
+          </PrivateRoutes>
+        ),
+        loader: async () => {
+          const response = await fetch("/warehouses.json");
+          if (!response.ok) {
+            throw new Error("Failed to load warehouse data");
+          }
+          const data = await response.json();
+          if (!Array.isArray(data)) {
+            throw new Error("warehouses.json must contain an array");
+          }
+
           return data;
         },
       },
