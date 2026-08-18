@@ -7,6 +7,7 @@ import Register from "@/Pages/Authentication/Register";
 import Coverage from "@/Pages/CoverageDistrict";
 import PrivateRoutes from "@/routes/PrivateRoute";
 import SendParcel from "@/Pages/SendParcel";
+import AboutUs from "@/Pages/AboutUs";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
           const data = await response.json();
           return data;
         },
+      },
+      {
+        path: "about",
+        Component: AboutUs,
       },
       {
         path: "sendParcel",

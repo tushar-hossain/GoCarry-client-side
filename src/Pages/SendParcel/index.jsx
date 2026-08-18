@@ -253,7 +253,7 @@ export default function SendParcel() {
                 className="h-3 w-3 accent-[#067A87]"
               />
 
-              <span className="text-[8px] text-[#18181B]">Document</span>
+              <span className="text-[11px] text-[#18181B]">Document</span>
             </label>
 
             <label className="flex cursor-pointer items-center gap-1.5">
@@ -264,7 +264,7 @@ export default function SendParcel() {
                 className="h-3 w-3 accent-[#067A87]"
               />
 
-              <span className="text-[8px] text-[#18181B]">Non-Document</span>
+              <span className="text-[11px] text-[#18181B]">Non-Document</span>
             </label>
           </div>
 
