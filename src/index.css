@@ -128,3 +128,8 @@
     @apply font-sans;
   }
 }
+
+.swal2-confirm,
+.swal2-cancel {
+  color: #000000 !important;
+}

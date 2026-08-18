@@ -1,7 +1,6 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useLoaderData } from "react-router";
-import toast from "react-hot-toast";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import Swal from "sweetalert2";
 
 // DELIVERY COST
 const calculateDeliveryCost = ({
@@ -75,7 +75,6 @@ function FormField({ label, error, children }) {
 }
 
 export default function SendParcel() {
-  const [isConfirming, setIsConfirming] = useState(false);
   const warehouses = useLoaderData();
 
   const {
@@ -149,83 +148,209 @@ export default function SendParcel() {
     return warehouse?.covered_area || [];
   }, [warehouses, receiverDistrict]);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const deliveryCost = calculateDeliveryCost({
       parcelType: data.parcelType,
       weight: data.parcelWeight,
       senderDistrict: data.senderDistrict,
       receiverDistrict: data.receiverDistrict,
     });
-    console.log("data: ", data);
+
     const parcelData = {
       ...data,
       deliveryCost,
     };
 
-    toast.success(
-      (t) => (
-        <div
-          className={`w-[350px] rounded-xl border border-[#D9E0E5] bg-white p-5 shadow-xl transition-all ${
-            t.visible ? "animate-in fade-in zoom-in" : "opacity-0"
-          }`}
-        >
-          <div>
-            <p className="text-[13px] font-bold text-[#03373D]">
-              Delivery Cost
-            </p>
+    const isWithinCity = data.senderDistrict === data.receiverDistrict;
 
-            <p className="mt-1 text-[10px] text-[#71717A]">
-              Your estimated delivery cost is:
-            </p>
+    let basePrice = 0;
+    let extraWeight = 0;
+    let extraCharge = 0;
 
-            <p className="mt-2 text-[26px] font-bold text-[#03373D]">
-              ৳{deliveryCost}
-            </p>
+    if (data.parcelType === "document") {
+      basePrice = isWithinCity ? 60 : 80;
+    } else {
+      const weight = Number(data.parcelWeight);
+
+      basePrice = isWithinCity ? 110 : 150;
+
+      if (weight > 3) {
+        extraWeight = weight - 3;
+        extraCharge = extraWeight * 40;
+      }
+    }
+
+    const result = await Swal.fire({
+      title: "Parcel Booking Summary",
+
+      html: `
+      <div style="text-align: left; font-size: 13px; color: #71717A;">
+
+        <!-- Parcel Information -->
+        <div style="
+          background: #F8FAFA;
+          border-radius: 10px;
+          padding: 12px;
+          margin-bottom: 14px;
+        ">
+          <div style="
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 7px;
+          ">
+            <span>Parcel Type</span>
+            <strong style="color:#03373D;">
+              ${data.parcelType === "document" ? "Document" : "Non-Document"}
+            </strong>
           </div>
 
-          <div className="mt-4 flex justify-end gap-2">
-            <button
-              type="button"
-              onClick={() => toast.dismiss(t.id)}
-              className="rounded-md border border-[#D9E0E5] px-4 py-2 text-[10px] font-medium text-[#71717A] transition hover:bg-gray-50"
-            >
-              Cancel
-            </button>
-
-            <button
-              type="button"
-              disabled={isConfirming}
-              onClick={() => {
-                setIsConfirming(true);
-
-                const finalParcelData = {
-                  ...parcelData,
-                  creation_date: new Date()?.toISOString(),
-                };
-
-                console.log("Confirmed Parcel:", finalParcelData);
-
-                /*
-                 * backend is ready to send
-                 */
-
-                toast.dismiss(t.id);
-                setIsConfirming(false);
-                reset();
-                toast.success("Parcel booking confirmed successfully!");
-              }}
-              className="rounded-md bg-[#CAEB66] px-4 py-2 text-[10px] font-medium text-black transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              {isConfirming ? "Confirming..." : "Confirm Booking"}
-            </button>
-          </div>
+          ${
+            data.parcelType === "non-document"
+              ? `
+                <div style="
+                  display: flex;
+                  justify-content: space-between;
+                ">
+                  <span>Parcel Weight</span>
+                  <strong style="color:#03373D;">
+                    ${data.parcelWeight} KG
+                  </strong>
+                </div>
+              `
+              : ""
+          }
         </div>
-      ),
-      {
-        duration: Infinity,
-        position: "top-center",
+
+        <!-- Pricing Breakdown -->
+        <div style="
+          border-top: 1px solid #E5E7EB;
+          padding-top: 12px;
+        ">
+
+          <div style="
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+          ">
+            <span>
+              ${
+                isWithinCity
+                  ? "Within City Base Charge"
+                  : "Outside City Base Charge"
+              }
+            </span>
+
+            <strong style="color:#03373D;">
+              ৳${basePrice}
+            </strong>
+          </div>
+
+          ${
+            data.parcelType === "non-document" && extraCharge > 0
+              ? `
+                <div style="
+                  display: flex;
+                  justify-content: space-between;
+                  margin-bottom: 8px;
+                ">
+                  <span>
+                    Extra Weight
+                    (${extraWeight.toFixed(1)} KG × ৳40)
+                  </span>
+
+                  <strong style="color:#03373D;">
+                    ৳${extraCharge}
+                  </strong>
+                </div>
+              `
+              : ""
+          }
+
+        </div>
+
+        <!-- Total -->
+        <div style="
+          margin-top: 15px;
+          padding: 14px;
+          border-radius: 10px;
+          background: #F1FAD5;
+          text-align: center;
+        ">
+          <p style="
+            margin: 0;
+            font-size: 12px;
+            color: #71717A;
+          ">
+            Total Delivery Cost
+          </p>
+
+          <p style="
+            margin: 4px 0 0;
+            font-size: 30px;
+            font-weight: 700;
+            color: #03373D;
+          ">
+            ৳${deliveryCost}
+          </p>
+        </div>
+
+      </div>
+    `,
+
+      width: "430px",
+      showCancelButton: true,
+      confirmButtonText: "Proceed To Payment",
+      cancelButtonText: "Back To Editing",
+
+      confirmButtonColor: "#CAEB66",
+      cancelButtonColor: "#CAEB66",
+
+      customClass: {
+        popup: "rounded-2xl",
+        title: "text-black",
+        confirmButton: "text-black font-small",
+        cancelButton: "text-black font-small",
       },
-    );
+
+      buttonsStyling: true,
+      reverseButtons: true,
+      allowOutsideClick: false,
+    });
+
+    if (result.isConfirmed) {
+      const finalParcelData = {
+        ...parcelData,
+        creation_date: new Date().toISOString(),
+      };
+
+      console.log("Confirmed Parcel:", finalParcelData);
+
+      /*
+       * Backend Note
+       * const response = await axiosSecure.post(
+       *   "/parcels",
+       *   finalParcelData
+       * );
+       *
+       * navigate(`/payment/${response.data.parcelId}`);
+       */
+
+      reset();
+
+      Swal.fire({
+        icon: "success",
+        title: "Booking Confirmed!",
+        text: "Your parcel booking has been confirmed successfully.",
+        confirmButtonColor: "#CAEB66",
+        customClass: {
+          confirmButton: "text-black font-medium",
+        },
+      });
+    }
+
+    if (result.dismiss === Swal.DismissReason.cancel) {
+      console.log("User returned to edit the parcel.");
+    }
   };
 
   return (
