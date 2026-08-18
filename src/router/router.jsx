@@ -4,6 +4,7 @@ import Home from "@/Pages/LandingPage";
 import AuthLauout from "@/layouts/AuthLayout/AuthLauout";
 import Login from "@/Pages/Authentication/Longin";
 import Register from "@/Pages/Authentication/Register";
+import Coverage from "@/Pages/CoverageDistrict";
 
 const router = createBrowserRouter([
   {
@@ -13,6 +14,15 @@ const router = createBrowserRouter([
       {
         index: true,
         Component: Home,
+      },
+      {
+        path: "coverage",
+        Component: Coverage,
+        loader: async () => {
+          const response = await fetch("/public/warehouses.json");
+          const data = await response.json();
+          return data;
+        },
       },
     ],
   },
