@@ -74,6 +74,13 @@ function FormField({ label, error, children }) {
   );
 }
 
+const generateTrackingId = () => {
+  const date = new Date()?.toISOString().slice(0, 10).replace(/-/g, "");
+  const random = Math.random()?.toString(36).substring(2, 8)?.toUpperCase();
+
+  return `GC-${date}-${random}`;
+};
+
 export default function SendParcel() {
   const warehouses = useLoaderData();
 
@@ -158,6 +165,8 @@ export default function SendParcel() {
 
     const parcelData = {
       ...data,
+      trackingId: generateTrackingId(),
+      paymentStatus: "pending",
       deliveryCost,
     };
 
