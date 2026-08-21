@@ -14,6 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Swal from "sweetalert2";
+import useAuth from "@/hooks/useAuth";
 
 // DELIVERY COST
 const calculateDeliveryCost = ({
@@ -83,6 +84,7 @@ const generateTrackingId = () => {
 
 export default function SendParcel() {
   const warehouses = useLoaderData();
+  const { user } = useAuth();
 
   const {
     register,
@@ -167,6 +169,9 @@ export default function SendParcel() {
       ...data,
       trackingId: generateTrackingId(),
       paymentStatus: "pending",
+      delivery_Status: "not_collected",
+      Payment_Status: "unpaid",
+      created_by: user.email,
       deliveryCost,
     };
 
