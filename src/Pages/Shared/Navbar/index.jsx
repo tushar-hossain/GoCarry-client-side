@@ -1,6 +1,8 @@
-import { ArrowUpRight, Menu, X } from "lucide-react";
+import useAuth from "@/hooks/useAuth";
+import { Menu, X } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import Swal from "sweetalert2";
 
 const navItems = [
   { label: "Services", href: "services" },
@@ -13,18 +15,21 @@ const navItems = [
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { user, signOutUser } = useAuth();
+  const [openProfile, setOpenProfile] = useState(false);
+  const navigate = useNavigate();
 
   return (
-    <header>
-      <nav className="flex items-center justify-between lg:rounded-[14px] bg-white px-5 sm:px-7 lg:px-6">
+    <header className="md:max-w-6xl mx-auto">
+      <nav className="flex items-center justify-between lg:rounded-sm bg-white h-[60px] px-5 sm:px-7 lg:px-6">
         {/* Logo */}
-        <a
-          href="/"
+        <Link
+          to="/"
           className="flex shrink-0 items-center"
           aria-label="GoCarry Home"
         >
-          <img className="w-40" src="/assets/logo.png" alt="logo" />
-        </a>
+          <img className="w-30" src="/assets/favicon.svg" alt="logo" />
+        </Link>
 
         {/* Desktop Navigation */}
         <div className="hidden items-center gap-[30px] lg:flex">
@@ -41,31 +46,82 @@ const Navbar = () => {
 
         {/* Desktop Actions */}
         <div className="hidden items-center gap-3 lg:flex">
-          <Link to="/login">
-            <button className="flex cursor-pointer h-[34px] items-center justify-center rounded-[10px] border border-[#dedede] px-[26px] text-[14px] font-semibold text-[#5a5a5a] transition hover:bg-[#f7f7f7]">
-              Sign In
-            </button>
-          </Link>
+          {user ? (
+            <div className="relative">
+              {/* Profile Avatar */}
+              <button
+                type="button"
+                onClick={() => setOpenProfile((prev) => !prev)}
+                className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-full border border-[#dedede] bg-[#f3f4f6] focus:outline-none cursor-pointer"
+              >
+                <img
+                  src={user?.photoURL || "/assets/user.png"}
+                  alt={user?.displayName || "User"}
+                  className="h-full w-full object-cover"
+                />
+              </button>
 
-          <div className="flex align-middle">
-            <Link to="rider">
-              <button className="flex cursor-pointer h-[34px] items-center justify-center rounded-[10px] bg-[#c4f044] px-[27px] text-[14px] font-semibold text-[#171717] transition hover:bg-[#b8e638]">
-                Be a rider
+              {/* Dropdown */}
+              {openProfile && (
+                <div className="absolute right-0 top-[55px] z-50 w-[210px] rounded-xl border border-[#e5e5e5] bg-white p-2 shadow-[0_4px_12px_rgba(0,0,0,0.08)]">
+                  {/* Profile */}
+                  <Link
+                    to="/dashboard"
+                    onClick={() => setOpenProfile(false)}
+                    className="flex h-10 items-center justify-between rounded-lg px-3 text-[13px] text-[#18181B] transition hover:bg-[#f5f5f5]"
+                  >
+                    <span>Dashboard</span>
+                  </Link>
+
+                  {/* Settings */}
+                  <Link
+                    to="/settings"
+                    onClick={() => setOpenProfile(false)}
+                    className="flex h-10 items-center rounded-lg px-3 text-[13px] text-[#18181B] transition hover:bg-[#f5f5f5]"
+                  >
+                    Settings
+                  </Link>
+
+                  {/* Logout */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setOpenProfile(false);
+                      signOutUser()
+                        .then(() => {
+                          Swal.fire({
+                            icon: "success",
+                            title: "Logout successful",
+                            showConfirmButton: false,
+                            timer: 1500,
+                          });
+                        })
+                        .catch((error) => {
+                          console.log(error);
+                          Swal.fire({
+                            icon: "success",
+                            title: "Logout failed",
+                            showConfirmButton: false,
+                            timer: 1500,
+                          });
+                        });
+
+                      navigate("/login");
+                    }}
+                    className="flex h-10 w-full items-center rounded-lg px-3 text-left text-[13px] text-[#18181B] transition hover:bg-[#f5f5f5] cursor-pointer"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <Link to="/login">
+              <button className=" w-[80px] h-[40px] cursor-pointer rounded-sm border border-[#dedede] text-sm font-semibold">
+                Sign In
               </button>
             </Link>
-
-            <a
-              href="#rider"
-              aria-label="Become a rider"
-              className="flex h-[34px] w-[34px] items-center justify-center rounded-full bg-[#202020] text-white transition hover:bg-[#333333]"
-            >
-              <ArrowUpRight
-                className="text-[#c4f044]"
-                size={22}
-                strokeWidth={2.2}
-              />
-            </a>
-          </div>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -94,19 +150,83 @@ const Navbar = () => {
             </div>
 
             <div className="mt-4 flex gap-2 border-t border-[#eeeeee] pt-4">
-              <a
-                href="/login"
-                className="flex h-11 flex-1 items-center justify-center rounded-[10px] border border-[#dedede] text-sm font-semibold"
-              >
-                Sign In
-              </a>
+              {user ? (
+                <div className="relative">
+                  {/* Profile Avatar */}
+                  <button
+                    type="button"
+                    onClick={() => setOpenProfile((prev) => !prev)}
+                    className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-full border border-[#dedede] bg-[#f3f4f6] focus:outline-none cursor-pointer"
+                  >
+                    <img
+                      src={user?.photoURL || "/assets/user.png"}
+                      alt={user?.displayName || "User"}
+                      className="h-full w-full object-cover"
+                    />
+                  </button>
 
-              <a
-                href="#rider"
-                className="flex h-11 flex-1 items-center justify-center rounded-[10px] bg-[#c4f044] text-sm font-semibold"
-              >
-                Be a rider
-              </a>
+                  {/* Dropdown */}
+                  {openProfile && (
+                    <div className="absolute right-0 top-[55px] z-50 w-[210px] rounded-xl border border-[#e5e5e5] bg-white p-2 shadow-[0_4px_12px_rgba(0,0,0,0.08)]">
+                      {/* Profile */}
+                      <Link
+                        to="/profile"
+                        onClick={() => setOpenProfile(false)}
+                        className="flex h-10 items-center justify-between rounded-lg px-3 text-[13px] text-[#18181B] transition hover:bg-[#f5f5f5]"
+                      >
+                        <span>Profile</span>
+                      </Link>
+
+                      {/* Settings */}
+                      <Link
+                        to="/settings"
+                        onClick={() => setOpenProfile(false)}
+                        className="flex h-10 items-center rounded-lg px-3 text-[13px] text-[#18181B] transition hover:bg-[#f5f5f5]"
+                      >
+                        Settings
+                      </Link>
+
+                      {/* Logout */}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setOpenProfile(false);
+                          signOutUser()
+                            .then(() => {
+                              Swal.fire({
+                                icon: "success",
+                                title: "Logout successful",
+                                showConfirmButton: false,
+                                timer: 1500,
+                              });
+                            })
+                            .catch((error) => {
+                              console.log(error);
+                              Swal.fire({
+                                icon: "success",
+                                title: "Logout failed",
+                                showConfirmButton: false,
+                                timer: 1500,
+                              });
+                            });
+
+                          navigate("/login");
+                        }}
+                        className="flex h-10 w-full items-center rounded-lg px-3 text-left text-[13px] text-[#18181B] transition hover:bg-[#f5f5f5] cursor-pointer"
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <Link
+                  to="/login"
+                  className="flex h-11 flex-1 items-center justify-center rounded-[10px] border border-[#dedede] text-sm font-semibold"
+                >
+                  Sign In
+                </Link>
+              )}
             </div>
           </div>
         )}

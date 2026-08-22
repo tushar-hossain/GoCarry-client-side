@@ -8,6 +8,8 @@ import Coverage from "@/Pages/CoverageDistrict";
 import PrivateRoutes from "@/routes/PrivateRoute";
 import SendParcel from "@/Pages/SendParcel";
 import AboutUs from "@/Pages/AboutUs";
+import DashboardLayout from "@/layouts/DashboardLayout";
+import UserDashboardHome from "@/Pages/Dashboard/UserDashboardHome";
 
 const router = createBrowserRouter([
   {
@@ -65,6 +67,48 @@ const router = createBrowserRouter([
         path: "register",
         Component: Register,
       },
+    ],
+  },
+  {
+    path: "/dashboard",
+    element: (
+      <PrivateRoutes>
+        <DashboardLayout />
+      </PrivateRoutes>
+    ),
+
+    children: [
+      {
+        index: true,
+        Component: UserDashboardHome,
+      },
+      {
+        path: "send-parcel",
+        Component: SendParcel,
+      },
+      // {
+      //   path: "myParcel",
+      //   Component: MyParcel,
+      // },
+
+      // {
+      //   path: "tracking",
+      //   Component: Tracking,
+      // },
+      // {
+      //   path: "parcel-to-pay",
+      //   Component: ParcelToPay,
+      // },
+
+      // {
+      //   path: "manage-parcel",
+      //   Component: ManageParcel,
+      // },
+
+      // {
+      //   path: "payment-history",
+      //   Component: PaymentHistory,
+      // },
     ],
   },
 ]);

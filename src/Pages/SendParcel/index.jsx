@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/select";
 import Swal from "sweetalert2";
 import useAuth from "@/hooks/useAuth";
+import useAxiosSecure from "@/hooks/useAxiosSecure";
 
 // DELIVERY COST
 const calculateDeliveryCost = ({
@@ -85,6 +86,7 @@ const generateTrackingId = () => {
 export default function SendParcel() {
   const warehouses = useLoaderData();
   const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
 
   const {
     register,
@@ -122,7 +124,7 @@ export default function SendParcel() {
   const districts = useMemo(() => {
     return [
       ...new Set(
-        warehouses.map((warehouse) => warehouse.district).filter(Boolean),
+        warehouses?.map((warehouse) => warehouse.district).filter(Boolean),
       ),
     ];
   }, [warehouses]);
@@ -337,8 +339,6 @@ export default function SendParcel() {
         creation_date: new Date().toISOString(),
       };
 
-      console.log("Confirmed Parcel:", finalParcelData);
-
       /*
        * Backend Note
        * const response = await axiosSecure.post(
@@ -349,17 +349,24 @@ export default function SendParcel() {
        * navigate(`/payment/${response.data.parcelId}`);
        */
 
-      reset();
+      try {
+        const result = await axiosSecure.post("/parcels", finalParcelData);
 
-      Swal.fire({
-        icon: "success",
-        title: "Booking Confirmed!",
-        text: "Your parcel booking has been confirmed successfully.",
-        confirmButtonColor: "#CAEB66",
-        customClass: {
-          confirmButton: "text-black font-medium",
-        },
-      });
+        if (result.data.result.insertedId) {
+          Swal.fire({
+            icon: "success",
+            title: "Booking Confirmed!",
+            text: "Your parcel booking has been confirmed successfully.",
+            confirmButtonColor: "#CAEB66",
+            customClass: {
+              confirmButton: "text-black font-medium",
+            },
+          });
+          reset();
+        }
+      } catch (error) {
+        console.log("Error:", error);
+      }
     }
 
     if (result.dismiss === Swal.DismissReason.cancel) {
@@ -368,7 +375,7 @@ export default function SendParcel() {
   };
 
   return (
-    <section className="w-full py-5">
+    <section className="md:max-w-6xl mx-auto py-5">
       <div className="mx-auto w-full rounded-[14px] bg-white px-5 py-7 sm:px-7 md:px-8 lg:px-[50px] lg:py-8">
         <div>
           <h1 className="text-[24px] font-bold tracking-[-0.6px] text-[#03373D] sm:text-[26px]">
@@ -490,7 +497,7 @@ export default function SendParcel() {
                         </SelectTrigger>
 
                         <SelectContent>
-                          {districts.map((district) => (
+                          {districts?.map((district) => (
                             <SelectItem
                               key={district}
                               value={district}
@@ -526,7 +533,7 @@ export default function SendParcel() {
                         </SelectTrigger>
 
                         <SelectContent>
-                          {senderServiceCenters.map((serviceCenter) => (
+                          {senderServiceCenters?.map((serviceCenter) => (
                             <SelectItem
                               key={serviceCenter}
                               value={serviceCenter}
@@ -619,7 +626,7 @@ export default function SendParcel() {
                         </SelectTrigger>
 
                         <SelectContent>
-                          {districts.map((district) => (
+                          {districts?.map((district) => (
                             <SelectItem
                               key={district}
                               value={district}

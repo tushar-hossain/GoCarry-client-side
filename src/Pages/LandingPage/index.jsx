@@ -9,7 +9,7 @@ import WhyChooseUs from "./Components/WhyChooseUs";
 
 const Home = () => {
   return (
-    <div>
+    <div className="md:max-w-6xl mx-auto">
       <div className="my-10">
         <Banner />
       </div>
