@@ -172,7 +172,6 @@ export default function SendParcel() {
       trackingId: generateTrackingId(),
       paymentStatus: "pending",
       delivery_Status: "not_collected",
-      Payment_Status: "unpaid",
       created_by: user.email,
       deliveryCost,
     };
