@@ -1,10 +1,11 @@
 import useAuth from "@/hooks/useAuth";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import Swal from "sweetalert2";
 
 export default function Login() {
   const { signInUser } = useAuth();
+  const location = useLocation();
   const navigate = useNavigate();
 
   const {
@@ -29,7 +30,7 @@ export default function Login() {
             showConfirmButton: false,
             timer: 1500,
           });
-          navigate("/");
+          navigate(location?.state || "/");
         }
       })
       .catch((error) => {
