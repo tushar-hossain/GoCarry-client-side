@@ -10,6 +10,7 @@ import SendParcel from "@/Pages/SendParcel";
 import AboutUs from "@/Pages/AboutUs";
 import DashboardLayout from "@/layouts/DashboardLayout";
 import UserDashboardHome from "@/Pages/Dashboard/UserDashboardHome";
+import MyParcel from "@/Pages/Dashboard/MyParcel";
 
 const router = createBrowserRouter([
   {
@@ -86,10 +87,10 @@ const router = createBrowserRouter([
         path: "send-parcel",
         Component: SendParcel,
       },
-      // {
-      //   path: "myParcel",
-      //   Component: MyParcel,
-      // },
+      {
+        path: "myParcel",
+        Component: MyParcel,
+      },
 
       // {
       //   path: "tracking",
