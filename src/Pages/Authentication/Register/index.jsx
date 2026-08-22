@@ -2,6 +2,7 @@ import useAuth from "@/hooks/useAuth";
 import { updateProfile } from "firebase/auth";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
+import Swal from "sweetalert2";
 
 export default function Register() {
   const { createUser } = useAuth();
@@ -28,11 +29,22 @@ export default function Register() {
         await updateProfile(user, {
           displayName: data.name,
         });
-
+        Swal.fire({
+          icon: "success",
+          title: "Registration successful",
+          showConfirmButton: false,
+          timer: 1500,
+        });
         navigate("/");
       })
       .catch((error) => {
         console.error(error.message);
+        Swal.fire({
+          icon: "success",
+          title: "Registration failed",
+          showConfirmButton: false,
+          timer: 1500,
+        });
       });
   };
 

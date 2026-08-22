@@ -1,6 +1,7 @@
 import useAuth from "@/hooks/useAuth";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
+import Swal from "sweetalert2";
 
 export default function Login() {
   const { signInUser } = useAuth();
@@ -22,11 +23,23 @@ export default function Login() {
       .then((userCredential) => {
         const user = userCredential.user;
         if (user) {
+          Swal.fire({
+            icon: "success",
+            title: "Login successful",
+            showConfirmButton: false,
+            timer: 1500,
+          });
           navigate("/");
         }
       })
       .catch((error) => {
         console.log(error.message);
+        Swal.fire({
+          icon: "success",
+          title: "Login failed",
+          showConfirmButton: false,
+          timer: 1500,
+        });
       });
   };
 

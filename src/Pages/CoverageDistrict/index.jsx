@@ -117,7 +117,7 @@ function Coverage() {
   };
 
   return (
-    <section className="w-full bg-[#eef0f1] px-3 py-8 sm:px-5 sm:py-10 lg:px-0 lg:py-5">
+    <section className="md:max-w-6xl mx-auto bg-[#eef0f1] px-3 py-8 sm:px-5 sm:py-10 lg:px-0 lg:py-5">
       <div className="mx-auto w-full rounded-[14px] bg-white px-5 py-4 sm:px-8 sm:py-10 lg:px-[52px] lg:py-[38px]">
         <div>
           <h2 className="text-[25px] font-bold leading-[32px] tracking-[-0.7px] text-[#03373D] sm:text-[30px] sm:leading-[38px] lg:text-[28px]">

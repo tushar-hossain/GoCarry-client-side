@@ -12,7 +12,7 @@ const Footer = () => {
   ];
 
   return (
-    <div className="px-6 text-center lg:rounded-[14px] flex min-h-[190px] flex-col items-center justify-center bg-[#0d0d0d] py-8 sm:px-7 lg:px-6">
+    <div className="md:max-w-6xl mx-auto px-6 text-center lg:rounded-[14px] flex min-h-[190px] flex-col items-center justify-center bg-[#0d0d0d] py-8 sm:px-7 lg:px-6">
       {/* Logo */}
       <a href="/" className="mb-3 flex items-center" aria-label="GoCarry">
         {/* Logo Icon */}
