@@ -11,6 +11,7 @@ import AboutUs from "@/Pages/AboutUs";
 import DashboardLayout from "@/layouts/DashboardLayout";
 import UserDashboardHome from "@/Pages/Dashboard/UserDashboardHome";
 import MyParcel from "@/Pages/Dashboard/MyParcel";
+import Payments from "@/Payments";
 
 const router = createBrowserRouter([
   {
@@ -90,6 +91,10 @@ const router = createBrowserRouter([
       {
         path: "myParcel",
         Component: MyParcel,
+      },
+      {
+        path: "payments/:id",
+        Component: Payments,
       },
 
       // {
