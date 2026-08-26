@@ -13,6 +13,7 @@ import UserDashboardHome from "@/Pages/Dashboard/UserDashboardHome";
 import MyParcel from "@/Pages/Dashboard/MyParcel";
 import Payments from "@/Payments";
 import ParcelToPay from "@/Pages/Dashboard/ParcelToPay";
+import PaymentHistory from "@/Pages/Dashboard/PaymentHistory";
 
 const router = createBrowserRouter([
   {
@@ -112,10 +113,10 @@ const router = createBrowserRouter([
       //   Component: ManageParcel,
       // },
 
-      // {
-      //   path: "payment-history",
-      //   Component: PaymentHistory,
-      // },
+      {
+        path: "payment-history",
+        Component: PaymentHistory,
+      },
     ],
   },
 ]);
