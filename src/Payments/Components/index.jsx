@@ -3,7 +3,8 @@ import useAxiosSecure from "@/hooks/useAxiosSecure";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
+import Swal from "sweetalert2";
 
 export default function PaymentsForm() {
   const stripe = useStripe();
@@ -12,6 +13,7 @@ export default function PaymentsForm() {
   const { id } = useParams();
   const axioSecure = useAxiosSecure();
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   const {
     isPending,
@@ -60,7 +62,7 @@ export default function PaymentsForm() {
       return;
     }
 
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
+    const { error } = await stripe.createPaymentMethod({
       type: "card",
       card,
     });
@@ -94,10 +96,48 @@ export default function PaymentsForm() {
         }
 
         if (result.paymentIntent?.status === "succeeded") {
-          // TODO:
-          // update parcel payment status
-          // save transaction/payment information
-          // generate tracking ID
+          const paymentData = {
+            paymentIntentId: result.paymentIntent.id,
+            parcelId: parcels?.data?.data._id,
+            status: result.paymentIntent.status,
+            user: user?.displayName || "",
+          };
+
+          const response = await axioSecure.post(
+            "/payments/save-payment",
+            paymentData,
+          );
+
+          const paymentResult = response.data.data;
+
+          if (paymentResult?.paymentStatus === "succeeded") {
+            const result = await Swal.fire({
+              icon: "success",
+              title: "Payment Successful!",
+              html: `
+                      <div style="text-align: left; margin-top: 15px;">
+                        <p style="margin-bottom: 8px;">
+                          <strong>Payment Status:</strong> ${paymentResult.paymentStatus}
+                        </p>
+
+                        <p style="margin-bottom: 8px;">
+                          <strong>Tracking ID:</strong> ${paymentResult.trackingId}
+                        </p>
+
+                        <p style="color: #71717A; font-size: 13px;">
+                          Your parcel payment has been completed successfully.
+                        </p>
+                      </div>
+                    `,
+              confirmButtonText: "Go to My Parcels",
+              confirmButtonColor: "#CAEB66",
+              allowOutsideClick: false,
+            });
+
+            if (result.isConfirmed) {
+              navigate("/dashboard/myParcel");
+            }
+          }
         }
       } catch (error) {
         setError(

@@ -216,15 +216,17 @@ export default function MyParcel() {
 
                     {/* Payment */}
                     <TableCell>
-                      <Badge
-                        className={
-                          parcel.paymentStatus === "paid"
-                            ? "border-green-200 bg-green-100 text-green-700 hover:bg-green-100"
-                            : "border-yellow-200 bg-yellow-100 text-yellow-700 hover:bg-yellow-100"
-                        }
-                      >
-                        {parcel.paymentStatus}
-                      </Badge>
+                      <TableCell>
+                        <Badge
+                          className={
+                            parcel.paymentStatus === "succeeded"
+                              ? "border-green-200 bg-green-100 text-green-700 hover:bg-green-100"
+                              : "border-yellow-200 bg-yellow-100 text-yellow-700 hover:bg-yellow-100"
+                          }
+                        >
+                          {parcel.paymentStatus}
+                        </Badge>
+                      </TableCell>
                     </TableCell>
 
                     {/* ACTION */}
@@ -234,18 +236,24 @@ export default function MyParcel() {
                         <Button
                           type="button"
                           size="icon"
-                          disabled={parcel.Payment_Status === "paid"}
+                          disabled={parcel.paymentStatus === "succeeded"}
                           onClick={() =>
                             navigate(`/dashboard/payments/${parcel._id}`)
                           }
-                          className="h-7 w-7 cursor-pointer bg-[#CAEB66] text-black hover:bg-[#CAEB66] hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-50"
+                          className="h-7 w-7 cursor-pointer bg-[#CAEB66] text-black hover:bg-[#CAEB66] hover:brightness-95 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-400 disabled:opacity-100"
                           title={
-                            parcel?.Payment_Status === "paid"
+                            parcel.paymentStatus === "succeeded"
                               ? "Already Paid"
                               : "Pay"
                           }
                         >
-                          <CreditCard className="h-3.5 w-3.5" />
+                          <CreditCard
+                            className={`h-3.5 w-3.5 ${
+                              parcel.paymentStatus === "succeeded"
+                                ? "text-gray-400"
+                                : "text-black"
+                            }`}
+                          />
                         </Button>
                         {/* VIEW */}
                         <Button
@@ -253,7 +261,7 @@ export default function MyParcel() {
                           variant="outline"
                           size="icon"
                           onClick={() => setSelectedParcel(parcel)}
-                          className="h-7 w-7"
+                          className="h-7 w-7 cursor-pointer"
                           title="View"
                         >
                           <Eye className="h-3.5 w-3.5" />
@@ -271,7 +279,7 @@ export default function MyParcel() {
                               },
                             })
                           }
-                          className="h-7 w-7"
+                          className="h-7 w-7 cursor-pointer"
                           title="Edit"
                         >
                           <Pencil className="h-3.5 w-3.5" />
@@ -284,7 +292,7 @@ export default function MyParcel() {
                           size="icon"
                           disabled={deleteParcelMutation.isPending}
                           onClick={() => handleDelete(parcel)}
-                          className="h-7 w-7 text-red-500 hover:text-red-600"
+                          className="h-7 w-7 text-red-500 hover:text-red-600 cursor-pointer"
                           title="Delete"
                         >
                           <Trash2 className="h-3.5 w-3.5" />
