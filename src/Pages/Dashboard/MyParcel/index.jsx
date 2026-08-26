@@ -121,10 +121,6 @@ export default function MyParcel() {
       {/* Header */}
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-[#03373D]">My Parcels</h1>
-
-        <p className="mt-1 text-sm text-[#71717A]">
-          View and manage all your parcels
-        </p>
       </div>
 
       {/* Total */}

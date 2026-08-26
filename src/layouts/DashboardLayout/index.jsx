@@ -111,7 +111,7 @@ export default function UserDashboardLayout() {
           className="border-r border-[#E5E7EB] bg-white"
         >
           {/* Logo */}
-          <SidebarHeader className="border-b border-[#E5E7EB] px-5 py-5">
+          <SidebarHeader className="border-b border-[#E5E7EB] px-5 h-14">
             <Link to="/" className="flex items-center">
               <img
                 src="/assets/favicon.svg"
@@ -122,7 +122,7 @@ export default function UserDashboardLayout() {
           </SidebarHeader>
 
           {/* SIDEBAR CONTENT */}
-          <SidebarContent className="px-3 py-4">
+          <SidebarContent className="px-3">
             {/* Dashboard */}
             <SidebarGroup>
               <SidebarGroupLabel className="px-3 text-[10px] font-medium text-[#71717A]">
@@ -130,7 +130,7 @@ export default function UserDashboardLayout() {
               </SidebarGroupLabel>
 
               <SidebarMenu>
-                {navigationItems.map((item) => {
+                {navigationItems?.map((item) => {
                   const Icon = item.icon;
                   const active = isActive(item.url);
 
@@ -171,7 +171,7 @@ export default function UserDashboardLayout() {
               </SidebarGroupLabel>
 
               <SidebarMenu>
-                {generalItems.map((item) => {
+                {generalItems?.map((item) => {
                   const Icon = item.icon;
                   const active = isActive(item.url);
 
@@ -210,7 +210,7 @@ export default function UserDashboardLayout() {
           <SidebarFooter className="border-t border-[#E5E7EB] p-3">
             <div className="flex items-center gap-3 rounded-[10px] p-2">
               <div className="h-9 w-9 shrink-0 overflow-hidden rounded-full bg-[#E5E7EB]">
-                {user.photoURL ? (
+                {user?.photoURL ? (
                   <img
                     src={user.photoURL}
                     alt={user.name}

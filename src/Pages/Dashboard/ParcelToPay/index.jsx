@@ -86,10 +86,6 @@ export default function ParcelToPay() {
         <h1 className="text-2xl font-bold tracking-tight text-[#03373D]">
           Parcel To Pay
         </h1>
-
-        <p className="mt-1 text-sm text-[#71717A]">
-          View your unpaid parcels and complete your payment.
-        </p>
       </div>
 
       {/* Summary + Search */}
