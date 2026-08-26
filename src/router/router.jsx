@@ -12,6 +12,7 @@ import DashboardLayout from "@/layouts/DashboardLayout";
 import UserDashboardHome from "@/Pages/Dashboard/UserDashboardHome";
 import MyParcel from "@/Pages/Dashboard/MyParcel";
 import Payments from "@/Payments";
+import ParcelToPay from "@/Pages/Dashboard/ParcelToPay";
 
 const router = createBrowserRouter([
   {
@@ -101,10 +102,10 @@ const router = createBrowserRouter([
       //   path: "tracking",
       //   Component: Tracking,
       // },
-      // {
-      //   path: "parcel-to-pay",
-      //   Component: ParcelToPay,
-      // },
+      {
+        path: "parcel-to-pay",
+        Component: ParcelToPay,
+      },
 
       // {
       //   path: "manage-parcel",
