@@ -19,7 +19,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Eye, Pencil, Trash2 } from "lucide-react";
+import { CreditCard, Eye, Pencil, Trash2 } from "lucide-react";
 import Swal from "sweetalert2";
 
 export default function MyParcel() {
@@ -230,6 +230,23 @@ export default function MyParcel() {
                     {/* ACTION */}
                     <TableCell>
                       <div className="flex items-center gap-1.5">
+                        {/* PAY */}
+                        <Button
+                          type="button"
+                          size="icon"
+                          disabled={parcel.Payment_Status === "paid"}
+                          onClick={() =>
+                            navigate(`/dashboard/payments/${parcel._id}`)
+                          }
+                          className="h-7 w-7 cursor-pointer bg-[#CAEB66] text-black hover:bg-[#CAEB66] hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-50"
+                          title={
+                            parcel?.Payment_Status === "paid"
+                              ? "Already Paid"
+                              : "Pay"
+                          }
+                        >
+                          <CreditCard className="h-3.5 w-3.5" />
+                        </Button>
                         {/* VIEW */}
                         <Button
                           type="button"
