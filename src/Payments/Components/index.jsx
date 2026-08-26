@@ -1,3 +1,4 @@
+import useAuth from "@/hooks/useAuth";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { useQuery } from "@tanstack/react-query";
@@ -5,11 +6,12 @@ import { useState } from "react";
 import { useParams } from "react-router";
 
 export default function PaymentsForm() {
-  const strip = useStripe();
+  const stripe = useStripe();
   const element = useElements();
   const [error, setError] = useState("");
   const { id } = useParams();
   const axioSecure = useAxiosSecure();
+  const { user } = useAuth();
 
   const {
     isPending,
@@ -43,10 +45,12 @@ export default function PaymentsForm() {
     );
   }
 
+  const parcelCost = parcels?.data?.data.deliveryCost * 100;
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!strip || !element) {
+    if (!stripe || !element) {
       return;
     }
 
@@ -56,7 +60,7 @@ export default function PaymentsForm() {
       return;
     }
 
-    const { error, paymentMethod } = await strip.createPaymentMethod({
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: "card",
       card,
     });
@@ -65,7 +69,42 @@ export default function PaymentsForm() {
       setError(error.message);
     } else {
       setError("");
-      console.log("[PaymentMethod]", paymentMethod);
+
+      // 1. Create PaymentIntent
+      try {
+        const response = await axioSecure.post(
+          "/payments/create-payment-intent",
+          {
+            amount: parcelCost,
+          },
+        );
+
+        const clientSecret = response.data.clientSecret;
+
+        // 2. Confirm payment
+        const result = await stripe.confirmCardPayment(clientSecret, {
+          payment_method: {
+            card,
+          },
+        });
+
+        if (result.error) {
+          setError(result.error.message);
+          return;
+        }
+
+        if (result.paymentIntent?.status === "succeeded") {
+          // TODO:
+          // update parcel payment status
+          // save transaction/payment information
+          // generate tracking ID
+        }
+      } catch (error) {
+        setError(
+          error?.response?.data?.message ||
+            "Something went wrong while processing payment.",
+        );
+      }
     }
   };
 
@@ -111,7 +150,7 @@ export default function PaymentsForm() {
           {/* Payment Button */}
           <button
             type="submit"
-            disabled={!strip}
+            disabled={!stripe}
             className="flex h-11 w-full items-center justify-center rounded-lg bg-[#CAEB66] text-sm font-semibold text-black transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
           >
             Pay Now ${parcels?.data?.data.deliveryCost}
