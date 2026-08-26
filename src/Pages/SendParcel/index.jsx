@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useLoaderData } from "react-router";
+import { useLoaderData, useNavigate } from "react-router";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -87,6 +87,7 @@ export default function SendParcel() {
   const warehouses = useLoaderData();
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -338,16 +339,6 @@ export default function SendParcel() {
         creation_date: new Date().toISOString(),
       };
 
-      /*
-       * Backend Note
-       * const response = await axiosSecure.post(
-       *   "/parcels",
-       *   finalParcelData
-       * );
-       *
-       * navigate(`/payment/${response.data.parcelId}`);
-       */
-
       try {
         const result = await axiosSecure.post("/parcels", finalParcelData);
 
@@ -362,6 +353,7 @@ export default function SendParcel() {
             },
           });
           reset();
+          navigate("/dashboard/myParcel");
         }
       } catch (error) {
         console.log("Error:", error);
