@@ -7,7 +7,6 @@ import {
   CreditCard,
   History,
   Settings,
-  Home,
   LogOut,
   Menu,
   UserRound,
@@ -21,7 +20,6 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
@@ -46,14 +44,14 @@ const navigationItems = [
     icon: ClipboardList,
   },
   {
-    title: "Tracking",
-    url: "/dashboard/tracking",
-    icon: Map,
-  },
-  {
     title: "Parcel To Pay",
     url: "/dashboard/parcel-to-pay",
     icon: CreditCard,
+  },
+  {
+    title: "Tracking",
+    url: "/dashboard/tracking",
+    icon: Map,
   },
   {
     title: "Manage Parcel",
@@ -64,14 +62,6 @@ const navigationItems = [
     title: "Payment History",
     url: "/dashboard/payment-history",
     icon: History,
-  },
-];
-
-const generalItems = [
-  {
-    title: "Home",
-    url: "/",
-    icon: Home,
   },
   {
     title: "Coverage Area",
@@ -125,53 +115,8 @@ export default function UserDashboardLayout() {
           <SidebarContent className="px-3">
             {/* Dashboard */}
             <SidebarGroup>
-              <SidebarGroupLabel className="px-3 text-[10px] font-medium text-[#71717A]">
-                MENU
-              </SidebarGroupLabel>
-
               <SidebarMenu>
                 {navigationItems?.map((item) => {
-                  const Icon = item.icon;
-                  const active = isActive(item.url);
-
-                  return (
-                    <SidebarMenuItem key={item.title}>
-                      <SidebarMenuButton
-                        asChild
-                        isActive={active}
-                        tooltip={item.title}
-                        className={`
-                          h-10 rounded-[10px] px-3
-                          text-[13px]
-                          ${
-                            active
-                              ? "bg-[#CAEB66] text-[#03373D] hover:bg-[#CAEB66]"
-                              : "text-[#71717A] hover:bg-[#F5F5F5] hover:text-[#03373D]"
-                          }
-                        `}
-                      >
-                        <Link
-                          to={item.url}
-                          className="flex flex-row items-center gap-2"
-                        >
-                          <Icon className="h-[17px] w-[17px]" />
-                          <span>{item.title}</span>
-                        </Link>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  );
-                })}
-              </SidebarMenu>
-            </SidebarGroup>
-
-            {/* General */}
-            <SidebarGroup className="mt-5">
-              <SidebarGroupLabel className="px-3 text-[10px] font-medium text-[#71717A]">
-                GENERAL
-              </SidebarGroupLabel>
-
-              <SidebarMenu>
-                {generalItems?.map((item) => {
                   const Icon = item.icon;
                   const active = isActive(item.url);
 

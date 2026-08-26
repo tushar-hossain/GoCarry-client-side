@@ -14,6 +14,8 @@ import MyParcel from "@/Pages/Dashboard/MyParcel";
 import Payments from "@/Payments";
 import ParcelToPay from "@/Pages/Dashboard/ParcelToPay";
 import PaymentHistory from "@/Pages/Dashboard/PaymentHistory";
+import TrackingPackage from "@/Pages/Dashboard/TrackingPackage";
+import ManageParcel from "@/Pages/Dashboard/ManageParcel";
 
 const router = createBrowserRouter([
   {
@@ -99,19 +101,19 @@ const router = createBrowserRouter([
         Component: Payments,
       },
 
-      // {
-      //   path: "tracking",
-      //   Component: Tracking,
-      // },
+      {
+        path: "tracking",
+        Component: TrackingPackage,
+      },
       {
         path: "parcel-to-pay",
         Component: ParcelToPay,
       },
 
-      // {
-      //   path: "manage-parcel",
-      //   Component: ManageParcel,
-      // },
+      {
+        path: "manage-parcel",
+        Component: ManageParcel,
+      },
 
       {
         path: "payment-history",
