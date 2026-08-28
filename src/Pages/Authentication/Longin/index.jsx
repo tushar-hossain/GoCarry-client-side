@@ -2,6 +2,7 @@ import useAuth from "@/hooks/useAuth";
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router";
 import Swal from "sweetalert2";
+import GoogleRegister from "../Components/GoogleRegister";
 
 export default function Login() {
   const { signInUser } = useAuth();
@@ -159,13 +160,7 @@ export default function Login() {
           </div>
 
           {/* Google Login */}
-          <button
-            type="button"
-            className="flex h-[29px] w-full items-center justify-center gap-1 rounded-[4px] bg-[#E9EDF2] text-[10px] font-medium text-black transition hover:bg-[#e1e5ea] cursor-pointer"
-          >
-            <span className="text-[10px] font-bold text-[#4285F4]">G</span>
-            Login with google
-          </button>
+          <GoogleRegister />
         </form>
       </div>
     </div>

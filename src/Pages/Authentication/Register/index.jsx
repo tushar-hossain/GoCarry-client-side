@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import Swal from "sweetalert2";
+import GoogleRegister from "../Components/GoogleRegister";
 
 export default function Register() {
   const { createUser } = useAuth();
@@ -235,13 +236,7 @@ export default function Register() {
           </div>
 
           {/* Google Register */}
-          <button
-            type="button"
-            className="flex h-[29px] w-full cursor-pointer items-center justify-center gap-1 rounded-[4px] bg-[#E9EDF2] text-[10px] font-medium text-black transition hover:bg-[#e1e5ea]"
-          >
-            <span className="text-[12px] font-bold text-[#4285F4]">G</span>
-            Register with google
-          </button>
+          <GoogleRegister />
         </form>
       </div>
     </div>
