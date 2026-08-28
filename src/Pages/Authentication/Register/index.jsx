@@ -1,12 +1,18 @@
 import useAuth from "@/hooks/useAuth";
+import useAxiosPublic from "@/hooks/useAxiosPublic";
+import axios from "axios";
 import { updateProfile } from "firebase/auth";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import Swal from "sweetalert2";
+import GoogleRegister from "../Components/GoogleRegister";
 
 export default function Register() {
   const { createUser } = useAuth();
   const navigate = useNavigate();
+  const [uploadImage, setUploadImage] = useState("");
+  const axiosPublic = useAxiosPublic();
 
   const {
     register,
@@ -20,15 +26,42 @@ export default function Register() {
     },
   });
 
-  const onSubmit = (data) => {
+  const handleUploadPicture = async (e) => {
+    const uploadImage = e.target.files[0];
+    const formData = new FormData();
+    formData.append("image", uploadImage);
+
+    try {
+      const response = await axios.post(
+        `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_API_KEY}`,
+        formData,
+      );
+      setUploadImage(response?.data?.data?.url);
+    } catch (error) {
+      console.lerror(error.message);
+    }
+  };
+
+  const onSubmit = async (data) => {
     createUser(data.email, data.password)
       .then(async (userCredential) => {
         const user = userCredential.user;
 
-        // Set display name
+        // Set display name and profile picture
         await updateProfile(user, {
           displayName: data.name,
+          photoURL: uploadImage,
         });
+
+        // db save User Information
+        const userInfo = {
+          uid: user.uid,
+          name: data.name,
+          email: data.email,
+        };
+
+        await axiosPublic.post("/users", userInfo);
+
         Swal.fire({
           icon: "success",
           title: "Registration successful",
@@ -158,6 +191,24 @@ export default function Register() {
             )}
           </div>
 
+          {/* Photo Upload */}
+          <div>
+            <label
+              htmlFor="photo"
+              className="mb-1 block text-[10px] font-medium text-[#18181B]"
+            >
+              Profile Picture
+            </label>
+
+            <input
+              id="photo"
+              type="file"
+              placeholder="photo"
+              onChange={handleUploadPicture}
+              className={`h-[29px] w-full cursor-pointer rounded-[4px] border bg-white px-2 text-[10px] outline-none placeholder:text-[#94A3B8] focus:border-[#CAEB66]}`}
+            />
+          </div>
+
           {/* Register Button */}
           <button
             type="submit"
@@ -185,13 +236,7 @@ export default function Register() {
           </div>
 
           {/* Google Register */}
-          <button
-            type="button"
-            className="flex h-[29px] w-full cursor-pointer items-center justify-center gap-1 rounded-[4px] bg-[#E9EDF2] text-[10px] font-medium text-black transition hover:bg-[#e1e5ea]"
-          >
-            <span className="text-[12px] font-bold text-[#4285F4]">G</span>
-            Register with google
-          </button>
+          <GoogleRegister />
         </form>
       </div>
     </div>
