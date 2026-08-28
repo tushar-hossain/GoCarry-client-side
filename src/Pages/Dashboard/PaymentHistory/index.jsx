@@ -27,7 +27,6 @@ export default function PaymentHistory() {
 
     queryFn: async () => {
       const response = await axiosSecure.get(`/payments?email=${user?.email}`);
-      console.log("response: ", response.data.data);
       return response?.data?.data || [];
     },
   });
