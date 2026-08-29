@@ -16,6 +16,7 @@ import ParcelToPay from "@/Pages/Dashboard/ParcelToPay";
 import PaymentHistory from "@/Pages/Dashboard/PaymentHistory";
 import TrackingPackage from "@/Pages/Dashboard/TrackingPackage";
 import ManageParcel from "@/Pages/Dashboard/ManageParcel";
+import BeARider from "@/Pages/BeARider";
 
 const router = createBrowserRouter([
   {
@@ -58,6 +59,14 @@ const router = createBrowserRouter([
 
           return data;
         },
+      },
+      {
+        path: "rider",
+        element: (
+          <PrivateRoutes>
+            <BeARider />
+          </PrivateRoutes>
+        ),
       },
     ],
   },

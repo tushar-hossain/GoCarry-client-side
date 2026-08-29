@@ -10,7 +10,7 @@ const navItems = [
   { label: "About Us", href: "about" },
   { label: "Send Parcel", href: "sendParcel" },
   { label: "Pricing", href: "pricing" },
-  { label: "Be a Rider", href: "#rider" },
+  { label: "Be a Rider", href: "rider" },
 ];
 
 const Navbar = () => {

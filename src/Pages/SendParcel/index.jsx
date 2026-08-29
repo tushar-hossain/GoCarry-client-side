@@ -412,7 +412,7 @@ export default function SendParcel() {
                 {...register("parcelName", {
                   required: "Parcel name is required",
                 })}
-                className="h-[32px] w-full rounded-[4px] border-[#D9E0E5] bg-white text-[12px] placeholder:text-[#A1A1AA] focus-visible:ring-1 focus-visible:ring-[#CAEB66]"
+                className="h-[32px] w-full rounded-[4px] border-[#D9E0E5] bg-white text-[11px] placeholder:text-[#A1A1AA] focus-visible:ring-1 focus-visible:ring-[#CAEB66]"
               />
             </FormField>
 
