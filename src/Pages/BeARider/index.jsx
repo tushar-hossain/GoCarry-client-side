@@ -14,6 +14,8 @@ import useAuth from "@/hooks/useAuth";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
+import { Textarea } from "@/components/ui/textarea";
+import Swal from "sweetalert2";
 
 export default function BeARider() {
   const { user } = useAuth();
@@ -23,13 +25,14 @@ export default function BeARider() {
     register,
     handleSubmit,
     setValue,
+    reset,
     watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
-      name: "",
+      name: user?.displayName ?? "",
       drivingLicenseNumber: "",
-      email: "",
+      email: user?.email ?? "",
       region: "",
       district: "",
       nid: "",
@@ -71,8 +74,31 @@ export default function BeARider() {
       ?.map((item) => item.district);
   }, [wearhouseData, selectedRegion]);
 
-  const onSubmit = (data) => {
-    console.log("Rider data:", data);
+  const onSubmit = async (data) => {
+    try {
+      const result = await axiosSecure.post("/riders", data);
+
+      if (result?.data?.data?._id) {
+        reset();
+        await Swal.fire({
+          icon: "success",
+          title: "Application Submitted!",
+          text: "Your rider application has been submitted successfully.",
+          confirmButtonText: "Okay",
+          confirmButtonColor: "#CAEB66",
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Submission Failed",
+        text:
+          error?.response?.data?.message ||
+          "Something went wrong. Please try again.",
+        confirmButtonText: "Try Again",
+        confirmButtonColor: "#CAEB66",
+      });
+    }
   };
 
   if (isPending) {
@@ -97,7 +123,7 @@ export default function BeARider() {
               Be a Rider
             </h1>
 
-            <p className="mt-1 text-[10px] leading-[15px] text-[#71717A]">
+            <p className="mt-1 text-[11px] leading-[15px] text-[#71717A]">
               Enjoy fast, reliable parcel delivery with real-time tracking and
               zero hassle. From personal packages to business shipments we
               deliver on time, every time.
@@ -122,6 +148,7 @@ export default function BeARider() {
                     {...register("name", {
                       required: "Name is required",
                     })}
+                    readOnly
                     placeholder="Your Name"
                     className="h-[32px] w-full rounded-[4px] border-[#D9E0E5] bg-white text-[11px] placeholder:text-[#A1A1AA] focus-visible:ring-1 focus-visible:ring-[#CAEB66]"
                   />
@@ -149,6 +176,7 @@ export default function BeARider() {
                     {...register("email", {
                       required: "Email is required",
                     })}
+                    readOnly
                     placeholder="Your Email"
                     className="h-[32px] w-full rounded-[4px] border-[#D9E0E5] bg-white text-[11px] placeholder:text-[#A1A1AA] focus-visible:ring-1 focus-visible:ring-[#CAEB66]"
                   />
@@ -291,7 +319,7 @@ export default function BeARider() {
                   label="Tell Us About Yourself"
                   error={errors.about?.message}
                 >
-                  <Input
+                  <Textarea
                     {...register("about", {
                       required: "Please tell us about yourself",
                     })}
