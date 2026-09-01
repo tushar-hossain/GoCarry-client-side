@@ -1,5 +1,5 @@
 import useAuth from "@/hooks/useAuth";
-import { Menu, X } from "lucide-react";
+import { Menu, UserRound, X } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import Swal from "sweetalert2";
@@ -54,17 +54,22 @@ const Navbar = () => {
                 onClick={() => setOpenProfile((prev) => !prev)}
                 className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-full border border-[#dedede] bg-[#f3f4f6] focus:outline-none cursor-pointer"
               >
-                <img
-                  src={user?.photoURL || "/assets/user.png"}
-                  alt={user?.displayName || "User"}
-                  className="h-full w-full object-cover"
-                />
+                {user?.photoURL ? (
+                  <img
+                    src={user.photoURL}
+                    alt={user.name}
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  <UserRound className="m-auto mt-2 h-5 w-5 text-[#71717A]" />
+                )}
               </button>
 
               {/* Dropdown */}
               {openProfile && (
                 <div className="absolute right-0 top-[55px] z-50 w-[210px] rounded-xl border border-[#e5e5e5] bg-white p-2 shadow-[0_4px_12px_rgba(0,0,0,0.08)]">
                   {/* Profile */}
+                  <p className="ml-3">{user?.displayName}</p>
                   <Link
                     to="/dashboard"
                     onClick={() => setOpenProfile(false)}

@@ -2,7 +2,6 @@ import { Link, Outlet, useLocation } from "react-router";
 import {
   LayoutDashboard,
   Map,
-  Package,
   Truck,
   CreditCard,
   History,
@@ -11,6 +10,9 @@ import {
   Menu,
   UserRound,
   ClipboardList,
+  PackageCheck,
+  Bike,
+  Users,
 } from "lucide-react";
 
 import {
@@ -26,63 +28,99 @@ import {
   SidebarInset,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import useUserRole from "@/hooks/useUserRol";
+import useAuth from "@/hooks/useAuth";
+import LoadingSpinner from "@/Pages/Shared/Loading";
 
 const navigationItems = [
   {
     title: "Dashboard",
     url: "/dashboard",
     icon: LayoutDashboard,
-  },
-  {
-    title: "Send Parcel",
-    url: "/dashboard/send-parcel",
-    icon: Package,
+    roles: ["user", "admin", "rider"],
   },
   {
     title: "My Parcel",
     url: "/dashboard/myParcel",
     icon: ClipboardList,
+    roles: ["user"],
   },
   {
     title: "Parcel To Pay",
     url: "/dashboard/parcel-to-pay",
     icon: CreditCard,
-  },
-  {
-    title: "Tracking",
-    url: "/dashboard/tracking",
-    icon: Map,
-  },
-  {
-    title: "Manage Parcel",
-    url: "/dashboard/manage-parcel",
-    icon: Truck,
+    roles: ["user"],
   },
   {
     title: "Payment History",
     url: "/dashboard/payment-history",
     icon: History,
+    roles: ["user"],
   },
   {
-    title: "Coverage Area",
-    url: "/coverage",
+    title: "Tracking",
+    url: "/dashboard/tracking",
     icon: Map,
+    roles: ["user"],
   },
+  {
+    title: "Manage Parcel",
+    url: "/dashboard/manage-parcel",
+    icon: Truck,
+    roles: ["user"],
+  },
+
+  // ADMIN
+  {
+    title: "Manage Users",
+    url: "/dashboard/manage-users",
+    icon: Users,
+    roles: ["admin"],
+  },
+  {
+    title: "Manage Riders",
+    url: "/dashboard/manage-riders",
+    icon: Bike,
+    roles: ["admin"],
+  },
+  {
+    title: "Delivery Management",
+    url: "/dashboard/delivery-management",
+    icon: ClipboardList,
+    roles: ["admin"],
+  },
+
+  // RIDER
+  {
+    title: "Parcel To Pickup",
+    url: "/dashboard/parcel-to-pickup",
+    icon: PackageCheck,
+    roles: ["rider"],
+  },
+  {
+    title: "Parcel To Delivery",
+    url: "/dashboard/parcel-to-delivery",
+    icon: Truck,
+    roles: ["rider"],
+  },
+
+  // COMMON
   {
     title: "Settings",
     url: "/dashboard/settings",
     icon: Settings,
+    roles: ["user", "admin", "rider"],
   },
 ];
 
 export default function UserDashboardLayout() {
   const location = useLocation();
-  const user = {
-    name: "Zahid Hossain",
-    email: "zahid@example.com",
-    photoURL: "/assets/user.png",
-    role: "User",
-  };
+  const { user } = useAuth();
+  const { role, roleLoading } = useUserRole();
+
+  if (roleLoading) {
+    return <LoadingSpinner />;
+  }
 
   const isActive = (url) => {
     if (url === "/dashboard") {
@@ -91,6 +129,10 @@ export default function UserDashboardLayout() {
 
     return location.pathname.startsWith(url);
   };
+
+  const visibleNavigationItems = navigationItems?.filter((item) =>
+    item?.roles?.includes(role),
+  );
 
   return (
     <SidebarProvider>
@@ -116,7 +158,7 @@ export default function UserDashboardLayout() {
             {/* Dashboard */}
             <SidebarGroup>
               <SidebarMenu>
-                {navigationItems?.map((item) => {
+                {visibleNavigationItems?.map((item) => {
                   const Icon = item.icon;
                   const active = isActive(item.url);
 

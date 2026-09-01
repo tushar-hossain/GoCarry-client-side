@@ -17,6 +17,9 @@ import PaymentHistory from "@/Pages/Dashboard/PaymentHistory";
 import TrackingPackage from "@/Pages/Dashboard/TrackingPackage";
 import ManageParcel from "@/Pages/Dashboard/ManageParcel";
 import BeARider from "@/Pages/BeARider";
+import ManageUsers from "@/Pages/Admin/ManageUsers";
+import AdminRoute from "../routes/AdminRoute/AdminRoute";
+import RiderRoute from "@/routes/RiderRoute";
 
 const router = createBrowserRouter([
   {
@@ -128,6 +131,30 @@ const router = createBrowserRouter([
         path: "payment-history",
         Component: PaymentHistory,
       },
+      {
+        path: "manage-users",
+        element: (
+          <AdminRoute>
+            <ManageUsers />
+          </AdminRoute>
+        ),
+      },
+      //     {
+      //       path: "manage-riders",
+      //       element:<AdminRoute> <ManageRiders /></AdminRoute>,
+      //     },
+      //     {
+      //       path: "delivery-management",
+      //       element:<AdminRoute> <DeliveryManagement /></AdminRoute>,
+      //     },
+      //     {
+      //       path: "parcel-to-pickup",
+      //       element: <RiderRoute><ParcelToPickup /></RiderRoute>,
+      //     },
+      //     {
+      //       path: "parcel-to-delivery",
+      //       element: <RiderRoute> <ParcelToDelivery /></RiderRoute>,
+      //     },
     ],
   },
 ]);
