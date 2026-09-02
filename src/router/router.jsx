@@ -20,6 +20,7 @@ import BeARider from "@/Pages/BeARider";
 import ManageUsers from "@/Pages/Admin/ManageUsers";
 import AdminRoute from "../routes/AdminRoute/AdminRoute";
 import RiderRoute from "@/routes/RiderRoute";
+import ManageRiders from "@/Pages/Admin/ManageRiders";
 
 const router = createBrowserRouter([
   {
@@ -139,10 +140,14 @@ const router = createBrowserRouter([
           </AdminRoute>
         ),
       },
-      //     {
-      //       path: "manage-riders",
-      //       element:<AdminRoute> <ManageRiders /></AdminRoute>,
-      //     },
+      {
+        path: "manage-riders",
+        element: (
+          <AdminRoute>
+            <ManageRiders />
+          </AdminRoute>
+        ),
+      },
       //     {
       //       path: "delivery-management",
       //       element:<AdminRoute> <DeliveryManagement /></AdminRoute>,
