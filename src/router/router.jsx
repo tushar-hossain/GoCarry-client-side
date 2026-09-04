@@ -18,9 +18,10 @@ import TrackingPackage from "@/Pages/Dashboard/TrackingPackage";
 import ManageParcel from "@/Pages/Dashboard/ManageParcel";
 import BeARider from "@/Pages/BeARider";
 import ManageUsers from "@/Pages/Admin/ManageUsers";
-import AdminRoute from "../routes/AdminRoute/AdminRoute";
+import AdminRoute from "../routes/AdminRoute";
 import RiderRoute from "@/routes/RiderRoute";
 import ManageRiders from "@/Pages/Admin/ManageRiders";
+import Unauthorized from "@/Pages/Error/Unauthorized";
 
 const router = createBrowserRouter([
   {
@@ -71,6 +72,10 @@ const router = createBrowserRouter([
             <BeARider />
           </PrivateRoutes>
         ),
+      },
+      {
+        path: "/unauthorized",
+        Component: Unauthorized,
       },
     ],
   },
