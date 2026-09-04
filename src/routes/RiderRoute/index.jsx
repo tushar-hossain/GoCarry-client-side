@@ -20,7 +20,7 @@ export default function RiderRoute({ children }) {
 
   // User is logged in but is not a rider
   if (role !== "rider") {
-    return <Navigate to="/dashboard" replace />;
+    return <Navigate to="/unauthorized" replace />;
   }
 
   return children;

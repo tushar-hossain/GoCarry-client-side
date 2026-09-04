@@ -69,7 +69,10 @@ const Navbar = () => {
               {openProfile && (
                 <div className="absolute right-0 top-[55px] z-50 w-[210px] rounded-xl border border-[#e5e5e5] bg-white p-2 shadow-[0_4px_12px_rgba(0,0,0,0.08)]">
                   {/* Profile */}
-                  <p className="ml-3">{user?.displayName}</p>
+                  <div className="rounded-lg px-3 text-[#18181B] transition hover:bg-[#f5f5f5]">
+                    <p>{user?.displayName}</p>
+                    <p className=" text-[9px]">{user?.email}</p>
+                  </div>
                   <Link
                     to="/dashboard"
                     onClick={() => setOpenProfile(false)}
