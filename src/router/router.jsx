@@ -22,6 +22,7 @@ import AdminRoute from "../routes/AdminRoute";
 import RiderRoute from "@/routes/RiderRoute";
 import ManageRiders from "@/Pages/Admin/ManageRiders";
 import Unauthorized from "@/Pages/Error/Unauthorized";
+import ErrorPage from "@/Pages/Error/ErrorPage";
 
 const router = createBrowserRouter([
   {
@@ -166,6 +167,10 @@ const router = createBrowserRouter([
       //       element: <RiderRoute> <ParcelToDelivery /></RiderRoute>,
       //     },
     ],
+  },
+  {
+    path: "*",
+    Component: ErrorPage,
   },
 ]);
 
