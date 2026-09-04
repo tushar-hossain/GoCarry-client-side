@@ -199,8 +199,8 @@ export default function UserDashboardLayout() {
               <div className="h-9 w-9 shrink-0 overflow-hidden rounded-full bg-[#E5E7EB]">
                 {user?.photoURL ? (
                   <img
-                    src={user.photoURL}
-                    alt={user.name}
+                    src={user?.photoURL}
+                    alt={user?.displayName}
                     className="h-full w-full object-cover"
                   />
                 ) : (
@@ -210,19 +210,19 @@ export default function UserDashboardLayout() {
 
               <div className="min-w-0 flex-1">
                 <p className="truncate text-[12px] font-semibold text-[#03373D]">
-                  {user.name}
+                  {user?.displayName}
                 </p>
 
-                <p className="truncate text-[9px] text-[#71717A]">
-                  {user.email}
+                <p className="truncate text-[10px] text-[#71717A]">
+                  {user?.email}
                 </p>
 
-                <p className="text-[8px] text-[#8FA748]">{user.role}</p>
+                <p className="text-[10px] text-[#8FA748]">{role}</p>
               </div>
 
               <button
                 type="button"
-                className="rounded-md p-2 text-[#71717A] transition hover:bg-red-50 hover:text-red-500"
+                className="rounded-md p-2 text-[#71717A] transition hover:bg-red-50 hover:text-red-500 cursor-pointer"
               >
                 <LogOut className="h-4 w-4" />
               </button>
