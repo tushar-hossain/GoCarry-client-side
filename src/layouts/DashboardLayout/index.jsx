@@ -13,6 +13,7 @@ import {
   PackageCheck,
   Bike,
   Users,
+  UserRoundPlus,
 } from "lucide-react";
 
 import {
@@ -43,31 +44,31 @@ const navigationItems = [
     title: "My Parcel",
     url: "/dashboard/myParcel",
     icon: ClipboardList,
-    roles: ["user"],
+    roles: ["user", "admin", "rider"],
   },
   {
     title: "Parcel To Pay",
     url: "/dashboard/parcel-to-pay",
     icon: CreditCard,
-    roles: ["user"],
+    roles: ["user", "admin", "rider"],
   },
   {
     title: "Payment History",
     url: "/dashboard/payment-history",
     icon: History,
-    roles: ["user"],
+    roles: ["user", "admin", "rider"],
   },
   {
     title: "Tracking",
     url: "/dashboard/tracking",
     icon: Map,
-    roles: ["user"],
+    roles: ["user", "admin", "rider"],
   },
   {
     title: "Manage Parcel",
     url: "/dashboard/manage-parcel",
     icon: Truck,
-    roles: ["user"],
+    roles: ["user", "admin", "rider"],
   },
 
   // ADMIN
@@ -81,6 +82,12 @@ const navigationItems = [
     title: "Manage Riders",
     url: "/dashboard/manage-riders",
     icon: Bike,
+    roles: ["admin"],
+  },
+  {
+    title: "Assign Riders",
+    url: "/dashboard/assign-riders",
+    icon: UserRoundPlus,
     roles: ["admin"],
   },
   {
@@ -199,8 +206,8 @@ export default function UserDashboardLayout() {
               <div className="h-9 w-9 shrink-0 overflow-hidden rounded-full bg-[#E5E7EB]">
                 {user?.photoURL ? (
                   <img
-                    src={user?.photoURL}
-                    alt={user?.displayName}
+                    src={user.photoURL}
+                    alt={user.displayName}
                     className="h-full w-full object-cover"
                   />
                 ) : (
