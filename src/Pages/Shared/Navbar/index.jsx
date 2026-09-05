@@ -57,7 +57,7 @@ const Navbar = () => {
                 {user?.photoURL ? (
                   <img
                     src={user.photoURL}
-                    alt={user.name}
+                    alt={user.displayName}
                     className="h-full w-full object-cover"
                   />
                 ) : (
@@ -166,11 +166,15 @@ const Navbar = () => {
                     onClick={() => setOpenProfile((prev) => !prev)}
                     className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-full border border-[#dedede] bg-[#f3f4f6] focus:outline-none cursor-pointer"
                   >
-                    <img
-                      src={user?.photoURL || "/assets/user.png"}
-                      alt={user?.displayName || "User"}
-                      className="h-full w-full object-cover"
-                    />
+                    {user?.photoURL ? (
+                      <img
+                        src={user.photoURL}
+                        alt={user.displayName}
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <UserRound className="m-auto mt-2 h-5 w-5 text-[#71717A]" />
+                    )}
                   </button>
 
                   {/* Dropdown */}

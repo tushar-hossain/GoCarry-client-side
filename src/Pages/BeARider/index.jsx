@@ -16,10 +16,12 @@ import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router";
 
 export default function BeARider() {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -88,6 +90,7 @@ export default function BeARider() {
           confirmButtonColor: "#CAEB66",
         });
       }
+      navigate("/");
     } catch (error) {
       Swal.fire({
         icon: "error",
