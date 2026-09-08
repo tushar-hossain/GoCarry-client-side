@@ -24,6 +24,8 @@ import ManageRiders from "@/Pages/Admin/ManageRiders";
 import Unauthorized from "@/Pages/Error/Unauthorized";
 import ErrorPage from "@/Pages/Error/ErrorPage";
 import AssignRider from "@/Pages/Rider/AssignRider";
+import PendingDeliveries from "@/Pages/Riders/PendingDeliveries";
+import DeliveryManagement from "@/Pages/Admin/DeliveryManagement";
 
 const router = createBrowserRouter([
   {
@@ -139,6 +141,8 @@ const router = createBrowserRouter([
         path: "payment-history",
         Component: PaymentHistory,
       },
+
+      // admin route
       {
         path: "manage-users",
         element: (
@@ -163,10 +167,25 @@ const router = createBrowserRouter([
           </AdminRoute>
         ),
       },
-      //     {
-      //       path: "delivery-management",
-      //       element:<AdminRoute> <DeliveryManagement /></AdminRoute>,
-      //     },
+      {
+        path: "delivery-management",
+        element: (
+          <AdminRoute>
+            {" "}
+            <DeliveryManagement />
+          </AdminRoute>
+        ),
+      },
+
+      // rider route
+      {
+        path: "delivery-tasks",
+        element: (
+          <RiderRoute>
+            <PendingDeliveries />
+          </RiderRoute>
+        ),
+      },
       //     {
       //       path: "parcel-to-pickup",
       //       element: <RiderRoute><ParcelToPickup /></RiderRoute>,
