@@ -14,6 +14,7 @@ import {
   Bike,
   Users,
   UserRoundPlus,
+  Package,
 } from "lucide-react";
 
 import {
@@ -99,9 +100,15 @@ const navigationItems = [
 
   // RIDER
   {
+    title: "Delivery Tasks",
+    url: "/dashboard/delivery-tasks",
+    icon: PackageCheck,
+    roles: ["rider"],
+  },
+  {
     title: "Parcel To Pickup",
     url: "/dashboard/parcel-to-pickup",
-    icon: PackageCheck,
+    icon: Package,
     roles: ["rider"],
   },
   {

@@ -14,7 +14,7 @@ export default function AdminRoute({ children }) {
 
   // user is not logged in
   if (!user) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return <Navigate to="/login" state={{ from: location.pathname }} replace />;
   }
 
   // User is logged in but is not a admin
