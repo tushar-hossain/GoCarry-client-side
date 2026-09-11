@@ -24,8 +24,10 @@ import ManageRiders from "@/Pages/Admin/ManageRiders";
 import Unauthorized from "@/Pages/Error/Unauthorized";
 import ErrorPage from "@/Pages/Error/ErrorPage";
 import AssignRider from "@/Pages/Rider/AssignRider";
-import PendingDeliveries from "@/Pages/Riders/PendingDeliveries";
+import PendingDeliveries from "@/Pages/Rider/PendingDeliveries";
 import DeliveryManagement from "@/Pages/Admin/DeliveryManagement";
+import CompletedDeliveries from "@/Pages/Rider/CompletedDeliveries";
+import CashoutHistory from "@/Pages/Admin/CashoutHistory";
 
 const router = createBrowserRouter([
   {
@@ -176,10 +178,18 @@ const router = createBrowserRouter([
           </AdminRoute>
         ),
       },
+      {
+        path: "cashout-history",
+        element: (
+          <AdminRoute>
+            <CashoutHistory />
+          </AdminRoute>
+        ),
+      },
 
       // rider route
       {
-        path: "delivery-tasks",
+        path: "pending-tasks",
         element: (
           <RiderRoute>
             <PendingDeliveries />
@@ -190,10 +200,14 @@ const router = createBrowserRouter([
       //       path: "parcel-to-pickup",
       //       element: <RiderRoute><ParcelToPickup /></RiderRoute>,
       //     },
-      //     {
-      //       path: "parcel-to-delivery",
-      //       element: <RiderRoute> <ParcelToDelivery /></RiderRoute>,
-      //     },
+      {
+        path: "completed-deliveries",
+        element: (
+          <RiderRoute>
+            <CompletedDeliveries />
+          </RiderRoute>
+        ),
+      },
     ],
   },
   {

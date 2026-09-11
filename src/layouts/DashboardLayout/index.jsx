@@ -14,7 +14,8 @@ import {
   Bike,
   Users,
   UserRoundPlus,
-  Package,
+  Motorbike,
+  WalletCards,
 } from "lucide-react";
 
 import {
@@ -97,24 +98,24 @@ const navigationItems = [
     icon: ClipboardList,
     roles: ["admin"],
   },
+  {
+    title: "Cashout History",
+    url: "/dashboard/cashout-history",
+    icon: WalletCards,
+    roles: ["admin"],
+  },
 
   // RIDER
   {
-    title: "Delivery Tasks",
-    url: "/dashboard/delivery-tasks",
+    title: "Pending Tasks",
+    url: "/dashboard/pending-tasks",
     icon: PackageCheck,
     roles: ["rider"],
   },
   {
-    title: "Parcel To Pickup",
-    url: "/dashboard/parcel-to-pickup",
-    icon: Package,
-    roles: ["rider"],
-  },
-  {
-    title: "Parcel To Delivery",
-    url: "/dashboard/parcel-to-delivery",
-    icon: Truck,
+    title: "Completed Deliveries",
+    url: "/dashboard/completed-deliveries",
+    icon: Motorbike,
     roles: ["rider"],
   },
 
