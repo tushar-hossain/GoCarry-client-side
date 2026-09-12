@@ -221,7 +221,7 @@ const CashoutHistory = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-[#03373D]">Cashout History</h1>
+        <h1 className="text-2xl font-bold text-[#03373D]">Cashout Request</h1>
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">

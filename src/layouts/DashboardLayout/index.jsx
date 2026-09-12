@@ -99,16 +99,16 @@ const navigationItems = [
     roles: ["admin"],
   },
   {
-    title: "Cashout History",
-    url: "/dashboard/cashout-history",
+    title: "Cashout Request",
+    url: "/dashboard/cashout-request",
     icon: WalletCards,
     roles: ["admin"],
   },
 
   // RIDER
   {
-    title: "Pending Tasks",
-    url: "/dashboard/pending-tasks",
+    title: "Pending Deliveries",
+    url: "/dashboard/pending-deliveries",
     icon: PackageCheck,
     roles: ["rider"],
   },
@@ -116,6 +116,12 @@ const navigationItems = [
     title: "Completed Deliveries",
     url: "/dashboard/completed-deliveries",
     icon: Motorbike,
+    roles: ["rider"],
+  },
+  {
+    title: "My Earnings",
+    url: "/dashboard/my-earnings",
+    icon: WalletCards,
     roles: ["rider"],
   },
 

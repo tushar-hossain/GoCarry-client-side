@@ -28,6 +28,7 @@ import PendingDeliveries from "@/Pages/Rider/PendingDeliveries";
 import DeliveryManagement from "@/Pages/Admin/DeliveryManagement";
 import CompletedDeliveries from "@/Pages/Rider/CompletedDeliveries";
 import CashoutHistory from "@/Pages/Admin/CashoutHistory";
+import MyEarnings from "@/Pages/Rider/Earnings";
 
 const router = createBrowserRouter([
   {
@@ -179,7 +180,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "cashout-history",
+        path: "cashout-request",
         element: (
           <AdminRoute>
             <CashoutHistory />
@@ -189,7 +190,7 @@ const router = createBrowserRouter([
 
       // rider route
       {
-        path: "pending-tasks",
+        path: "pending-deliveries",
         element: (
           <RiderRoute>
             <PendingDeliveries />
@@ -205,6 +206,14 @@ const router = createBrowserRouter([
         element: (
           <RiderRoute>
             <CompletedDeliveries />
+          </RiderRoute>
+        ),
+      },
+      {
+        path: "my-earnings",
+        element: (
+          <RiderRoute>
+            <MyEarnings />
           </RiderRoute>
         ),
       },

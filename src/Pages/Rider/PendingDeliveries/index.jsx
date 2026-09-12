@@ -175,10 +175,6 @@ const PendingDeliveries = () => {
       <div className="overflow-hidden rounded-xl border bg-white shadow-sm">
         <div className="border-b px-5 py-4">
           <h2 className="font-semibold text-[#03373D]">Delivery Tasks</h2>
-
-          <p className="text-sm text-[#71717A]">
-            Pick up assigned parcels and mark them as delivered.
-          </p>
         </div>
 
         {deliveries?.length === 0 ? (
