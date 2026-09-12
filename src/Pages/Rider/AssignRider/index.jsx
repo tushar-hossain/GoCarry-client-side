@@ -30,6 +30,7 @@ export default function AssignRider() {
     data: parcels = [],
     isPending,
     isError,
+    refetch,
     error,
   } = useQuery({
     queryKey: ["assign-rider-parcels"],
@@ -91,7 +92,7 @@ export default function AssignRider() {
           riderId,
         },
       );
-      console.log("data: ", response.data);
+
       return response.data;
     },
 
@@ -113,7 +114,7 @@ export default function AssignRider() {
       queryClient.invalidateQueries({
         queryKey: ["riders"],
       });
-
+      refetch();
       setSelectedParcel(null);
     },
 

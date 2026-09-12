@@ -284,6 +284,7 @@ const CompletedDeliveries = () => {
                     <TableHead>Phone</TableHead>
                     <TableHead>Status</TableHead>
                     <TableHead>Completed At</TableHead>
+                    <TableHead>Amount</TableHead>
                     <TableHead>Cashout</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -364,6 +365,15 @@ const CompletedDeliveries = () => {
                                 },
                               )
                             : "N/A"}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2 text-xs text-[#71717A]">
+                          <CalendarDays className="h-4 w-4" />
+                          <p className="font-semibold text-[#03373D]">
+                            ৳
+                            {Number(parcel?.deliveryCost || 0).toLocaleString()}
+                          </p>
                         </div>
                       </TableCell>
 
