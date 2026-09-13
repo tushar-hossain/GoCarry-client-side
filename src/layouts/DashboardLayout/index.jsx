@@ -203,7 +203,7 @@ export default function UserDashboardLayout() {
                           to={item.url}
                           className="flex flex-row items-center gap-2"
                         >
-                          <Icon className="h-[17px] w-[17px]" />
+                          <Icon className="h-4.25 w-4.25" />
                           <span>{item.title}</span>
                         </Link>
                       </SidebarMenuButton>

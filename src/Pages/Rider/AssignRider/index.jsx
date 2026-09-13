@@ -238,7 +238,7 @@ export default function AssignRider() {
                   <TableRow key={parcel._id} className="hover:bg-[#F8FAFA]">
                     <TableCell>
                       <div>
-                        <p className="max-w-[150px] truncate text-xs font-semibold text-[#03373D]">
+                        <p className="max-w-37.5 truncate text-xs font-semibold text-[#03373D]">
                           {parcel.parcelName || "N/A"}
                         </p>
 
@@ -349,7 +349,7 @@ export default function AssignRider() {
           }}
           className="overflow-hidden"
         >
-          <DialogContent className="w-[95vw] !max-w-[1000px] overflow-hidden">
+          <DialogContent className="w-[95vw] max-w-250! overflow-hidden">
             <DialogHeader>
               <DialogTitle className="text-[#03373D]">Assign Rider</DialogTitle>
             </DialogHeader>
@@ -390,7 +390,7 @@ export default function AssignRider() {
             )}
 
             {/* Riders */}
-            <div className="max-h-[400px] overflow-y-auto rounded-lg border">
+            <div className="max-h-100 overflow-y-auto rounded-lg border">
               {ridersLoading ? (
                 <LoadingSpinner />
               ) : ridersError ? (
