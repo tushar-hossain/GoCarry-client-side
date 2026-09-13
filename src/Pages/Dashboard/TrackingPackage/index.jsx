@@ -16,7 +16,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-
 import {
   Table,
   TableBody,
@@ -25,25 +24,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
 import { useSearchParams } from "react-router";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 
 export default function TrackingPackage() {
   const axiosSecure = useAxiosSecure();
-
   const [searchParams, setSearchParams] = useSearchParams();
-
   const urlTrackingId = searchParams.get("trackingId") || "";
-
   const [searchValue, setSearchValue] = useState(urlTrackingId);
-
   const trackingId = urlTrackingId.trim();
-
-  // =========================================================
-  // ALL PARCELS
-  // =========================================================
-
   const {
     data: parcels = [],
     isPending: parcelsPending,
@@ -51,7 +40,6 @@ export default function TrackingPackage() {
     error: parcelsError,
   } = useQuery({
     queryKey: ["all-parcels"],
-
     queryFn: async () => {
       const response = await axiosSecure.get("/parcels");
       console.log("All parcels response:", response);
@@ -73,10 +61,6 @@ export default function TrackingPackage() {
     },
   });
 
-  // =========================================================
-  // TRACKING DETAILS
-  // =========================================================
-
   const {
     data: trackingData = {},
     isPending: trackingPending,
@@ -97,14 +81,6 @@ export default function TrackingPackage() {
 
   const parcel = trackingData?.parcel || null;
 
-  const tracking = Array.isArray(trackingData?.tracking)
-    ? trackingData.tracking
-    : [];
-
-  // =========================================================
-  // SEARCH
-  // =========================================================
-
   const handleSearch = () => {
     const value = searchValue.trim();
 
@@ -117,28 +93,20 @@ export default function TrackingPackage() {
     });
   };
 
-  // =========================================================
-  // CLEAR SEARCH
-  // =========================================================
-
   const handleClear = () => {
     setSearchValue("");
     setSearchParams({});
   };
 
-  // =========================================================
-  // SORT TRACKING
-  // =========================================================
+  const tracking = useMemo(() => {
+    return Array.isArray(trackingData?.tracking) ? trackingData.tracking : [];
+  }, [trackingData.tracking]);
 
   const sortedTracking = useMemo(() => {
     return [...tracking].sort(
       (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
     );
   }, [tracking]);
-
-  // =========================================================
-  // STATUS LABEL
-  // =========================================================
 
   const getStatusLabel = (status) => {
     if (!status) {
@@ -148,10 +116,6 @@ export default function TrackingPackage() {
     return status.replaceAll("_", " ");
   };
 
-  // =========================================================
-  // PAYMENT STATUS
-  // =========================================================
-
   const getPaymentStatusClass = (status) => {
     if (status === "succeeded") {
       return "bg-green-100 text-green-700 hover:bg-green-100";
@@ -159,10 +123,6 @@ export default function TrackingPackage() {
 
     return "bg-yellow-100 text-yellow-700 hover:bg-yellow-100";
   };
-
-  // =========================================================
-  // DELIVERY STATUS
-  // =========================================================
 
   const getDeliveryStatusClass = (status) => {
     switch (status) {
@@ -183,10 +143,6 @@ export default function TrackingPackage() {
     }
   };
 
-  // =========================================================
-  // TRACKING ICON
-  // =========================================================
-
   const getTrackingIcon = (status, isLast) => {
     if (isLast) {
       return <CheckCircle2 className="h-4 w-4" />;
@@ -203,10 +159,6 @@ export default function TrackingPackage() {
     return <Clock3 className="h-4 w-4" />;
   };
 
-  // =========================================================
-  // FORMAT DATE
-  // =========================================================
-
   const formatDate = (date) => {
     if (!date) {
       return "—";
@@ -220,27 +172,13 @@ export default function TrackingPackage() {
 
   return (
     <div className="space-y-6">
-      {/* =====================================================
-          PAGE HEADER
-      ====================================================== */}
-
       <div>
         <h1 className="text-2xl font-bold text-[#03373D]">Track Your Parcel</h1>
-
-        <p className="mt-1 text-sm text-[#71717A]">
-          Search your tracking ID to view the complete delivery progress.
-        </p>
       </div>
-
-      {/* =====================================================
-          SEARCH CARD
-      ====================================================== */}
 
       <Card className="border-[#E5E7EB] shadow-none">
         <CardContent className="p-5">
           <div className="flex flex-col gap-3 sm:flex-row">
-            {/* Search Input */}
-
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#A1A1AA]" />
 
@@ -267,8 +205,6 @@ export default function TrackingPackage() {
               )}
             </div>
 
-            {/* Search Button */}
-
             <Button
               type="button"
               onClick={handleSearch}
@@ -281,16 +217,9 @@ export default function TrackingPackage() {
         </CardContent>
       </Card>
 
-      {/* =====================================================
-          DEFAULT VIEW
-          SHOW ALL PARCELS
-      ====================================================== */}
-
       {!trackingId && (
         <Card className="border-[#E5E7EB] shadow-none">
           <CardContent className="p-5 sm:p-7">
-            {/* Header */}
-
             <div className="mb-5">
               <h2 className="text-lg font-semibold text-[#03373D]">
                 All Parcels
@@ -300,10 +229,6 @@ export default function TrackingPackage() {
                 View your parcels and their current delivery status.
               </p>
             </div>
-
-            {/* =================================================
-                LOADING
-            ================================================== */}
 
             {parcelsPending && (
               <div className="flex flex-col items-center justify-center py-16">
@@ -316,10 +241,6 @@ export default function TrackingPackage() {
                 </p>
               </div>
             )}
-
-            {/* =================================================
-                ERROR
-            ================================================== */}
 
             {parcelsIsError && (
               <div className="rounded-lg border border-red-200 bg-red-50 px-5 py-8 text-center">
@@ -337,10 +258,6 @@ export default function TrackingPackage() {
               </div>
             )}
 
-            {/* =================================================
-                EMPTY
-            ================================================== */}
-
             {!parcelsPending && !parcelsIsError && parcels.length === 0 && (
               <div className="flex flex-col items-center justify-center py-16 text-center">
                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#F1F5F5]">
@@ -357,27 +274,17 @@ export default function TrackingPackage() {
               </div>
             )}
 
-            {/* =================================================
-                TABLE
-            ================================================== */}
-
             {!parcelsPending && !parcelsIsError && parcels.length > 0 && (
               <div className="overflow-x-auto">
                 <Table>
                   <TableHeader>
                     <TableRow>
                       <TableHead>Parcel</TableHead>
-
                       <TableHead>Tracking ID</TableHead>
-
                       <TableHead>Receiver</TableHead>
-
                       <TableHead>Delivery To</TableHead>
-
                       <TableHead>Payment</TableHead>
-
                       <TableHead>Status</TableHead>
-
                       <TableHead>Updated</TableHead>
                     </TableRow>
                   </TableHeader>
@@ -385,8 +292,6 @@ export default function TrackingPackage() {
                   <TableBody>
                     {parcels.map((item) => (
                       <TableRow key={item._id}>
-                        {/* Parcel */}
-
                         <TableCell>
                           <div>
                             <p className="font-medium text-[#03373D]">
@@ -399,9 +304,6 @@ export default function TrackingPackage() {
                             </p>
                           </div>
                         </TableCell>
-
-                        {/* Tracking ID */}
-
                         <TableCell>
                           <button
                             type="button"
@@ -419,9 +321,6 @@ export default function TrackingPackage() {
                             {item.trackingId || "—"}
                           </button>
                         </TableCell>
-
-                        {/* Receiver */}
-
                         <TableCell>
                           <div>
                             <p className="font-medium text-[#03373D]">
@@ -433,9 +332,6 @@ export default function TrackingPackage() {
                             </p>
                           </div>
                         </TableCell>
-
-                        {/* Delivery */}
-
                         <TableCell>
                           <div className="text-sm text-[#03373D]">
                             <p>{item.receiverDistrict || "—"}</p>
@@ -447,9 +343,6 @@ export default function TrackingPackage() {
                             )}
                           </div>
                         </TableCell>
-
-                        {/* Payment */}
-
                         <TableCell>
                           <Badge
                             className={`capitalize ${getPaymentStatusClass(
@@ -459,9 +352,6 @@ export default function TrackingPackage() {
                             {item.paymentStatus || "pending"}
                           </Badge>
                         </TableCell>
-
-                        {/* Delivery Status */}
-
                         <TableCell>
                           <Badge
                             className={`capitalize ${getDeliveryStatusClass(
@@ -471,9 +361,6 @@ export default function TrackingPackage() {
                             {getStatusLabel(item.delivery_Status)}
                           </Badge>
                         </TableCell>
-
-                        {/* Updated */}
-
                         <TableCell>
                           <span className="whitespace-nowrap text-xs text-[#71717A]">
                             {formatDate(item.updatedAt || item.creation_date)}
@@ -488,10 +375,6 @@ export default function TrackingPackage() {
           </CardContent>
         </Card>
       )}
-
-      {/* =====================================================
-          TRACKING LOADING
-      ====================================================== */}
 
       {trackingId && trackingPending && (
         <Card className="border-[#E5E7EB] shadow-none">
@@ -510,10 +393,6 @@ export default function TrackingPackage() {
           </CardContent>
         </Card>
       )}
-
-      {/* =====================================================
-          TRACKING ERROR
-      ====================================================== */}
 
       {trackingId && trackingIsError && (
         <Card className="border-red-200 shadow-none">
@@ -534,10 +413,6 @@ export default function TrackingPackage() {
           </CardContent>
         </Card>
       )}
-
-      {/* =====================================================
-          NO TRACKING EVENTS
-      ====================================================== */}
 
       {trackingId &&
         !trackingPending &&
@@ -560,20 +435,12 @@ export default function TrackingPackage() {
           </Card>
         )}
 
-      {/* =====================================================
-          TRACKING DETAILS
-      ====================================================== */}
-
       {trackingId &&
         !trackingPending &&
         !trackingIsError &&
         sortedTracking.length > 0 && (
           <Card className="border-[#E5E7EB] shadow-none">
             <CardContent className="p-5 sm:p-7">
-              {/* =================================================
-                  TRACKING HEADER
-              ================================================== */}
-
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="text-xs font-medium text-[#71717A]">
@@ -594,13 +461,7 @@ export default function TrackingPackage() {
 
               <Separator className="my-6" />
 
-              {/* =================================================
-                  PARCEL SUMMARY
-              ================================================== */}
-
               <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                {/* Parcel Name */}
-
                 <div>
                   <p className="text-xs text-[#71717A]">Parcel Name</p>
 
@@ -608,9 +469,6 @@ export default function TrackingPackage() {
                     {parcel?.parcelName || "—"}
                   </p>
                 </div>
-
-                {/* Parcel Type */}
-
                 <div>
                   <p className="text-xs text-[#71717A]">Parcel Type</p>
 
@@ -618,9 +476,6 @@ export default function TrackingPackage() {
                     {parcel?.parcelType?.replaceAll("-", " ") || "—"}
                   </p>
                 </div>
-
-                {/* Pickup */}
-
                 <div>
                   <p className="text-xs text-[#71717A]">Pickup</p>
 
@@ -635,15 +490,10 @@ export default function TrackingPackage() {
                     </span>
                   </div>
                 </div>
-
-                {/* Delivery */}
-
                 <div>
                   <p className="text-xs text-[#71717A]">Delivery To</p>
-
                   <div className="mt-1 flex items-center gap-1.5 text-sm font-semibold text-[#03373D]">
                     <MapPin className="h-3.5 w-3.5 text-[#067A87]" />
-
                     <span>
                       {parcel?.receiverDistrict || "—"}
 
@@ -655,11 +505,6 @@ export default function TrackingPackage() {
               </div>
 
               <Separator className="my-7" />
-
-              {/* =================================================
-                  DELIVERY TIMELINE
-              ================================================== */}
-
               <div>
                 <div className="mb-6">
                   <h2 className="text-lg font-semibold text-[#03373D]">
@@ -670,9 +515,6 @@ export default function TrackingPackage() {
                     Follow your parcel's delivery progress.
                   </p>
                 </div>
-
-                {/* Timeline */}
-
                 <div className="relative">
                   {sortedTracking.map((item, index) => {
                     const isLast = index === sortedTracking.length - 1;
@@ -682,14 +524,9 @@ export default function TrackingPackage() {
                         key={`${item._id || item.createdAt}-${index}`}
                         className="relative flex gap-4 pb-8 last:pb-0"
                       >
-                        {/* Vertical Line */}
-
                         {!isLast && (
                           <div className="absolute left-4 top-8 bottom-0 w-px bg-[#D9E0E5]" />
                         )}
-
-                        {/* Timeline Icon */}
-
                         <div
                           className={`relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border ${
                             isLast
@@ -699,12 +536,7 @@ export default function TrackingPackage() {
                         >
                           {getTrackingIcon(item.status, isLast)}
                         </div>
-
-                        {/* Timeline Content */}
-
                         <div className="min-w-0 flex-1">
-                          {/* Title */}
-
                           <div className="flex flex-wrap items-center gap-2">
                             <h3 className="text-sm font-semibold text-[#03373D]">
                               {item.title || getStatusLabel(item.status)}
@@ -717,16 +549,11 @@ export default function TrackingPackage() {
                               {getStatusLabel(item.status)}
                             </Badge>
                           </div>
-
-                          {/* Description */}
-
                           {item.description && (
                             <p className="mt-1 text-sm leading-6 text-[#71717A]">
                               {item.description}
                             </p>
                           )}
-
-                          {/* Location */}
 
                           {item.location && (
                             <div className="mt-2 flex items-center gap-1.5 text-xs text-[#71717A]">
@@ -740,9 +567,6 @@ export default function TrackingPackage() {
                               </span>
                             </div>
                           )}
-
-                          {/* Date */}
-
                           <p className="mt-2 text-[11px] text-[#A1A1AA]">
                             {formatDate(item.createdAt)}
                           </p>
