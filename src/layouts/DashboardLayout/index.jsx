@@ -1,4 +1,4 @@
-import { Link, Outlet, useLocation } from "react-router";
+import { Link, Outlet, useLocation, useNavigate } from "react-router";
 import {
   LayoutDashboard,
   Map,
@@ -34,6 +34,7 @@ import {
 import useUserRole from "@/hooks/useUserRol";
 import useAuth from "@/hooks/useAuth";
 import LoadingSpinner from "@/Pages/Shared/Loading";
+import Swal from "sweetalert2";
 
 const navigationItems = [
   {
@@ -136,12 +137,38 @@ const navigationItems = [
 
 export default function UserDashboardLayout() {
   const location = useLocation();
-  const { user } = useAuth();
+  const { user, signOutUser } = useAuth();
   const { role, roleLoading } = useUserRole();
+  const navigate = useNavigate();
 
   if (roleLoading) {
     return <LoadingSpinner />;
   }
+
+  const handleSignOut = async () => {
+    try {
+      await signOutUser();
+
+      localStorage.clear();
+      sessionStorage.clear();
+
+      await Swal.fire({
+        icon: "success",
+        title: "Signed out successfully!",
+        timer: 1200,
+        showConfirmButton: false,
+      });
+
+      navigate("/login");
+    } catch (error) {
+      console.error(error);
+      Swal.fire({
+        icon: "error",
+        title: "Sign out failed",
+        text: "Please try again.",
+      });
+    }
+  };
 
   const isActive = (url) => {
     if (url === "/dashboard") {
@@ -164,12 +191,12 @@ export default function UserDashboardLayout() {
           className="border-r border-[#E5E7EB] bg-white"
         >
           {/* Logo */}
-          <SidebarHeader className="border-b border-[#E5E7EB] px-5 h-14">
-            <Link to="/" className="flex items-center">
+          <SidebarHeader className="border-b border-[#E5E7EB] px-5 py-4 h-14 flex items-center align-middle">
+            <Link to="/">
               <img
                 src="/assets/favicon.svg"
                 alt="GoCarry"
-                className="h-9 w-auto"
+                className="h-6 w-auto"
               />
             </Link>
           </SidebarHeader>
@@ -185,28 +212,28 @@ export default function UserDashboardLayout() {
 
                   return (
                     <SidebarMenuItem key={item.title}>
-                      <SidebarMenuButton
-                        asChild
-                        isActive={active}
-                        tooltip={item.title}
-                        className={`
+                      <Link
+                        to={item.url}
+                        className="flex flex-row items-center gap-2"
+                      >
+                        <SidebarMenuButton
+                          asChild
+                          isActive={active}
+                          tooltip={item.title}
+                          className={`
                           h-10 rounded-[10px] px-3
-                          text-[13px]
+                          text-[13px] cursor-pointer
                           ${
                             active
                               ? "bg-[#CAEB66] text-[#03373D] hover:bg-[#CAEB66]"
                               : "text-[#71717A] hover:bg-[#F5F5F5] hover:text-[#03373D]"
                           }
                         `}
-                      >
-                        <Link
-                          to={item.url}
-                          className="flex flex-row items-center gap-2"
                         >
                           <Icon className="h-4.25 w-4.25" />
                           <span>{item.title}</span>
-                        </Link>
-                      </SidebarMenuButton>
+                        </SidebarMenuButton>
+                      </Link>
                     </SidebarMenuItem>
                   );
                 })}
@@ -244,6 +271,7 @@ export default function UserDashboardLayout() {
               <button
                 type="button"
                 className="rounded-md p-2 text-[#71717A] transition hover:bg-red-50 hover:text-red-500 cursor-pointer"
+                onClick={handleSignOut}
               >
                 <LogOut className="h-4 w-4" />
               </button>
