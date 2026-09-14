@@ -19,7 +19,7 @@ export default function AdminRoute({ children }) {
 
   // User is logged in but is not a admin
   if (role !== "admin") {
-    return <Navigate to="/dashboard" replace />;
+    return <Navigate to="/unauthorized" replace />;
   }
 
   return children;

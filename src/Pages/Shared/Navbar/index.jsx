@@ -19,6 +19,32 @@ const Navbar = () => {
   const [openProfile, setOpenProfile] = useState(false);
   const navigate = useNavigate();
 
+  const handleSignOut = async () => {
+    try {
+      await signOutUser();
+
+      localStorage.clear();
+      sessionStorage.clear();
+
+      await Swal.fire({
+        icon: "success",
+        title: "Signed out successfully!",
+        timer: 1200,
+        showConfirmButton: false,
+      });
+
+      navigate("/login");
+    } catch (error) {
+      console.error("Sign out failed:", error);
+
+      Swal.fire({
+        icon: "error",
+        title: "Sign out failed",
+        text: "Please try again.",
+      });
+    }
+  };
+
   return (
     <header className="md:max-w-6xl mx-auto">
       <nav className="flex items-center justify-between lg:rounded-sm bg-white h-[60px] px-5 sm:px-7 lg:px-6">
@@ -69,8 +95,10 @@ const Navbar = () => {
               {openProfile && (
                 <div className="absolute right-0 top-[55px] z-50 w-[210px] rounded-xl border border-[#e5e5e5] bg-white p-2 shadow-[0_4px_12px_rgba(0,0,0,0.08)]">
                   {/* Profile */}
-                  <div className="rounded-lg px-3 text-[#18181B] transition hover:bg-[#f5f5f5]">
-                    <p>{user?.displayName}</p>
+                  <div className="rounded-lg px-3 text-[#18181B] transition hover:bg-[#f5f5f5] cursor-pointer">
+                    <p className="text-[13px] font-semibold">
+                      {user?.displayName}
+                    </p>
                     <p className=" text-[9px]">{user?.email}</p>
                   </div>
                   <Link
@@ -82,39 +110,19 @@ const Navbar = () => {
                   </Link>
 
                   {/* Settings */}
-                  <Link
+                  {/* <Link
                     to="/settings"
                     onClick={() => setOpenProfile(false)}
                     className="flex h-10 items-center rounded-lg px-3 text-[13px] text-[#18181B] transition hover:bg-[#f5f5f5]"
                   >
                     Settings
-                  </Link>
+                  </Link> */}
 
                   {/* Logout */}
                   <button
                     type="button"
                     onClick={() => {
-                      setOpenProfile(false);
-                      signOutUser()
-                        .then(() => {
-                          Swal.fire({
-                            icon: "success",
-                            title: "Logout successful",
-                            showConfirmButton: false,
-                            timer: 1500,
-                          });
-                        })
-                        .catch((error) => {
-                          console.log(error);
-                          Swal.fire({
-                            icon: "success",
-                            title: "Logout failed",
-                            showConfirmButton: false,
-                            timer: 1500,
-                          });
-                        });
-
-                      navigate("/login");
+                      handleSignOut;
                     }}
                     className="flex h-10 w-full items-center rounded-lg px-3 text-left text-[13px] text-[#18181B] transition hover:bg-[#f5f5f5] cursor-pointer"
                   >
@@ -181,48 +189,28 @@ const Navbar = () => {
                   {openProfile && (
                     <div className="absolute right-0 top-[55px] z-50 w-[210px] rounded-xl border border-[#e5e5e5] bg-white p-2 shadow-[0_4px_12px_rgba(0,0,0,0.08)]">
                       {/* Profile */}
-                      <Link
+                      {/* <Link
                         to="/profile"
                         onClick={() => setOpenProfile(false)}
                         className="flex h-10 items-center justify-between rounded-lg px-3 text-[13px] text-[#18181B] transition hover:bg-[#f5f5f5]"
                       >
                         <span>Profile</span>
-                      </Link>
+                      </Link> */}
 
                       {/* Settings */}
-                      <Link
+                      {/* <Link
                         to="/settings"
                         onClick={() => setOpenProfile(false)}
                         className="flex h-10 items-center rounded-lg px-3 text-[13px] text-[#18181B] transition hover:bg-[#f5f5f5]"
                       >
                         Settings
-                      </Link>
+                      </Link> */}
 
                       {/* Logout */}
                       <button
                         type="button"
                         onClick={() => {
-                          setOpenProfile(false);
-                          signOutUser()
-                            .then(() => {
-                              Swal.fire({
-                                icon: "success",
-                                title: "Logout successful",
-                                showConfirmButton: false,
-                                timer: 1500,
-                              });
-                            })
-                            .catch((error) => {
-                              console.log(error);
-                              Swal.fire({
-                                icon: "success",
-                                title: "Logout failed",
-                                showConfirmButton: false,
-                                timer: 1500,
-                              });
-                            });
-
-                          navigate("/login");
+                          handleSignOut;
                         }}
                         className="flex h-10 w-full items-center rounded-lg px-3 text-left text-[13px] text-[#18181B] transition hover:bg-[#f5f5f5] cursor-pointer"
                       >

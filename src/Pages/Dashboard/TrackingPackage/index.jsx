@@ -42,7 +42,6 @@ export default function TrackingPackage() {
     queryKey: ["all-parcels"],
     queryFn: async () => {
       const response = await axiosSecure.get("/parcels");
-      console.log("All parcels response:", response);
       const responseData = response?.data;
 
       if (Array.isArray(responseData)) {

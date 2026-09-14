@@ -197,10 +197,6 @@ const router = createBrowserRouter([
           </RiderRoute>
         ),
       },
-      //     {
-      //       path: "parcel-to-pickup",
-      //       element: <RiderRoute><ParcelToPickup /></RiderRoute>,
-      //     },
       {
         path: "completed-deliveries",
         element: (
