@@ -12,6 +12,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import LoadingSpinner from "@/Pages/Shared/Loading";
+import { Link } from "react-router";
 
 const AdminDashboard = () => {
   const axiosSecure = useAxiosSecure();
@@ -138,10 +139,13 @@ const AdminDashboard = () => {
             <h2 className="font-semibold text-[#03373D]">Recent Parcels</h2>
           </div>
 
-          <button className="flex cursor-pointer items-center gap-1 text-sm font-medium text-[#067A87]">
+          <Link
+            to={"/dashboard/myParcel"}
+            className="flex cursor-pointer items-center gap-1 text-sm font-medium text-[#067A87]"
+          >
             View All
             <ArrowRight className="h-4 w-4" />
-          </button>
+          </Link>
         </div>
 
         <div className="overflow-x-auto">
