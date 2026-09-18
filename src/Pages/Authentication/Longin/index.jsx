@@ -147,7 +147,7 @@ export default function Login() {
             <Link to={"/register"}>
               <button
                 type="button"
-                className="text-[#8FA748] hover:underline cursor-pointer"
+                className="text-black hover:underline cursor-pointer"
               >
                 Register
               </button>
@@ -156,7 +156,7 @@ export default function Login() {
 
           {/* Or */}
           <div className="flex items-center justify-center py-[2px]">
-            <span className="text-[10px] text-[#71717A]">Or</span>
+            <span className="text-[10px] text-black">Or</span>
           </div>
 
           {/* Google Login */}

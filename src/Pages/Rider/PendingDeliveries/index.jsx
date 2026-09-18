@@ -131,9 +131,7 @@ const PendingDeliveries = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-[#03373D]">
-          Pending Deliveries
-        </h1>
+        <h1 className="text-2xl font-bold text-[#03373D]">Delivery Tasks</h1>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">

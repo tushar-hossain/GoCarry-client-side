@@ -108,8 +108,8 @@ const navigationItems = [
 
   // RIDER
   {
-    title: "Pending Deliveries",
-    url: "/dashboard/pending-deliveries",
+    title: "My Delivery Tasks",
+    url: "/dashboard/my-delivery-tasks",
     icon: PackageCheck,
     roles: ["rider"],
   },
@@ -261,16 +261,14 @@ export default function UserDashboardLayout() {
                   {user?.displayName}
                 </p>
 
-                <p className="truncate text-[10px] text-[#71717A]">
-                  {user?.email}
-                </p>
+                <p className="truncate text-[10px] text-black">{user?.email}</p>
 
-                <p className="text-[10px] text-[#8FA748]">{role}</p>
+                <p className="text-[10px] text-black">{role}</p>
               </div>
 
               <button
                 type="button"
-                className="rounded-md p-2 text-[#71717A] transition hover:bg-red-50 hover:text-red-500 cursor-pointer"
+                className="rounded-md p-2 text-black transition hover:bg-red-50 hover:text-red-500 cursor-pointer"
                 onClick={handleSignOut}
               >
                 <LogOut className="h-4 w-4" />

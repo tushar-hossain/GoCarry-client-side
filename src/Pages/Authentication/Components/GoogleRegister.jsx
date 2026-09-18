@@ -45,7 +45,7 @@ export default function GoogleRegister() {
       <button
         type="button"
         onClick={handleSubmit}
-        className="flex h-[29px] w-full cursor-pointer items-center justify-center gap-1 rounded-[4px] bg-[#E9EDF2] text-[10px] font-medium text-black transition hover:bg-[#e1e5ea]"
+        className="flex h-[29px] w-full cursor-pointer items-center justify-center gap-1 rounded-[4px] bg-[#CAEB66] text-[10px] font-medium text-black transition hover:brightness-95"
       >
         <FcGoogle size={16} />
         Register with google
