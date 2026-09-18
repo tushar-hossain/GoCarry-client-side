@@ -30,6 +30,7 @@ import CompletedDeliveries from "@/Pages/Rider/CompletedDeliveries";
 import CashoutHistory from "@/Pages/Admin/CashoutHistory";
 import MyEarnings from "@/Pages/Rider/Earnings";
 import Settings from "@/Pages/Settings/Settings";
+import Notifications from "@/Pages/components/Notifications";
 
 const router = createBrowserRouter([
   {
@@ -84,6 +85,10 @@ const router = createBrowserRouter([
       {
         path: "/unauthorized",
         Component: Unauthorized,
+      },
+      {
+        path: "notifications",
+        Component: Notifications,
       },
     ],
   },
@@ -195,7 +200,7 @@ const router = createBrowserRouter([
 
       // rider route
       {
-        path: "pending-deliveries",
+        path: "my-delivery-tasks",
         element: (
           <RiderRoute>
             <PendingDeliveries />

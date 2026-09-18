@@ -20,14 +20,15 @@ import Swal from "sweetalert2";
 import { updateProfile } from "firebase/auth";
 
 import useAuth from "@/hooks/useAuth";
+import useUserRole from "@/hooks/useUserRol";
 
 const Settings = () => {
   const { user, updatePass } = useAuth();
+  const { role } = useUserRole();
   const fileInputRef = useRef(null);
   const [activeSection, setActiveSection] = useState("profile");
   const [name, setName] = useState("");
   const [photoURL, setPhotoURL] = useState("");
-  const [selectedFile, setSelectedFile] = useState(null);
   const [isSavingProfile, setIsSavingProfile] = useState(false);
   const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
   const [newPassword, setNewPassword] = useState("");
@@ -85,10 +86,6 @@ const Settings = () => {
     },
   ];
 
-  // --------------------------------------------------
-  // Change profile photo
-  // --------------------------------------------------
-
   const handlePhotoChange = async (event) => {
     const file = event.target.files?.[0];
 
@@ -120,11 +117,8 @@ const Settings = () => {
       return;
     }
 
-    setSelectedFile(file);
-
     try {
       setIsUploadingPhoto(true);
-
       const formData = new FormData();
       formData.append("image", file);
 
@@ -158,8 +152,6 @@ const Settings = () => {
     } catch (error) {
       console.error("Photo upload error:", error);
 
-      setSelectedFile(null);
-
       Swal.fire({
         icon: "error",
         title: "Upload failed",
@@ -170,10 +162,6 @@ const Settings = () => {
       event.target.value = "";
     }
   };
-
-  // --------------------------------------------------
-  // Save profile
-  // --------------------------------------------------
 
   const handleSaveProfile = async () => {
     const trimmedName = name.trim();
@@ -207,7 +195,6 @@ const Settings = () => {
       });
 
       setName(trimmedName);
-      setSelectedFile(null);
 
       Swal.fire({
         icon: "success",
@@ -229,10 +216,6 @@ const Settings = () => {
       setIsSavingProfile(false);
     }
   };
-
-  // --------------------------------------------------
-  // Notification change
-  // --------------------------------------------------
 
   const handleNotificationChange = (key) => {
     setNotifications((previous) => {
@@ -332,7 +315,7 @@ const Settings = () => {
   };
 
   const getAccountRole = () => {
-    return "User";
+    return role ?? "User";
   };
 
   const ProfileSection = () => {
@@ -603,10 +586,6 @@ const Settings = () => {
       </div>
     );
   };
-
-  // --------------------------------------------------
-  // Password Section
-  // --------------------------------------------------
 
   const PasswordSection = () => {
     return (

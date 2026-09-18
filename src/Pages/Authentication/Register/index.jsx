@@ -223,7 +223,7 @@ export default function Register() {
             <Link to={"/login"}>
               <button
                 type="button"
-                className="cursor-pointer text-[#8FA748] hover:underline"
+                className="cursor-pointer text-black hover:underline"
               >
                 Login
               </button>
