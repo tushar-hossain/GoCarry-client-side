@@ -733,7 +733,7 @@ git clone <https://github.com/tushar-hossain/GoCarry-client-side>
 ### 2. Enter the project {#2-enter-the-project}
 
 ```bash
-cd gocarry-client
+cd GoCarry-client-side
 ```
 
 ### 3. Install dependencies {#3-install-dependencies}
@@ -1192,6 +1192,10 @@ style: update dashboard UI
 docs: update README
 chore: update dependencies
 ```
+
+# 📄 License
+
+This project is developed for educational and portfolio purposes.
 
 ## Developer
 
