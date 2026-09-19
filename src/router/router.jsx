@@ -32,6 +32,7 @@ import MyEarnings from "@/Pages/Rider/Earnings";
 import Settings from "@/Pages/Settings/Settings";
 import Notifications from "@/Pages/components/Notifications";
 import Pricing from "@/Pages/Pricing";
+import Services from "@/Pages/Services";
 
 const router = createBrowserRouter([
   {
@@ -94,6 +95,10 @@ const router = createBrowserRouter([
       {
         path: "pricing",
         Component: Pricing,
+      },
+      {
+        path: "services",
+        Component: Services,
       },
     ],
   },
