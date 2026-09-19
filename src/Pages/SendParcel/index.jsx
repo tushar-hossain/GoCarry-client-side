@@ -283,7 +283,7 @@ export default function SendParcel() {
             </span>
 
             <strong style="color:#03373D;">
-              ৳${basePrice}
+              TK${basePrice}
             </strong>
           </div>
 
@@ -297,11 +297,11 @@ export default function SendParcel() {
                 ">
                   <span>
                     Extra Weight
-                    (${extraWeight.toFixed(1)} KG × ৳40)
+                    (${extraWeight.toFixed(1)} KG × TK40)
                   </span>
 
                   <strong style="color:#03373D;">
-                    ৳${extraCharge}
+                    TK${extraCharge}
                   </strong>
                 </div>
               `
@@ -332,7 +332,7 @@ export default function SendParcel() {
             font-weight: 700;
             color: #03373D;
           ">
-            ৳${deliveryCost}
+            TK${deliveryCost}
           </p>
         </div>
 

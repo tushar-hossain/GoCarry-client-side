@@ -94,12 +94,6 @@ export default function Faq() {
         >
           Frequently Asked Question (FAQ)
         </h2>
-
-        <p className="mx-auto mt-3 max-w-[90%] text-[13px] leading-5 text-slate-500 sm:mt-4 sm:max-w-xl sm:text-sm md:text-base md:leading-normal">
-          Enhance posture, mobility, and well-being effortlessly with Posture
-          Pro. Achieve proper alignment, reduce pain, and strengthen your body
-          with ease!
-        </p>
       </div>
 
       {/* FAQ */}

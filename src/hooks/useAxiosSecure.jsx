@@ -35,6 +35,8 @@ export default function useAxiosSecure() {
         // access token is expired or invalid
         signOutUser()
           .then(() => {
+            localStorage.clear();
+            sessionStorage.clear();
             navigate("/login");
           })
           .catch(() => {});

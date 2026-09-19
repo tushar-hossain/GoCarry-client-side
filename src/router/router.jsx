@@ -33,6 +33,9 @@ import Settings from "@/Pages/Settings/Settings";
 import Notifications from "@/Pages/components/Notifications";
 import Pricing from "@/Pages/Pricing";
 import Services from "@/Pages/Services";
+import Blogs from "@/Pages/Blogs/indes";
+import Contact from "@/Pages/Contact";
+import FAQS from "@/Pages/FAQ";
 
 const router = createBrowserRouter([
   {
@@ -99,6 +102,18 @@ const router = createBrowserRouter([
       {
         path: "services",
         Component: Services,
+      },
+      {
+        path: "blog",
+        Component: Blogs,
+      },
+      {
+        path: "contact",
+        Component: Contact,
+      },
+      {
+        path: "faq",
+        Component: FAQS,
       },
     ],
   },

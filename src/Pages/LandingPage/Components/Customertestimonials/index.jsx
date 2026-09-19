@@ -116,15 +116,9 @@ export default function CustomerTestimonials() {
         <h2 className="text-3xl font-bold text-[#0b4a57] md:text-4xl">
           What our customers are sayings
         </h2>
-
-        <p className="mx-auto mt-4 max-w-xl text-sm text-slate-500 md:text-base">
-          Enhance posture, mobility, and well-being effortlessly with Posture
-          Pro. Achieve proper alignment, reduce pain, and strengthen your body
-          with ease!
-        </p>
       </div>
 
-      <div className="relative mx-auto mt-12 max-w-6xl">
+      <div className="relative mx-auto mt-6 max-w-6xl">
         <Swiper
           modules={[Autoplay]}
           onSwiper={(swiper) => (swiperRef.current = swiper)}
@@ -161,7 +155,7 @@ export default function CustomerTestimonials() {
           <button
             aria-label="Previous testimonial"
             onClick={() => swiperRef.current?.slidePrev()}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-300 text-slate-500 hover:bg-[#c7de2c] bg-white transition hover:border-slate-400 hover:text-slate-700"
+            className="flex cursor-pointer h-10 w-10 items-center justify-center rounded-full border border-slate-300 text-slate-500 hover:bg-[#c7de2c] bg-white transition hover:border-slate-400 hover:text-slate-700"
           >
             <ArrowLeft className="h-4 w-4" />
           </button>
@@ -185,7 +179,7 @@ export default function CustomerTestimonials() {
           <button
             aria-label="Next testimonial"
             onClick={() => swiperRef.current?.slideNext()}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-300 text-slate-500 hover:bg-[#c7de2c] bg-white transition hover:border-slate-400 hover:text-slate-700"
+            className="flex cursor-pointer h-10 w-10 items-center justify-center rounded-full border border-slate-300 text-slate-500 hover:bg-[#c7de2c] bg-white transition hover:border-slate-400 hover:text-slate-700"
           >
             <ArrowRight className="h-4 w-4" />
           </button>

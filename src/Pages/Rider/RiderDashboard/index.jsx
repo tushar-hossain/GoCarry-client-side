@@ -2,7 +2,6 @@ import {
   Package,
   PackageCheck,
   Truck,
-  DollarSign,
   Clock3,
   CheckCircle2,
   ArrowRight,
@@ -14,6 +13,7 @@ import { Link } from "react-router";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import useAuth from "@/hooks/useAuth";
 import LoadingSpinner from "@/Pages/Shared/Loading";
+import { FaBangladeshiTakaSign } from "react-icons/fa6";
 
 const RiderDashboard = () => {
   const axiosSecure = useAxiosSecure();
@@ -92,8 +92,8 @@ const RiderDashboard = () => {
 
         <DashboardCard
           title="Total Earnings"
-          value={`$${earnings.totalEarnings || 0}`}
-          icon={DollarSign}
+          value={`TK${earnings.totalEarnings || 0}`}
+          icon={FaBangladeshiTakaSign}
           description="All rider earnings"
         />
       </div>
@@ -153,7 +153,7 @@ const RiderDashboard = () => {
                     </div>
 
                     <div className="font-medium text-[#03373D]">
-                      Delivery Cost: ${parcel.deliveryCost || 0}
+                      Delivery Cost: TK{parcel.deliveryCost || 0}
                     </div>
                   </div>
                 </div>
@@ -176,14 +176,10 @@ const RiderDashboard = () => {
           <div className="flex items-center justify-between">
             <div>
               <h2 className="font-semibold text-[#03373D]">Earnings</h2>
-
-              <p className="mt-1 text-xs text-[#71717A]">
-                Your cashout overview
-              </p>
             </div>
 
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#eef8d5]">
-              <DollarSign className="h-5 w-5 text-[#03373D]" />
+              <FaBangladeshiTakaSign className="h-5 w-5 text-[#03373D]" />
             </div>
           </div>
 
@@ -217,7 +213,7 @@ const RiderDashboard = () => {
             <p className="text-xs text-[#71717A]">Total Earnings</p>
 
             <p className="mt-1 text-2xl font-bold text-[#03373D]">
-              ${earnings.totalEarnings || 0}
+              TK{earnings.totalEarnings || 0}
             </p>
           </div>
 
@@ -250,7 +246,7 @@ const RiderDashboard = () => {
           />
 
           <QuickAction
-            icon={DollarSign}
+            icon={FaBangladeshiTakaSign}
             title="My Earnings"
             description="View cashouts and earnings"
             to="/dashboard/my-earnings"
@@ -294,7 +290,7 @@ const EarningRow = ({ title, amount, icon: Icon, bg, iconColor }) => {
         <span className="text-sm font-medium text-[#03373D]">{title}</span>
       </div>
 
-      <span className="text-sm font-bold text-[#03373D]">${amount || 0}</span>
+      <span className="text-sm font-bold text-[#03373D]">TK{amount || 0}</span>
     </div>
   );
 };

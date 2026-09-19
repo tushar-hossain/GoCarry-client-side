@@ -143,7 +143,7 @@ const UserDashboard = () => {
           <div className="mt-5 rounded-xl bg-[#03373D] p-5 text-white">
             <p className="text-sm text-gray-300">Total Spent</p>
             <h2 className="mt-2 text-3xl font-bold">
-              ${dashboard?.totalSpent || 0}
+              TK{dashboard?.totalSpent || 0}
             </h2>
           </div>
 

@@ -301,7 +301,7 @@ export default function AssignRider() {
                     </TableCell>
 
                     <TableCell className="whitespace-nowrap text-xs font-semibold text-[#03373D]">
-                      ৳{parcel.deliveryCost || 0}
+                      TK{parcel.deliveryCost || 0}
                     </TableCell>
 
                     <TableCell>

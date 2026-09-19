@@ -93,7 +93,7 @@ const CompletedDeliveries = () => {
       Swal.fire({
         icon: "success",
         title: "Cashout Requested",
-        text: `Your cashout request of ৳${data?.data?.amount} has been submitted.`,
+        text: `Your cashout request of TK${data?.data?.amount} has been submitted.`,
         confirmButtonColor: "#CAEB66",
         cancelButtonColor: "#CAEB66",
         color: "#03373D",
@@ -371,7 +371,7 @@ const CompletedDeliveries = () => {
                         <div className="flex items-center gap-2 text-xs text-[#71717A]">
                           <CalendarDays className="h-4 w-4" />
                           <p className="font-semibold text-[#03373D]">
-                            ৳
+                            TK
                             {Number(parcel?.deliveryCost || 0).toLocaleString()}
                           </p>
                         </div>

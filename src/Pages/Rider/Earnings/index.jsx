@@ -10,7 +10,6 @@ import {
   X,
   PackageCheck,
   CheckCircle2,
-  CircleDollarSign,
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -26,6 +25,7 @@ import {
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import useAuth from "@/hooks/useAuth";
 import LoadingSpinner from "@/Pages/Shared/Loading";
+import { FaBangladeshiTakaSign } from "react-icons/fa6";
 
 const MyEarnings = () => {
   const axiosSecure = useAxiosSecure();
@@ -241,7 +241,7 @@ const MyEarnings = () => {
               <p className="text-sm text-gray-500">Total Earning</p>
 
               <h2 className="mt-1 text-2xl font-bold text-[#03373D]">
-                ৳{summary?.totalEarning?.toLocaleString()}
+                TK{summary?.totalEarning?.toLocaleString()}
               </h2>
             </div>
           </CardContent>
@@ -257,7 +257,7 @@ const MyEarnings = () => {
               <p className="text-sm text-gray-500">Total Cashed Out</p>
 
               <h2 className="mt-1 text-2xl font-bold text-green-600">
-                ৳{summary?.totalCashedOut?.toLocaleString()}
+                TK{summary?.totalCashedOut?.toLocaleString()}
               </h2>
             </div>
           </CardContent>
@@ -273,7 +273,7 @@ const MyEarnings = () => {
               <p className="text-sm text-gray-500">Total Pending</p>
 
               <h2 className="mt-1 text-2xl font-bold text-yellow-600">
-                ৳{summary?.totalPending?.toLocaleString()}
+                TK{summary?.totalPending?.toLocaleString()}
               </h2>
             </div>
           </CardContent>
@@ -301,7 +301,7 @@ const MyEarnings = () => {
               <p className="text-sm text-gray-500">Earning Today</p>
 
               <h3 className="mt-1 text-xl font-bold text-[#03373D]">
-                ৳{earningsAnalysis?.today?.toLocaleString()}
+                TK{earningsAnalysis?.today?.toLocaleString()}
               </h3>
             </CardContent>
           </Card>
@@ -319,7 +319,7 @@ const MyEarnings = () => {
               <p className="text-sm text-gray-500">This Week</p>
 
               <h3 className="mt-1 text-xl font-bold text-[#03373D]">
-                ৳{earningsAnalysis?.week?.toLocaleString()}
+                TK{earningsAnalysis?.week?.toLocaleString()}
               </h3>
             </CardContent>
           </Card>
@@ -337,7 +337,7 @@ const MyEarnings = () => {
               <p className="text-sm text-gray-500">This Month</p>
 
               <h3 className="mt-1 text-xl font-bold text-[#03373D]">
-                ৳{earningsAnalysis.month.toLocaleString()}
+                TK{earningsAnalysis.month.toLocaleString()}
               </h3>
             </CardContent>
           </Card>
@@ -355,7 +355,7 @@ const MyEarnings = () => {
               <p className="text-sm text-gray-500">This Year</p>
 
               <h3 className="mt-1 text-xl font-bold text-[#03373D]">
-                ৳{earningsAnalysis.year.toLocaleString()}
+                TK{earningsAnalysis.year.toLocaleString()}
               </h3>
             </CardContent>
           </Card>
@@ -364,7 +364,7 @@ const MyEarnings = () => {
             <CardContent className="p-5">
               <div className="mb-3 flex items-center justify-between">
                 <div className="rounded-lg bg-white/10 p-2">
-                  <CircleDollarSign className="h-5 w-5 text-[#CAEB66]" />
+                  <FaBangladeshiTakaSign className="h-5 w-5 text-[#CAEB66]" />
                 </div>
 
                 <span className="text-xs font-medium text-white/60">
@@ -375,7 +375,7 @@ const MyEarnings = () => {
               <p className="text-sm text-white/70">Overall</p>
 
               <h3 className="mt-1 text-xl font-bold text-[#CAEB66]">
-                ৳{earningsAnalysis.overall.toLocaleString()}
+                TK{earningsAnalysis.overall.toLocaleString()}
               </h3>
             </CardContent>
           </Card>
@@ -389,10 +389,6 @@ const MyEarnings = () => {
               <h2 className="text-lg font-semibold text-[#03373D]">
                 Earnings History
               </h2>
-
-              <p className="text-sm text-gray-500">
-                View all your delivery earnings.
-              </p>
             </div>
 
             <div className="relative w-full md:w-[300px]">
@@ -475,7 +471,7 @@ const MyEarnings = () => {
                       </TableCell>
 
                       <TableCell>
-                        ৳{Number(cashout?.deliveryCost || 0).toLocaleString()}
+                        TK{Number(cashout?.deliveryCost || 0).toLocaleString()}
                       </TableCell>
 
                       <TableCell>
@@ -486,7 +482,7 @@ const MyEarnings = () => {
 
                       <TableCell>
                         <span className="font-bold text-[#03373D]">
-                          ৳{Number(cashout?.amount || 0).toLocaleString()}
+                          TK{Number(cashout?.amount || 0).toLocaleString()}
                         </span>
                       </TableCell>
 

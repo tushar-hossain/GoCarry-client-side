@@ -198,7 +198,7 @@ export default function ParcelToPay() {
 
                   {/* Cost */}
                   <TableCell className="whitespace-nowrap text-xs font-bold text-[#03373D]">
-                    ৳{parcel.deliveryCost}
+                    TK{parcel.deliveryCost}
                   </TableCell>
 
                   {/* Payment */}
