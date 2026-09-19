@@ -1,6 +1,6 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useLoaderData, useNavigate } from "react-router";
+import { useLoaderData, useLocation, useNavigate } from "react-router";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -84,10 +84,18 @@ const generateTrackingId = () => {
 };
 
 export default function SendParcel() {
-  const warehouses = useLoaderData();
+  const loaderData = useLoaderData();
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
+  const location = useLocation();
+  const editingParcel = location.state?.parcel;
+  const isEditMode = Boolean(editingParcel?._id);
+
+  const warehouses = useMemo(
+    () => (Array.isArray(loaderData) ? loaderData : []),
+    [loaderData],
+  );
 
   const {
     register,
@@ -117,6 +125,28 @@ export default function SendParcel() {
     },
   });
 
+  useEffect(() => {
+    if (!editingParcel) return;
+
+    reset({
+      parcelType: editingParcel.parcelType || "document",
+      parcelName: editingParcel.parcelName || "",
+      parcelWeight: editingParcel.parcelWeight || "",
+      senderName: editingParcel.senderName || "",
+      senderPhone: editingParcel.senderPhone || "",
+      senderDistrict: editingParcel.senderDistrict || "",
+      senderServiceCenter: editingParcel.senderServiceCenter || "",
+      senderAddress: editingParcel.senderAddress || "",
+      pickupInstruction: editingParcel.pickupInstruction || "",
+      receiverName: editingParcel.receiverName || "",
+      receiverPhone: editingParcel.receiverPhone || "",
+      receiverDistrict: editingParcel.receiverDistrict || "",
+      receiverServiceCenter: editingParcel.receiverServiceCenter || "",
+      receiverAddress: editingParcel.receiverAddress || "",
+      deliveryInstruction: editingParcel.deliveryInstruction || "",
+    });
+  }, [editingParcel, reset]);
+
   const parcelType = watch("parcelType");
   const senderDistrict = watch("senderDistrict");
   const receiverDistrict = watch("receiverDistrict");
@@ -125,7 +155,7 @@ export default function SendParcel() {
   const districts = useMemo(() => {
     return [
       ...new Set(
-        warehouses?.map((warehouse) => warehouse.district).filter(Boolean),
+        warehouses?.map((warehouse) => warehouse?.district)?.filter(Boolean),
       ),
     ];
   }, [warehouses]);
@@ -138,8 +168,8 @@ export default function SendParcel() {
 
     const warehouse = warehouses.find(
       (warehouse) =>
-        warehouse.district?.trim().toLowerCase() ===
-        senderDistrict.trim().toLowerCase(),
+        warehouse?.district?.trim()?.toLowerCase() ===
+        senderDistrict?.trim()?.toLowerCase(),
     );
 
     return warehouse?.covered_area || [];
@@ -153,8 +183,8 @@ export default function SendParcel() {
 
     const warehouse = warehouses.find(
       (warehouse) =>
-        warehouse.district?.trim().toLowerCase() ===
-        receiverDistrict.trim().toLowerCase(),
+        warehouse?.district?.trim()?.toLowerCase() ===
+        receiverDistrict?.trim()?.toLowerCase(),
     );
 
     return warehouse?.covered_area || [];
@@ -170,10 +200,6 @@ export default function SendParcel() {
 
     const parcelData = {
       ...data,
-      trackingId: generateTrackingId(),
-      paymentStatus: "pending",
-      delivery_Status: "not_collected",
-      created_by: user.email,
       deliveryCost,
     };
 
@@ -197,7 +223,7 @@ export default function SendParcel() {
     }
 
     const result = await Swal.fire({
-      title: "Parcel Booking Summary",
+      title: isEditMode ? "Parcel Update Summary" : "Parcel Booking Summary",
 
       html: `
       <div style="text-align: left; font-size: 13px; color: #71717A;">
@@ -315,7 +341,7 @@ export default function SendParcel() {
 
       width: "430px",
       showCancelButton: true,
-      confirmButtonText: "Proceed To Payment",
+      confirmButtonText: isEditMode ? "Update Parcel" : "Proceed To Payment",
       cancelButtonText: "Back To Editing",
 
       confirmButtonColor: "#CAEB66",
@@ -340,23 +366,75 @@ export default function SendParcel() {
       };
 
       try {
-        const result = await axiosSecure.post("/parcels", finalParcelData);
+        if (isEditMode) {
+          // Update existing parcels
+          const updateData = {
+            ...data,
+            deliveryCost,
+          };
 
-        if (result.data.result.insertedId) {
-          Swal.fire({
-            icon: "success",
-            title: "Booking Confirmed!",
-            text: "Your parcel booking has been confirmed successfully.",
-            confirmButtonColor: "#CAEB66",
-            customClass: {
-              confirmButton: "text-black font-medium",
-            },
-          });
-          reset();
-          navigate("/dashboard/myParcel");
+          const response = await axiosSecure.patch(
+            `/parcels/${editingParcel._id}`,
+            updateData,
+          );
+
+          if (response.data.success) {
+            await Swal.fire({
+              icon: "success",
+              title: "Parcel Updated!",
+              text: "Your parcel has been updated successfully.",
+              confirmButtonColor: "#CAEB66",
+              customClass: {
+                confirmButton: "text-black font-medium",
+              },
+            });
+            reset();
+            navigate("/dashboard/myParcel", {
+              replace: true,
+            });
+          }
+        } else {
+          // Create new parcels
+          const finalParcelData = {
+            ...parcelData,
+            trackingId: generateTrackingId(),
+            paymentStatus: "pending",
+            delivery_Status: "not_collected",
+            created_by: user.email,
+            creation_date: new Date().toISOString(),
+          };
+
+          const response = await axiosSecure.post("/parcels", finalParcelData);
+
+          if (response.data.result?.insertedId) {
+            await Swal.fire({
+              icon: "success",
+              title: "Booking Confirmed!",
+              text: "Your parcel booking has been confirmed successfully.",
+              confirmButtonColor: "#CAEB66",
+              customClass: {
+                confirmButton: "text-black font-medium",
+              },
+            });
+
+            reset();
+
+            navigate("/dashboard/myParcel", {
+              replace: true,
+            });
+          }
         }
       } catch (error) {
-        console.log("Error:", error);
+        console.error("Parcel save error:", error);
+
+        Swal.fire({
+          icon: "error",
+          title: isEditMode ? "Update Failed" : "Booking Failed",
+          text:
+            error?.response?.data?.message ||
+            "Something went wrong. Please try again.",
+          confirmButtonColor: "#CAEB66",
+        });
       }
     }
 
@@ -367,14 +445,16 @@ export default function SendParcel() {
 
   return (
     <section className="md:max-w-6xl mx-auto py-5">
-      <div className="mx-auto w-full rounded-[14px] bg-white px-5 py-7 sm:px-7 md:px-8 lg:px-[50px] lg:py-8">
+      <div className="mx-auto w-full rounded-[14px] bg-white px-5 py-7 sm:px-7 md:px-8 lg:px-12.5 lg:py-8">
         <div>
           <h1 className="text-[24px] font-bold tracking-[-0.6px] text-[#03373D] sm:text-[26px]">
-            Send A Parcel
+            {isEditMode ? "Edit Parcel" : "Send A Parcel"}
           </h1>
 
           <h2 className="mt-6 text-[12px] font-bold text-[#03373D]">
-            Enter your parcel details
+            {isEditMode
+              ? "Update your parcel details"
+              : "Enter your parcel details"}
           </h2>
 
           <div className="mt-3 border-t border-[#E5E7EB]" />
@@ -412,7 +492,7 @@ export default function SendParcel() {
                 {...register("parcelName", {
                   required: "Parcel name is required",
                 })}
-                className="h-[32px] w-full rounded-[4px] border-[#D9E0E5] bg-white text-[11px] placeholder:text-[#A1A1AA] focus-visible:ring-1 focus-visible:ring-[#CAEB66]"
+                className="h-8 w-full rounded-lg border-[#D9E0E5] bg-white text-[11px] placeholder:text-[#A1A1AA] focus-visible:ring-1 focus-visible:ring-[#CAEB66]"
               />
             </FormField>
 
@@ -435,7 +515,7 @@ export default function SendParcel() {
                     return true;
                   },
                 })}
-                className="h-[32px] w-full rounded-[4px] border-[#D9E0E5] bg-white text-[11px] placeholder:text-[#A1A1AA] focus-visible:ring-1 focus-visible:ring-[#CAEB66] disabled:bg-[#F5F5F5]"
+                className="h- w-full rounded-lg border-[#D9E0E5] bg-white text-[11px] placeholder:text-[#A1A1AA] focus-visible:ring-1 focus-visible:ring-[#CAEB66] disabled:bg-[#F5F5F5]"
               />
             </FormField>
           </div>
@@ -453,7 +533,7 @@ export default function SendParcel() {
                     {...register("senderName", {
                       required: "Sender name is required",
                     })}
-                    className="h-[32px] w-full rounded-[4px] border-[#D9E0E5] text-[11px] placeholder:text-[#A1A1AA]"
+                    className="h-8 w-full rounded-lg border-[#D9E0E5] text-[11px] placeholder:text-[#A1A1AA]"
                   />
                 </FormField>
 
@@ -463,7 +543,7 @@ export default function SendParcel() {
                     {...register("senderPhone", {
                       required: "Sender phone is required",
                     })}
-                    className="h-[32px] w-full rounded-[4px] border-[#D9E0E5] text-[11px] placeholder:text-[#A1A1AA]"
+                    className="h-8 w-full rounded-lg border-[#D9E0E5] text-[11px] placeholder:text-[#A1A1AA]"
                   />
                 </FormField>
 
@@ -483,7 +563,7 @@ export default function SendParcel() {
                           setValue("senderServiceCenter", "");
                         }}
                       >
-                        <SelectTrigger className="h-[32px] w-full rounded-[4px] border-[#D9E0E5] bg-white text-[11px]">
+                        <SelectTrigger className="h-8 w-full rounded-lg border-[#D9E0E5] bg-white text-[11px]">
                           <SelectValue placeholder="Select your District" />
                         </SelectTrigger>
 
@@ -519,7 +599,7 @@ export default function SendParcel() {
                         onValueChange={field.onChange}
                         disabled={!senderDistrict}
                       >
-                        <SelectTrigger className="h-[32px] w-full rounded-[4px] border-[#D9E0E5] bg-white text-[11px]">
+                        <SelectTrigger className="h-8 w-full rounded-lg border-[#D9E0E5] bg-white text-[11px]">
                           <SelectValue placeholder="Select Service Center" />
                         </SelectTrigger>
 
@@ -545,7 +625,7 @@ export default function SendParcel() {
                     {...register("senderAddress", {
                       required: "Sender address is required",
                     })}
-                    className="h-[32px] w-full rounded-[4px] border-[#D9E0E5] text-[11px] placeholder:text-[#A1A1AA]"
+                    className="h-8 w-full rounded-lg border-[#D9E0E5] text-[11px] placeholder:text-[#A1A1AA]"
                   />
                 </FormField>
 
@@ -558,7 +638,7 @@ export default function SendParcel() {
                     {...register("pickupInstruction", {
                       required: "Pickup instruction is required",
                     })}
-                    className="min-h-[70px] w-full resize-none rounded-[4px] border-[#D9E0E5] text-[11px] placeholder:text-[#A1A1AA]"
+                    className="min-h-17.5 w-full resize-none rounded-lg border-[#D9E0E5] text-[11px] placeholder:text-[#A1A1AA]"
                   />
                 </FormField>
               </div>
@@ -576,7 +656,7 @@ export default function SendParcel() {
                     {...register("receiverName", {
                       required: "Receiver name is required",
                     })}
-                    className="h-[32px] w-full rounded-[4px] border-[#D9E0E5] text-[11px] placeholder:text-[#A1A1AA]"
+                    className="h-8 w-full rounded-lg border-[#D9E0E5] text-[11px] placeholder:text-[#A1A1AA]"
                   />
                 </FormField>
 
@@ -589,7 +669,7 @@ export default function SendParcel() {
                     {...register("receiverPhone", {
                       required: "Receiver contact is required",
                     })}
-                    className="h-[32px] w-full rounded-[4px] border-[#D9E0E5] text-[11px] placeholder:text-[#A1A1AA]"
+                    className="h-8 w-full rounded-lg border-[#D9E0E5] text-[11px] placeholder:text-[#A1A1AA]"
                   />
                 </FormField>
 
@@ -612,7 +692,7 @@ export default function SendParcel() {
                           setValue("receiverServiceCenter", "");
                         }}
                       >
-                        <SelectTrigger className="h-[32px] w-full rounded-[4px] border-[#D9E0E5] bg-white text-[11px]">
+                        <SelectTrigger className="h-8 w-full rounded-lg border-[#D9E0E5] bg-white text-[11px]">
                           <SelectValue placeholder="Select your District" />
                         </SelectTrigger>
 
@@ -648,7 +728,7 @@ export default function SendParcel() {
                         onValueChange={field.onChange}
                         disabled={!receiverDistrict}
                       >
-                        <SelectTrigger className="h-[32px] w-full rounded-[4px] border-[#D9E0E5] bg-white text-[11px]">
+                        <SelectTrigger className="h-8 w-full rounded-lg border-[#D9E0E5] bg-white text-[11px]">
                           <SelectValue placeholder="Select Service Center" />
                         </SelectTrigger>
 
@@ -674,7 +754,7 @@ export default function SendParcel() {
                     {...register("receiverAddress", {
                       required: "Receiver address is required",
                     })}
-                    className="h-[32px] w-full rounded-[4px] border-[#D9E0E5] text-[11px] placeholder:text-[#A1A1AA]"
+                    className="h-8 w-full rounded-lg border-[#D9E0E5] text-[11px] placeholder:text-[#A1A1AA]"
                   />
                 </FormField>
 
@@ -687,7 +767,7 @@ export default function SendParcel() {
                     {...register("deliveryInstruction", {
                       required: "Delivery instruction is required",
                     })}
-                    className="min-h-[70px] w-full resize-none rounded-[4px] border-[#D9E0E5] text-[11px] placeholder:text-[#A1A1AA]"
+                    className="min-h-17.5 w-full resize-none rounded-lg border-[#D9E0E5] text-[11px] placeholder:text-[#A1A1AA]"
                   />
                 </FormField>
               </div>
@@ -700,9 +780,9 @@ export default function SendParcel() {
 
           <Button
             type="submit"
-            className="mt-6 h-[32px] cursor-pointer rounded-[4px] bg-[#CAEB66] text-[11px] font-medium text-black hover:bg-[#CAEB66] hover:brightness-95"
+            className="mt-6 h-8 cursor-pointer rounded-lg bg-[#CAEB66] text-[11px] font-medium text-black hover:bg-[#CAEB66] hover:brightness-95"
           >
-            Proceed to Confirm Booking
+            {isEditMode ? "Update Parcel" : "Proceed to Confirm Booking"}
           </Button>
         </form>
       </div>
