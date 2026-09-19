@@ -1,11 +1,4 @@
-import {
-  Package,
-  Clock3,
-  Truck,
-  CheckCircle2,
-  ArrowRight,
-  MapPin,
-} from "lucide-react";
+import { Package, Clock3, Truck, CheckCircle2, ArrowRight } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import useAuth from "@/hooks/useAuth";
@@ -157,7 +150,7 @@ const UserDashboard = () => {
           <div className="mt-4 space-y-3">
             <Link
               to={"/sendParcel"}
-              className="flex w-full cursor-pointer items-center justify-between rounded-xl bg-[#CAEB66] px-4 py-3 text-sm font-semibold text-[#03373D]"
+              className="flex w-full cursor-pointer items-center justify-between rounded-xl hover:bg-[#CAEB66] px-4 py-3 text-sm font-semibold text-[#03373D]"
             >
               Send New Parcel
               <ArrowRight className="h-4 w-4" />
@@ -165,12 +158,9 @@ const UserDashboard = () => {
 
             <Link
               to={"/dashboard/tracking"}
-              className="flex w-full cursor-pointer items-center justify-between rounded-xl border border-gray-200 px-4 py-3 text-sm font-medium text-[#03373D]"
+              className="flex w-full cursor-pointer items-center justify-between rounded-xl hover:bg-[#CAEB66] border border-gray-200 px-4 py-3 text-sm font-medium text-[#03373D]"
             >
-              <span className="flex items-center gap-2">
-                <MapPin className="h-4 w-4" />
-                Track Parcel
-              </span>
+              <span className="flex items-center gap-2">Track Parcel</span>
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>

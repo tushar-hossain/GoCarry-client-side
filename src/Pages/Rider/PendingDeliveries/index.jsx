@@ -176,7 +176,7 @@ const PendingDeliveries = () => {
         </div>
 
         {deliveries?.length === 0 ? (
-          <div className="flex min-h-[300px] flex-col items-center justify-center px-5 text-center">
+          <div className="flex min-h-75 flex-col items-center justify-center px-5 text-center">
             <PackageCheck className="mb-3 h-12 w-12 text-gray-300" />
 
             <h3 className="font-semibold text-[#03373D]">

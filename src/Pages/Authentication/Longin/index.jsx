@@ -1,13 +1,19 @@
 import useAuth from "@/hooks/useAuth";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router";
 import Swal from "sweetalert2";
+import { Loader2 } from "lucide-react";
+
 import GoogleRegister from "../Components/GoogleRegister";
 
 export default function Login() {
   const { signInUser } = useAuth();
+
   const location = useLocation();
   const navigate = useNavigate();
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
@@ -20,29 +26,33 @@ export default function Login() {
     },
   });
 
-  const onSubmit = (data) => {
-    signInUser(data.email, data.password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        if (user) {
-          Swal.fire({
-            icon: "success",
-            title: "Login successful",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-          navigate(location?.state || "/");
-        }
-      })
-      .catch((error) => {
-        console.log(error.message);
-        Swal.fire({
+  const onSubmit = async (data) => {
+    if (isLoading) return;
+    setIsLoading(true);
+    try {
+      const userCredential = await signInUser(data.email, data.password);
+      const user = userCredential.user;
+      if (user) {
+        await Swal.fire({
           icon: "success",
-          title: "Login failed",
+          title: "Login successful",
           showConfirmButton: false,
           timer: 1500,
         });
+
+        navigate(location?.state || "/");
+      }
+    } catch (error) {
+      console.error(error);
+      Swal.fire({
+        icon: "error",
+        title: "Login failed",
+        text: "Invalid email or password.",
+        showConfirmButton: true,
       });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -50,7 +60,7 @@ export default function Login() {
       <div>
         {/* Heading */}
         <div className="mb-3">
-          <h1 className="text-[23px] font-bold leading-[28px] tracking-[-0.5px] text-black">
+          <h1 className="text-[23px] font-bold leading-7 tracking-[-0.5px] text-black">
             Welcome Back
           </h1>
 
@@ -72,6 +82,7 @@ export default function Login() {
               id="email"
               type="email"
               placeholder="Email"
+              disabled={isLoading}
               {...register("email", {
                 required: "Email is required",
                 pattern: {
@@ -79,7 +90,7 @@ export default function Login() {
                   message: "Enter a valid email address",
                 },
               })}
-              className={`h-[29px] w-full rounded-[4px] border bg-white px-2 text-[10px] outline-none placeholder:text-[#A1A1AA] focus:border-[#CAEB66] ${
+              className={`h-7.25 w-full rounded-lg border bg-white px-2 text-[10px] outline-none placeholder:text-[#A1A1AA] focus:border-[#CAEB66] disabled:cursor-not-allowed disabled:bg-gray-100 ${
                 errors.email ? "border-red-400" : "border-[#D9E0E5]"
               }`}
             />
@@ -104,6 +115,7 @@ export default function Login() {
               id="password"
               type="password"
               placeholder="Password"
+              disabled={isLoading}
               {...register("password", {
                 required: "Password is required",
                 minLength: {
@@ -111,7 +123,7 @@ export default function Login() {
                   message: "Password must be at least 6 characters",
                 },
               })}
-              className={`h-[29px] w-full rounded-[4px] border bg-white px-2 text-[10px] outline-none placeholder:text-[#A1A1AA] focus:border-[#CAEB66] ${
+              className={`h-7.25 w-full rounded-lg border bg-white px-2 text-[10px] outline-none placeholder:text-[#A1A1AA] focus:border-[#CAEB66] disabled:cursor-not-allowed disabled:bg-gray-100 ${
                 errors.password ? "border-red-400" : "border-[#D9E0E5]"
               }`}
             />
@@ -124,10 +136,11 @@ export default function Login() {
           </div>
 
           {/* Forgot Password */}
-          <div className="pt-[1px]">
+          <div className="pt-px">
             <button
               type="button"
-              className="text-[10px] text-[#71717A] hover:underline cursor-pointer"
+              disabled={isLoading}
+              className="cursor-pointer text-[10px] text-[#71717A] hover:underline disabled:cursor-not-allowed"
             >
               Forgot Password?
             </button>
@@ -136,18 +149,27 @@ export default function Login() {
           {/* Login */}
           <button
             type="submit"
-            className="h-[29px] w-full rounded-[4px] bg-[#CAEB66] text-[10px] font-medium text-black transition hover:brightness-95 cursor-pointer"
+            disabled={isLoading}
+            className="flex h-7.25 w-full items-center justify-center gap-1 rounded-lg bg-[#CAEB66] text-[10px] font-medium text-black cursor-pointer transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-70"
           >
-            Login
+            {isLoading ? (
+              <>
+                <Loader2 className="h-3 w-3 animate-spin" />
+                Logging in...
+              </>
+            ) : (
+              "Login"
+            )}
           </button>
 
           {/* Register */}
-          <p className="pt-[1px] text-[10px] text-[#71717A]">
+          <p className="pt-px text-[10px] text-[#71717A]">
             Don't have any account?{" "}
-            <Link to={"/register"}>
+            <Link to="/register">
               <button
                 type="button"
-                className="text-black hover:underline cursor-pointer"
+                disabled={isLoading}
+                className="cursor-pointer text-black hover:underline"
               >
                 Register
               </button>
@@ -155,7 +177,7 @@ export default function Login() {
           </p>
 
           {/* Or */}
-          <div className="flex items-center justify-center py-[2px]">
+          <div className="flex items-center justify-center py-0.5">
             <span className="text-[10px] text-black">Or</span>
           </div>
 
