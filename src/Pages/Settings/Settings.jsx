@@ -562,7 +562,7 @@ const Settings = () => {
             </button>
 
             {/* Account security */}
-            <div className="flex items-center justify-between gap-4 rounded-xl border border-gray-100 p-4">
+            {/* <div className="flex items-center justify-between gap-4 rounded-xl border border-gray-100 p-4">
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#eef8d5]">
                   <Shield className="h-5 w-5 text-[#03373D]" />
@@ -580,7 +580,7 @@ const Settings = () => {
               </div>
 
               <CheckCircle2 className="h-5 w-5 text-green-600" />
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
@@ -710,7 +710,7 @@ const Settings = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#eef0f1] p-4 sm:p-6 lg:p-8">
+    <div>
       <div className="mx-auto max-w-6xl">
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-[#03373D] sm:text-3xl">

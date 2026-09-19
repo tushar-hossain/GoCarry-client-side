@@ -99,7 +99,7 @@ export default function MyParcel() {
   // LOADING
   if (isPending) {
     return (
-      <div className="flex min-h-[300px] items-center justify-center">
+      <div className="flex min-h-75 items-center justify-center">
         <p className="text-sm text-[#71717A]">Loading parcels...</p>
       </div>
     );
@@ -108,7 +108,7 @@ export default function MyParcel() {
   // ERROR
   if (isError) {
     return (
-      <div className="flex min-h-[300px] items-center justify-center">
+      <div className="flex min-h-75 items-center justify-center">
         <p className="text-sm text-red-500">
           {error?.message || "Failed to load parcels"}
         </p>
@@ -186,7 +186,7 @@ export default function MyParcel() {
                     </TableCell>
 
                     {/* Name */}
-                    <TableCell className="max-w-[180px] truncate text-xs font-medium text-[#03373D]">
+                    <TableCell className="max-w-45 truncate text-xs font-medium text-[#03373D]">
                       {parcel.parcelName}
                     </TableCell>
 
@@ -322,7 +322,7 @@ export default function MyParcel() {
           }
         }}
       >
-        <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
+        <DialogContent className="sm:max-w-4xl w-[95vw] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-[#03373D]">Parcel Details</DialogTitle>
           </DialogHeader>
@@ -441,7 +441,7 @@ function Detail({ label, value }) {
     <div className="rounded-lg border border-[#E5E7EB] bg-[#F8FAFA] p-3">
       <p className="text-[10px] font-medium text-[#71717A]">{label}</p>
 
-      <p className="mt-1 break-words text-xs font-semibold text-[#03373D]">
+      <p className="mt-1 wrap-break-word text-xs font-semibold text-[#03373D]">
         {value || "N/A"}
       </p>
     </div>

@@ -1,10 +1,35 @@
 import useAuth from "@/hooks/useAuth";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
+import LoadingSpinner from "@/Pages/Shared/Loading";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { useQuery } from "@tanstack/react-query";
+import { Check, Copy, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import Swal from "sweetalert2";
+
+const testCards = [
+  {
+    number: "4242424242424242",
+    brand: "Visa",
+    description: "Payment succeeds",
+  },
+  {
+    number: "4000056655665556",
+    brand: "Visa",
+    description: "Payment succeeds",
+  },
+  {
+    number: "5555555555554444",
+    brand: "Mastercard",
+    description: "Payment succeeds",
+  },
+  {
+    number: "378282246310005",
+    brand: "American Express",
+    description: "Payment succeeds",
+  },
+];
 
 export default function PaymentsForm() {
   const stripe = useStripe();
@@ -14,6 +39,8 @@ export default function PaymentsForm() {
   const axioSecure = useAxiosSecure();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [copiedCard, setCopiedCard] = useState("");
 
   const {
     isPending,
@@ -29,17 +56,13 @@ export default function PaymentsForm() {
 
   // LOADING
   if (isPending) {
-    return (
-      <div className="flex min-h-[300px] items-center justify-center">
-        <p className="text-sm text-[#71717A]">Loading parcels...</p>
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   // ERROR
   if (isError) {
     return (
-      <div className="flex min-h-[300px] items-center justify-center">
+      <div className="flex min-h-75 items-center justify-center">
         <p className="text-sm text-red-500">
           {error?.message || "Failed to load parcels"}
         </p>
@@ -52,99 +75,123 @@ export default function PaymentsForm() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!stripe || !element) {
+    if (!stripe || !element || isProcessing) {
       return;
     }
 
-    const card = element.getElement(CardElement);
+    setError("");
+    setIsProcessing(true);
 
-    if (card === "null") {
-      return;
-    }
+    try {
+      const card = element.getElement(CardElement);
 
-    const { error } = await stripe.createPaymentMethod({
-      type: "card",
-      card,
-    });
+      if (!card) {
+        setError("Please enter your card information.");
+        return;
+      }
 
-    if (error) {
-      setError(error.message);
-    } else {
-      setError("");
+      // 1. Create Payment Method
+      const { error: paymentMethodError } = await stripe.createPaymentMethod({
+        type: "card",
+        card,
+      });
 
-      // 1. Create PaymentIntent
-      try {
-        const response = await axioSecure.post(
-          "/payments/create-payment-intent",
-          {
-            amount: parcelCost,
-          },
+      if (paymentMethodError) {
+        setError(paymentMethodError.message);
+        return;
+      }
+
+      // 2. Create Payment Intent
+      const response = await axioSecure.post(
+        "/payments/create-payment-intent",
+        {
+          amount: parcelCost,
+        },
+      );
+
+      const clientSecret = response.data.clientSecret;
+
+      // 3. Confirm Payment
+      const result = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card,
+        },
+      });
+
+      if (result.error) {
+        setError(result.error.message);
+        return;
+      }
+
+      // 4. Payment successful
+      if (result.paymentIntent?.status === "succeeded") {
+        const paymentData = {
+          paymentIntentId: result.paymentIntent.id,
+          parcelId: parcels?.data?.data?._id,
+          status: result.paymentIntent.status,
+          user: user?.displayName || "",
+        };
+
+        // 5. payment information Save database
+        const saveResponse = await axioSecure.post(
+          "/payments/save-payment",
+          paymentData,
         );
 
-        const clientSecret = response.data.clientSecret;
+        const paymentResult = saveResponse.data.data;
 
-        // 2. Confirm payment
-        const result = await stripe.confirmCardPayment(clientSecret, {
-          payment_method: {
-            card,
-          },
-        });
+        if (paymentResult?.paymentStatus === "succeeded") {
+          const swalResult = await Swal.fire({
+            icon: "success",
+            title: "Payment Successful!",
+            html: `
+            <div style="text-align: left; margin-top: 15px;">
+              <p style="margin-bottom: 8px;">
+                <strong>Payment Status:</strong>
+                ${paymentResult.paymentStatus}
+              </p>
 
-        if (result.error) {
-          setError(result.error.message);
-          return;
-        }
+              <p style="margin-bottom: 8px;">
+                <strong>Tracking ID:</strong>
+                ${paymentResult.trackingId}
+              </p>
 
-        if (result.paymentIntent?.status === "succeeded") {
-          const paymentData = {
-            paymentIntentId: result.paymentIntent.id,
-            parcelId: parcels?.data?.data._id,
-            status: result.paymentIntent.status,
-            user: user?.displayName || "",
-          };
+              <p style="color: #71717A; font-size: 13px;">
+                Your parcel payment has been completed successfully.
+              </p>
+            </div>
+          `,
+            confirmButtonText: "Go to My Parcels",
+            confirmButtonColor: "#CAEB66",
+            allowOutsideClick: false,
+          });
 
-          const response = await axioSecure.post(
-            "/payments/save-payment",
-            paymentData,
-          );
-
-          const paymentResult = response.data.data;
-
-          if (paymentResult?.paymentStatus === "succeeded") {
-            const result = await Swal.fire({
-              icon: "success",
-              title: "Payment Successful!",
-              html: `
-                      <div style="text-align: left; margin-top: 15px;">
-                        <p style="margin-bottom: 8px;">
-                          <strong>Payment Status:</strong> ${paymentResult.paymentStatus}
-                        </p>
-
-                        <p style="margin-bottom: 8px;">
-                          <strong>Tracking ID:</strong> ${paymentResult.trackingId}
-                        </p>
-
-                        <p style="color: #71717A; font-size: 13px;">
-                          Your parcel payment has been completed successfully.
-                        </p>
-                      </div>
-                    `,
-              confirmButtonText: "Go to My Parcels",
-              confirmButtonColor: "#CAEB66",
-              allowOutsideClick: false,
-            });
-
-            if (result.isConfirmed) {
-              navigate("/dashboard/myParcel");
-            }
+          if (swalResult.isConfirmed) {
+            navigate("/dashboard/myParcel");
           }
         }
-      } catch (error) {
-        setError(
-          error?.response?.data?.message ||
-            "Something went wrong while processing payment.",
-        );
       }
+    } catch (error) {
+      console.error("Payment error:", error);
+
+      setError(
+        error?.response?.data?.message ||
+          "Something went wrong while processing payment.",
+      );
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const handleCopyCard = async (cardNumber) => {
+    try {
+      await navigator.clipboard.writeText(cardNumber);
+      setCopiedCard(cardNumber);
+      setTimeout(() => {
+        setCopiedCard("");
+      }, 1500);
+    } catch (error) {
+      console.error("Failed to copy card number:", error);
     }
   };
 
@@ -190,12 +237,57 @@ export default function PaymentsForm() {
           {/* Payment Button */}
           <button
             type="submit"
-            disabled={!stripe}
-            className="flex h-11 w-full items-center justify-center rounded-lg bg-[#CAEB66] text-sm font-semibold text-black transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
+            disabled={!stripe || isProcessing}
+            className="flex h-9 w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-[#CAEB66] text-sm font-semibold text-black transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            Pay Now ${parcels?.data?.data.deliveryCost}
+            {isProcessing ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" />
+                Processing Payment...
+              </>
+            ) : (
+              `Pay Now $${parcels?.data?.data?.deliveryCost}`
+            )}
           </button>
         </form>
+      </div>
+      {/* Test Cards */}
+      <div className="mt-6 border-t border-[#E5E7EB] pt-5">
+        <div className="mb-3">
+          <h3 className="text-sm font-semibold text-[#03373D]">
+            Test Card Numbers
+          </h3>
+        </div>
+
+        <div className="grid grid-cols-2 gap-2">
+          {testCards.map((card) => (
+            <div
+              key={card.number}
+              className="flex items-center justify-between gap-3 rounded-lg border border-[#E5E7EB] bg-[#F8FAFA] px-3 py-2.5"
+            >
+              <div className="min-w-0">
+                <p className="font-mono text-xs font-medium text-[#18181B]">
+                  {card.number}
+                </p>
+
+                <p className="mt-0.5 text-[9px] text-[#71717A]">{card.brand}</p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => handleCopyCard(card.number)}
+                className="flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-md border border-[#D9E0E5] bg-white text-[#71717A] transition hover:bg-[#F4F4F5] hover:text-[#03373D]"
+                title="Copy card number"
+              >
+                {copiedCard === card.number ? (
+                  <Check className="h-3.5 w-3.5 text-green-600" />
+                ) : (
+                  <Copy className="h-3.5 w-3.5" />
+                )}
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
