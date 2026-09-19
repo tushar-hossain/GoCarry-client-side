@@ -256,6 +256,7 @@ export default function MyParcel() {
                           type="button"
                           variant="outline"
                           size="icon"
+                          disabled={parcel.paymentStatus === "succeeded"}
                           onClick={() => setSelectedParcel(parcel)}
                           className="h-7 w-7 cursor-pointer"
                           title="View"
@@ -268,6 +269,7 @@ export default function MyParcel() {
                           type="button"
                           variant="outline"
                           size="icon"
+                          disabled={parcel.paymentStatus === "succeeded"}
                           onClick={() =>
                             navigate("/dashboard/send-parcel", {
                               state: {
@@ -286,7 +288,10 @@ export default function MyParcel() {
                           type="button"
                           variant="outline"
                           size="icon"
-                          disabled={deleteParcelMutation.isPending}
+                          disabled={
+                            deleteParcelMutation.isPending ||
+                            parcel.paymentStatus === "succeeded"
+                          }
                           onClick={() => handleDelete(parcel)}
                           className="h-7 w-7 text-red-500 hover:text-red-600 cursor-pointer"
                           title="Delete"
