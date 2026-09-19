@@ -223,10 +223,6 @@ export default function TrackingPackage() {
               <h2 className="text-lg font-semibold text-[#03373D]">
                 All Parcels
               </h2>
-
-              <p className="mt-1 text-sm text-[#71717A]">
-                View your parcels and their current delivery status.
-              </p>
             </div>
 
             {parcelsPending && (

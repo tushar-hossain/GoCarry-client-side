@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ChevronDown, ChevronUp, ArrowUpRight } from "lucide-react";
+import { Link } from "react-router";
 
 const ACTIVE = "#067A87";
 const HEADING = "#03373D";
@@ -49,7 +50,7 @@ function FaqItem({ item, isOpen, onToggle }) {
     >
       <button
         onClick={onToggle}
-        className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left sm:gap-4 sm:px-5 sm:py-4 lg:px-6"
+        className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left sm:gap-4 sm:px-5 sm:py-4 lg:px-6 cursor-pointer"
       >
         <span
           className="text-[13px] font-semibold leading-5 sm:text-sm"
@@ -84,7 +85,7 @@ export default function Faq() {
   const [openId, setOpenId] = useState(FAQS[0].id);
 
   return (
-    <section className="bg-[#ececec] px-4 py-10 sm:px-6 sm:py-12 lg:px-0">
+    <section className="bg-[#fafafa] px-4 py-10 sm:px-6 sm:py-12 lg:px-0 rounded-lg">
       {/* Heading */}
       <div className="text-center">
         <h2
@@ -115,18 +116,20 @@ export default function Faq() {
 
       {/* Button */}
       <div className="mt-8 flex justify-center sm:mt-10">
-        <button
-          className="flex items-center gap-2 rounded-full py-1.5 pl-5 pr-1.5 text-[13px] font-semibold transition hover:brightness-95 sm:gap-3 sm:pl-6 sm:text-sm"
-          style={{ backgroundColor: BUTTON, color: HEADING }}
-        >
-          See More FAQ's
-          <span
-            className="flex h-7 w-7 items-center justify-center rounded-full sm:h-8 sm:w-8"
-            style={{ backgroundColor: HEADING }}
+        <Link to={"/faq"}>
+          <button
+            className="flex items-center gap-2 rounded-full py-1.5 pl-5 pr-1.5 text-[13px] font-semibold transition hover:brightness-95 sm:gap-3 sm:pl-6 sm:text-sm cursor-pointer"
+            style={{ backgroundColor: BUTTON, color: HEADING }}
           >
-            <ArrowUpRight className="h-3.5 w-3.5 text-white sm:h-4 sm:w-4" />
-          </span>
-        </button>
+            See More FAQ's
+            <span
+              className="flex h-7 w-7 items-center justify-center rounded-full sm:h-8 sm:w-8"
+              style={{ backgroundColor: HEADING }}
+            >
+              <ArrowUpRight className="h-3.5 w-3.5 text-white sm:h-4 sm:w-4" />
+            </span>
+          </button>
+        </Link>
       </div>
     </section>
   );

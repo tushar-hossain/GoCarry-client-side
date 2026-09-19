@@ -51,7 +51,7 @@ function TestimonialCard({ quote, name, role, active }) {
       className={[
         "flex h-full flex-col rounded-2xl p-7 transition-all duration-300",
         active
-          ? "bg-white shadow-xl shadow-slate-200/70 scale-100"
+          ? "bg-[#ececec] shadow-xl shadow-slate-200/70 scale-100"
           : "bg-[#e6e6e6] scale-[0.94] opacity-90",
       ].join(" ")}
     >
@@ -109,7 +109,7 @@ export default function CustomerTestimonials() {
   const LOOP_TESTIMONIALS = [...TESTIMONIALS, ...TESTIMONIALS, ...TESTIMONIALS];
 
   return (
-    <section className="bg-[#ececec] overflow-hidden">
+    <section className="bg-[#fafafa] overflow-hidden py-10 sm:py-12 rounded-lg">
       <div className="mx-auto max-w-3xl text-center">
         <img src={ICON_SRC} alt="" className="mx-auto mb-6 h-16 w-auto" />
 
@@ -129,7 +129,7 @@ export default function CustomerTestimonials() {
           modules={[Autoplay]}
           onSwiper={(swiper) => (swiperRef.current = swiper)}
           onSlideChange={(swiper) =>
-            setActiveIndex(swiper.realIndex % TESTIMONIALS.length)
+            setActiveIndex(swiper.realIndex % TESTIMONIALS?.length)
           }
           centeredSlides
           loop={true}
@@ -145,10 +145,10 @@ export default function CustomerTestimonials() {
             640: { slidesPerView: 2.2 },
             1024: { slidesPerView: 3.3 },
           }}
-          className="!overflow-visible !py-4"
+          className="overflow-visible! py-4!"
         >
           {LOOP_TESTIMONIALS?.map((t, i) => (
-            <SwiperSlide key={`${t.id}-${i}`} className="!h-auto">
+            <SwiperSlide key={`${t.id}-${i}`} className="h-auto!">
               <TestimonialCard
                 {...t}
                 active={i % TESTIMONIALS?.length === activeIndex}

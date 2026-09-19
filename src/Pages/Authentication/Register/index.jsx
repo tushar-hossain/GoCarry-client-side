@@ -13,6 +13,7 @@ export default function Register() {
   const navigate = useNavigate();
   const [uploadImage, setUploadImage] = useState("");
   const axiosPublic = useAxiosPublic();
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
@@ -43,6 +44,7 @@ export default function Register() {
   };
 
   const onSubmit = async (data) => {
+    setIsLoading(true);
     createUser(data.email, data.password)
       .then(async (userCredential) => {
         const user = userCredential.user;
@@ -72,12 +74,16 @@ export default function Register() {
       })
       .catch((error) => {
         console.error(error.message);
+        setIsLoading(false);
         Swal.fire({
           icon: "success",
           title: "Registration failed",
           showConfirmButton: false,
           timer: 1500,
         });
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -86,7 +92,7 @@ export default function Register() {
       <div>
         {/* Heading */}
         <div className="mb-4">
-          <h1 className="text-[23px] font-bold leading-[34px] tracking-[-0.7px] text-black">
+          <h1 className="text-[23px] font-bold leading-8.5 tracking-[-0.7px] text-black">
             Create an Account
           </h1>
 
@@ -115,7 +121,7 @@ export default function Register() {
                   message: "Name must be at least 2 characters",
                 },
               })}
-              className={`h-[29px] w-full rounded-[4px] border bg-white px-2 text-[10px] outline-none placeholder:text-[#94A3B8] focus:border-[#CAEB66] ${
+              className={`h-7.25 w-full rounded-lg border bg-white px-2 text-[10px] outline-none placeholder:text-[#94A3B8] focus:border-[#CAEB66] ${
                 errors.name ? "border-red-400" : "border-[#D9E0E5]"
               }`}
             />
@@ -147,7 +153,7 @@ export default function Register() {
                   message: "Enter a valid email address",
                 },
               })}
-              className={`h-[29px] w-full rounded-[4px] border bg-white px-2 text-[10px] outline-none placeholder:text-[#94A3B8] focus:border-[#CAEB66] ${
+              className={`h-7.25 w-full rounded-lg border bg-white px-2 text-[10px] outline-none placeholder:text-[#94A3B8] focus:border-[#CAEB66] ${
                 errors.email ? "border-red-400" : "border-[#D9E0E5]"
               }`}
             />
@@ -179,7 +185,7 @@ export default function Register() {
                   message: "Password must be at least 6 characters",
                 },
               })}
-              className={`h-[29px] w-full rounded-[4px] border bg-white px-2 text-[10px] outline-none placeholder:text-[#94A3B8] focus:border-[#CAEB66] ${
+              className={`h-7.25 w-full rounded-lg border bg-white px-2 text-[10px] outline-none placeholder:text-[#94A3B8] focus:border-[#CAEB66] ${
                 errors.password ? "border-red-400" : "border-[#D9E0E5]"
               }`}
             />
@@ -205,20 +211,21 @@ export default function Register() {
               type="file"
               placeholder="photo"
               onChange={handleUploadPicture}
-              className={`h-[29px] w-full cursor-pointer rounded-[4px] border bg-white px-2 text-[10px] outline-none placeholder:text-[#94A3B8] focus:border-[#CAEB66]}`}
+              className={`h-7.25 w-full cursor-pointer rounded-lg border bg-white px-2 text-[10px] outline-none placeholder:text-[#94A3B8] focus:border-[#CAEB66]}`}
             />
           </div>
 
           {/* Register Button */}
           <button
             type="submit"
-            className="mt-1 h-[29px] w-full cursor-pointer rounded-[4px] bg-[#CAEB66] text-[10px] font-medium text-black transition hover:brightness-95"
+            disabled={isLoading}
+            className="mt-1 h-7.25 w-full cursor-pointer rounded-lg bg-[#CAEB66] text-[10px] font-medium text-black transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-70"
           >
-            Register
+            {isLoading ? "Registering..." : "Register"}
           </button>
 
           {/* Login */}
-          <p className="pt-[1px] text-[10px] text-[#71717A]">
+          <p className="pt-px text-[10px] text-[#71717A]">
             Already have an account?{" "}
             <Link to={"/login"}>
               <button
@@ -231,7 +238,7 @@ export default function Register() {
           </p>
 
           {/* Or */}
-          <div className="flex items-center justify-center py-[2px]">
+          <div className="flex items-center justify-center py-0.5">
             <span className="text-[10px] text-[#71717A]">Or</span>
           </div>
 

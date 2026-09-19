@@ -1,99 +1,93 @@
 import { FaLinkedinIn, FaFacebookF, FaYoutube } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
+import { Link } from "react-router";
 
 const Footer = () => {
   const navItems = [
-    { label: "Services", href: "#services" },
-    { label: "Coverage", href: "#coverage" },
-    { label: "About Us", href: "#about" },
-    { label: "Pricing", href: "#pricing" },
-    { label: "Blog", href: "#blog" },
-    { label: "Contact", href: "#contact" },
+    { label: "Services", href: "/services" },
+    { label: "Coverage", href: "/coverage" },
+    { label: "About Us", href: "/about" },
+    { label: "Pricing", href: "/pricing" },
+    { label: "Blog", href: "/blog" },
+    { label: "Contact", href: "/contact" },
   ];
 
   return (
-    <div className="md:max-w-6xl mx-auto px-6 text-center lg:rounded-[14px] flex min-h-[190px] flex-col items-center justify-center bg-[#0d0d0d] py-8 sm:px-7 lg:px-6">
+    <div className="md:max-w-6xl mx-auto px-6 text-center lg:rounded-[14px] flex min-h-47.5 flex-col items-center justify-center bg-[#0d0d0d] py-8 sm:px-7 lg:px-6">
       {/* Logo */}
-      <a href="/" className="mb-3 flex items-center" aria-label="GoCarry">
-        {/* Logo Icon */}
-        {/* <div className="relative mr-1.5 h-[22px] w-[18px]">
-            <div
-              className="absolute left-0 top-0 h-[20px] w-[14px] bg-[#c4f044]"
-              style={{
-                clipPath:
-                  "polygon(0 18%, 55% 0, 55% 20%, 100% 20%, 100% 80%, 55% 80%, 55% 100%, 0 82%)",
-              }}
-            />
-          </div> */}
-
+      <Link to={"/"} className="mb-3 flex items-center" aria-label="GoCarry">
         <span className="text-[18px] font-bold tracking-[-0.8px] text-white">
           GoCarry
         </span>
-      </a>
+      </Link>
 
       {/* Description */}
-      <p className="max-w-[470px] text-center text-[7px] leading-[11px] text-[#DADADA] sm:text-[8px] sm:leading-[12px]">
+      <p className="max-w-117.5 text-center text-[7px] leading-2.75 text-[#DADADA] sm:text-[10px] sm:leading-3">
         Enjoy fast, reliable parcel delivery with real-time tracking and zero
-        hassle. From personal packages to business shipments — we deliver on
+        hassle. From personal packages to business shipments. we deliver on
         time, every time.
       </p>
 
       {/* Divider */}
-      <div className="mt-3 w-full max-w-[530px] border-t border-dashed border-[#17454b]" />
+      <div className="mt-3 w-full max-w-132.5 border-t border-dashed border-[#17454b]" />
 
       {/* Navigation */}
       <nav className="mt-3 flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
-        {navItems.map((item) => (
-          <a
+        {navItems?.map((item) => (
+          <Link
             key={item.label}
-            href={item.href}
-            className="text-[7px] font-medium text-[#bdbdbd] transition-colors hover:text-white"
+            to={item.href}
+            className="text-[10px] font-medium text-[#bdbdbd] transition-colors hover:text-white"
           >
             {item.label}
-          </a>
+          </Link>
         ))}
       </nav>
 
       {/* Divider */}
-      <div className="mt-3 w-full max-w-[530px] border-t border-dashed border-[#17454b]" />
+      <div className="mt-3 w-full max-w-132.5 border-t border-dashed border-[#17454b]" />
 
       {/* Social Icons */}
       <div className="mt-3 flex items-center gap-2.5">
         {/* LinkedIn */}
-        <a
-          href="#"
+        <Link
+          to="https://www.linkedin.com/"
+          target="_blank"
           aria-label="LinkedIn"
-          className="flex h-[15px] w-[15px] items-center justify-center rounded-full bg-[#087ea4] text-white transition-transform hover:scale-110"
+          className="flex h-3.75 w-3.75 items-center justify-center rounded-full bg-[#087ea4] text-white transition-transform hover:scale-110"
         >
           <FaLinkedinIn size={8} />
-        </a>
+        </Link>
 
         {/* X */}
-        <a
-          href="#"
+        <Link
+          to="https://x.com/"
+          target="_blank"
           aria-label="X"
-          className="flex h-[15px] w-[15px] items-center justify-center rounded-full bg-white text-[#111] transition-transform hover:scale-110"
+          className="flex h-3.75 w-3.75 items-center justify-center rounded-full bg-white text-[#111] transition-transform hover:scale-110"
         >
           <FaXTwitter size={7} />
-        </a>
+        </Link>
 
         {/* Facebook */}
-        <a
-          href="#"
+        <Link
+          to="https://www.facebook.com/"
+          target="_blank"
           aria-label="Facebook"
-          className="flex h-[15px] w-[15px] items-center justify-center rounded-full bg-[#1877f2] text-white transition-transform hover:scale-110"
+          className="flex h-3.75 w-3.75 items-center justify-center rounded-full bg-[#1877f2] text-white transition-transform hover:scale-110"
         >
           <FaFacebookF size={8} />
-        </a>
+        </Link>
 
         {/* YouTube */}
-        <a
-          href="#"
+        <Link
+          to="https://www.youtube.com/"
+          target="_blank"
           aria-label="YouTube"
-          className="flex h-[15px] w-[15px] items-center justify-center rounded-full bg-[#ff0000] text-white transition-transform hover:scale-110"
+          className="flex h-3.75 w-3.75 items-center justify-center rounded-full bg-[#ff0000] text-white transition-transform hover:scale-110"
         >
           <FaYoutube size={8} />
-        </a>
+        </Link>
       </div>
     </div>
   );
