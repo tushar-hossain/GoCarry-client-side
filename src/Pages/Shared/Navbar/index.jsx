@@ -8,6 +8,7 @@ import { Link, useNavigate } from "react-router";
 import Swal from "sweetalert2";
 
 const navItems = [
+  { label: "Home", href: "/" },
   { label: "Services", href: "services" },
   { label: "Coverage", href: "coverage" },
   { label: "About Us", href: "about" },
