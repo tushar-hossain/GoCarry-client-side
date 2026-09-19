@@ -1,4 +1,4 @@
-# GoCarry --- Client Side {#gocarry--client-side}
+# GoCarry --- Client Side
 
 GoCarry is a modern parcel delivery web application built with **React +
 Vite**. It provides a complete customer-facing delivery experience
