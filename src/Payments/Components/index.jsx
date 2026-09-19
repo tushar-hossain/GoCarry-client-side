@@ -246,7 +246,7 @@ export default function PaymentsForm() {
                 Processing Payment...
               </>
             ) : (
-              `Pay Now $${parcels?.data?.data?.deliveryCost}`
+              `Pay Now TK${parcels?.data?.data?.deliveryCost}`
             )}
           </button>
         </form>

@@ -84,7 +84,7 @@ export default function PaymentHistory() {
           <p className="text-xs text-[#71717A]">Total Amount</p>
 
           <p className="mt-1 text-xl font-bold text-[#03373D]">
-            $
+            TK
             {payments
               ?.reduce(
                 (total, payment) => total + Number(payment.amount || 0),
@@ -154,7 +154,7 @@ export default function PaymentHistory() {
                     </TableCell>
 
                     <TableCell className="whitespace-nowrap text-xs font-semibold text-[#03373D]">
-                      ${Number(payment.amount || 0).toFixed(2)}
+                      TK{Number(payment.amount || 0).toFixed(2)}
                     </TableCell>
 
                     <TableCell className="text-xs uppercase text-[#52525B]">

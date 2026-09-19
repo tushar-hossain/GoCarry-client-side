@@ -238,10 +238,6 @@ const DeliveryManagement = () => {
         <div className="flex flex-col gap-4 border-b p-5 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <h2 className="font-semibold text-[#03373D]">All Deliveries</h2>
-
-            <p className="text-sm text-[#71717A]">
-              View and monitor parcel delivery progress.
-            </p>
           </div>
 
           <div className="flex flex-col gap-3 sm:flex-row">
@@ -386,7 +382,7 @@ const DeliveryManagement = () => {
 
                     <TableCell>
                       <span className="font-medium text-[#03373D]">
-                        ৳{parcel.deliveryCost}
+                        TK{parcel.deliveryCost}
                       </span>
                     </TableCell>
 

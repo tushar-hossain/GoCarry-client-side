@@ -2,7 +2,6 @@ import {
   Users,
   Bike,
   Package,
-  DollarSign,
   Clock3,
   Truck,
   CheckCircle2,
@@ -13,6 +12,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import LoadingSpinner from "@/Pages/Shared/Loading";
 import { Link } from "react-router";
+import { FaBangladeshiTakaSign } from "react-icons/fa6";
 
 const AdminDashboard = () => {
   const axiosSecure = useAxiosSecure();
@@ -55,8 +55,8 @@ const AdminDashboard = () => {
     },
     {
       title: "Total Revenue",
-      value: `$${payments.totalRevenue || 0}`,
-      icon: DollarSign,
+      value: `TK${payments.totalRevenue || 0}`,
+      icon: FaBangladeshiTakaSign,
     },
   ];
 
@@ -185,7 +185,7 @@ const AdminDashboard = () => {
                   </td>
 
                   <td className="py-4 text-sm font-medium text-[#03373D]">
-                    ${parcel.deliveryCost}
+                    TK{parcel.deliveryCost}
                   </td>
                 </tr>
               ))}
@@ -202,21 +202,21 @@ const AdminDashboard = () => {
             <div className="rounded-xl bg-yellow-50 p-4">
               <p className="text-xs text-yellow-700">Pending</p>
               <p className="mt-1 font-bold text-yellow-800">
-                ${cashouts.pending || 0}
+                TK{cashouts.pending || 0}
               </p>
             </div>
 
             <div className="rounded-xl bg-blue-50 p-4">
               <p className="text-xs text-blue-700">Approved</p>
               <p className="mt-1 font-bold text-blue-800">
-                ${cashouts.approved || 0}
+                TK{cashouts.approved || 0}
               </p>
             </div>
 
             <div className="rounded-xl bg-green-50 p-4">
               <p className="text-xs text-green-700">Paid</p>
               <p className="mt-1 font-bold text-green-800">
-                ${cashouts.paid || 0}
+                TK{cashouts.paid || 0}
               </p>
             </div>
           </div>

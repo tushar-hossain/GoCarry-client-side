@@ -32,6 +32,7 @@ import {
 } from "@/components/ui/table";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import LoadingSpinner from "@/Pages/Shared/Loading";
+import { FaBangladeshiTakaSign } from "react-icons/fa6";
 
 const CashoutHistory = () => {
   const axiosSecure = useAxiosSecure();
@@ -123,19 +124,19 @@ const CashoutHistory = () => {
 
     if (status === "approved") {
       title = "Approve Cashout?";
-      text = `Approve ৳${cashout?.amount} cashout for ${cashout?.riderName}?`;
+      text = `Approve TK${cashout?.amount} cashout for ${cashout?.riderName}?`;
       confirmText = "Yes, Approve";
     }
 
     if (status === "paid") {
       title = "Mark Cashout as Paid?";
-      text = `Confirm that ৳${cashout?.amount} has been paid to ${cashout?.riderName}?`;
+      text = `Confirm that TK${cashout?.amount} has been paid to ${cashout?.riderName}?`;
       confirmText = "Yes, Mark Paid";
     }
 
     if (status === "rejected") {
       title = "Reject Cashout?";
-      text = `Reject this ৳${cashout?.amount} cashout request?`;
+      text = `Reject this TK${cashout?.amount} cashout request?`;
       confirmText = "Yes, Reject";
     }
 
@@ -270,7 +271,7 @@ const CashoutHistory = () => {
         <Card>
           <CardContent className="flex items-center gap-4 p-5">
             <div className="rounded-lg bg-green-100 p-3">
-              <DollarSign className="h-5 w-5 text-green-600" />
+              <FaBangladeshiTakaSign className="h-5 w-5 text-green-600" />
             </div>
 
             <div>
@@ -302,7 +303,7 @@ const CashoutHistory = () => {
             <p className="text-sm text-gray-500">Pending Cashout Amount</p>
 
             <h2 className="mt-1 text-2xl font-bold text-yellow-600">
-              ৳{statistics.pendingAmount.toLocaleString()}
+              TK{statistics.pendingAmount.toLocaleString()}
             </h2>
           </CardContent>
         </Card>
@@ -312,7 +313,7 @@ const CashoutHistory = () => {
             <p className="text-sm text-gray-500">Total Paid Amount</p>
 
             <h2 className="mt-1 text-2xl font-bold text-green-600">
-              ৳{statistics.paidAmount.toLocaleString()}
+              TK{statistics.paidAmount.toLocaleString()}
             </h2>
           </CardContent>
         </Card>
@@ -422,7 +423,7 @@ const CashoutHistory = () => {
                       </TableCell>
 
                       <TableCell>
-                        ৳{Number(cashout?.deliveryCost || 0).toLocaleString()}
+                        TK{Number(cashout?.deliveryCost || 0).toLocaleString()}
                       </TableCell>
 
                       <TableCell>
@@ -434,7 +435,7 @@ const CashoutHistory = () => {
                       <TableCell>
                         <div className="space-y-1">
                           <p className="font-semibold text-[#03373D]">
-                            ৳{Number(cashout?.amount || 0).toLocaleString()}
+                            TK{Number(cashout?.amount || 0).toLocaleString()}
                           </p>
 
                           {cashout?.cashoutStatus === "pending" ? (

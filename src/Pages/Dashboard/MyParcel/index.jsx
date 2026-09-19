@@ -207,7 +207,7 @@ export default function MyParcel() {
 
                     {/* Cost */}
                     <TableCell className="whitespace-nowrap text-xs font-semibold text-[#03373D]">
-                      ৳{parcel.deliveryCost}
+                      TK{parcel.deliveryCost}
                     </TableCell>
 
                     {/* Payment */}
@@ -351,7 +351,7 @@ export default function MyParcel() {
 
               <Detail
                 label="Delivery Cost"
-                value={`৳${selectedParcel.deliveryCost}`}
+                value={`TK${selectedParcel.deliveryCost}`}
               />
 
               <Detail
