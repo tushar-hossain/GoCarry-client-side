@@ -31,6 +31,7 @@ import CashoutHistory from "@/Pages/Admin/CashoutHistory";
 import MyEarnings from "@/Pages/Rider/Earnings";
 import Settings from "@/Pages/Settings/Settings";
 import Notifications from "@/Pages/components/Notifications";
+import Pricing from "@/Pages/Pricing";
 
 const router = createBrowserRouter([
   {
@@ -83,12 +84,16 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/unauthorized",
+        path: "unauthorized",
         Component: Unauthorized,
       },
       {
         path: "notifications",
         Component: Notifications,
+      },
+      {
+        path: "pricing",
+        Component: Pricing,
       },
     ],
   },
