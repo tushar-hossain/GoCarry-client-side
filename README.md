@@ -698,7 +698,7 @@ Create `.env.local` in the project root.
 Example:
 
 ```env
-VITE_API_URL=http://localhost:5000
+VITE_API_URL=https://go-carry-server-side.vercel.app
 
 VITE_IMGBB_API_KEY=your_imgbb_api_key
 
@@ -760,7 +760,7 @@ npm run dev
 The Vite development server normally runs at:
 
 ```text
-http://localhost:5173
+https://go-carry-server-side.vercel.app
 ```
 
 ## Development Commands

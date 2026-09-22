@@ -49,11 +49,6 @@ const router = createBrowserRouter([
       {
         path: "coverage",
         Component: Coverage,
-        loader: async () => {
-          const response = await fetch("/public/warehouses.json");
-          const data = await response.json();
-          return data;
-        },
       },
       {
         path: "about",
@@ -66,18 +61,6 @@ const router = createBrowserRouter([
             <SendParcel />
           </PrivateRoutes>
         ),
-        loader: async () => {
-          const response = await fetch("/warehouses.json");
-          if (!response.ok) {
-            throw new Error("Failed to load warehouse data");
-          }
-          const data = await response.json();
-          if (!Array.isArray(data)) {
-            throw new Error("warehouses.json must contain an array");
-          }
-
-          return data;
-        },
       },
       {
         path: "rider",

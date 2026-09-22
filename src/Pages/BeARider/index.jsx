@@ -9,7 +9,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import WearhouseData from "/public/warehouses.json";
 import useAuth from "@/hooks/useAuth";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
@@ -17,6 +16,7 @@ import { useMemo } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
+import LoadingSpinner from "../Shared/Loading";
 
 export default function BeARider() {
   const { user } = useAuth();
@@ -53,10 +53,8 @@ export default function BeARider() {
   } = useQuery({
     queryKey: ["warehouses"],
     queryFn: async () => {
-      //   const response = await axiosSecure.get("/warehouses");
-
-      //   return response?.data?.data || response?.data || [];
-      return WearhouseData;
+      const response = await axiosSecure.get("/warehouses");
+      return response?.data?.data;
     },
   });
 
@@ -105,7 +103,7 @@ export default function BeARider() {
   };
 
   if (isPending) {
-    return <div>Loading...</div>;
+    return <LoadingSpinner />;
   }
 
   if (isError) {
@@ -120,28 +118,19 @@ export default function BeARider() {
     <div className="md:max-w-6xl mx-auto py-5">
       <Card className="overflow-hidden rounded-[14px] bg-white">
         <CardContent className="p-5 sm:p-7 lg:px-9 lg:py-8">
-          {/* Header */}
           <div className="mb-5">
             <h1 className="text-[25px] font-bold leading-tight tracking-[-0.7px] text-[#03373D]">
               Be a Rider
             </h1>
-
-            <p className="mt-1 text-[11px] leading-[15px] text-[#71717A]">
-              Enjoy fast, reliable parcel delivery with real-time tracking and
-              zero hassle. From personal packages to business shipments we
-              deliver on time, every time.
-            </p>
           </div>
 
           <div className="grid grid-cols-1 gap-8 border-t border-[#E5E7EB] pt-3 md:grid-cols-[1fr_0.85fr] md:gap-10">
-            {/* LEFT : FORM */}
             <div>
               <h2 className="mb-3 text-[11px] font-bold text-[#03373D]">
                 Tell us about yourself
               </h2>
 
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
-                {/* Name */}
                 <FormField
                   className="text-[11px]"
                   label="Your Name"
@@ -153,11 +142,10 @@ export default function BeARider() {
                     })}
                     readOnly
                     placeholder="Your Name"
-                    className="h-[32px] w-full rounded-[4px] border-[#D9E0E5] bg-white text-[11px] placeholder:text-[#A1A1AA] focus-visible:ring-1 focus-visible:ring-[#CAEB66]"
+                    className="h-8 w-full rounded-lg border-[#D9E0E5] bg-white text-[11px] placeholder:text-[#A1A1AA] focus-visible:ring-1 focus-visible:ring-[#CAEB66]"
                   />
                 </FormField>
 
-                {/* Driving License */}
                 <FormField
                   label="Driving License Number"
                   error={errors.drivingLicenseNumber?.message}
@@ -168,11 +156,10 @@ export default function BeARider() {
                     })}
                     type="number"
                     placeholder="Driving License Number"
-                    className="h-[32px] w-full rounded-[4px] border-[#D9E0E5] bg-white text-[11px] placeholder:text-[#A1A1AA] focus-visible:ring-1 focus-visible:ring-[#CAEB66]"
+                    className="h-8 w-full rounded-lg border-[#D9E0E5] bg-white text-[11px] placeholder:text-[#A1A1AA] focus-visible:ring-1 focus-visible:ring-[#CAEB66]"
                   />
                 </FormField>
 
-                {/* Email */}
                 <FormField label="Your Email" error={errors.email?.message}>
                   <Input
                     type="email"
@@ -181,11 +168,10 @@ export default function BeARider() {
                     })}
                     readOnly
                     placeholder="Your Email"
-                    className="h-[32px] w-full rounded-[4px] border-[#D9E0E5] bg-white text-[11px] placeholder:text-[#A1A1AA] focus-visible:ring-1 focus-visible:ring-[#CAEB66]"
+                    className="h-8 w-full rounded-lg border-[#D9E0E5] bg-white text-[11px] placeholder:text-[#A1A1AA] focus-visible:ring-1 focus-visible:ring-[#CAEB66]"
                   />
                 </FormField>
 
-                {/* Region */}
                 <FormField label="Your Region" error={errors.region?.message}>
                   <Select
                     value={selectedRegion}
@@ -193,14 +179,12 @@ export default function BeARider() {
                       setValue("region", value, {
                         shouldValidate: true,
                       });
-
-                      // Reset district when region changes
                       setValue("district", "", {
                         shouldValidate: true,
                       });
                     }}
                   >
-                    <SelectTrigger className="h-[32px] w-full rounded-[4px] border-[#D9E0E5] bg-white text-[11px]">
+                    <SelectTrigger className="h-8 w-full rounded-lg border-[#D9E0E5] bg-white text-[11px]">
                       <SelectValue placeholder="Select your Region" />
                     </SelectTrigger>
 
@@ -218,7 +202,6 @@ export default function BeARider() {
                   </Select>
                 </FormField>
 
-                {/* Hidden RHF registration for Select */}
                 <input
                   type="hidden"
                   {...register("region", {
@@ -226,7 +209,6 @@ export default function BeARider() {
                   })}
                 />
 
-                {/* District */}
                 <FormField
                   label="Your District"
                   error={errors.district?.message}
@@ -240,7 +222,7 @@ export default function BeARider() {
                       })
                     }
                   >
-                    <SelectTrigger className="h-[32px] w-full rounded-[4px] border-[#D9E0E5] bg-white text-[11px]">
+                    <SelectTrigger className="h-8 w-full rounded-lg border-[#D9E0E5] bg-white text-[11px]">
                       <SelectValue placeholder="Select your District" />
                     </SelectTrigger>
 
@@ -265,7 +247,6 @@ export default function BeARider() {
                   })}
                 />
 
-                {/* NID */}
                 <FormField label="NID No" error={errors.nid?.message}>
                   <Input
                     {...register("nid", {
@@ -273,11 +254,10 @@ export default function BeARider() {
                     })}
                     type="number"
                     placeholder="NID Number"
-                    className="h-[32px] w-full rounded-[4px] border-[#D9E0E5] bg-white text-[11px] placeholder:text-[#A1A1AA] focus-visible:ring-1 focus-visible:ring-[#CAEB66]"
+                    className="h-8 w-full rounded-lg border-[#D9E0E5] bg-white text-[11px] placeholder:text-[#A1A1AA] focus-visible:ring-1 focus-visible:ring-[#CAEB66]"
                   />
                 </FormField>
 
-                {/* Phone */}
                 <FormField label="Phone Number" error={errors.phone?.message}>
                   <Input
                     {...register("phone", {
@@ -285,11 +265,10 @@ export default function BeARider() {
                     })}
                     type="number"
                     placeholder="Phone Number"
-                    className="h-[32px] w-full rounded-[4px] border-[#D9E0E5] bg-white text-[11px] placeholder:text-[#A1A1AA] focus-visible:ring-1 focus-visible:ring-[#CAEB66]"
+                    className="h-8 w-full rounded-lg border-[#D9E0E5] bg-white text-[11px] placeholder:text-[#A1A1AA] focus-visible:ring-1 focus-visible:ring-[#CAEB66]"
                   />
                 </FormField>
 
-                {/* Bike Brand */}
                 <FormField
                   label="Bike Brand Model and Year"
                   error={errors.bikeBrandModel?.message}
@@ -299,11 +278,10 @@ export default function BeARider() {
                       required: "Bike brand, model and year is required",
                     })}
                     placeholder="Bike Brand Model and Year"
-                    className="h-[32px] w-full rounded-[4px] border-[#D9E0E5] bg-white text-[11px] placeholder:text-[#A1A1AA] focus-visible:ring-1 focus-visible:ring-[#CAEB66]"
+                    className="h-8 w-full rounded-lg border-[#D9E0E5] bg-white text-[11px] placeholder:text-[#A1A1AA] focus-visible:ring-1 focus-visible:ring-[#CAEB66]"
                   />
                 </FormField>
 
-                {/* Registration */}
                 <FormField
                   label="Bike Registration Number"
                   error={errors.bikeRegistrationNumber?.message}
@@ -313,11 +291,10 @@ export default function BeARider() {
                       required: "Bike registration number is required",
                     })}
                     placeholder="Bike Registration Number"
-                    className="h-[32px] w-full rounded-[4px] border-[#D9E0E5] bg-white text-[11px] placeholder:text-[#A1A1AA] focus-visible:ring-1 focus-visible:ring-[#CAEB66]"
+                    className="h-8 w-full rounded-lg border-[#D9E0E5] bg-white text-[11px] placeholder:text-[#A1A1AA] focus-visible:ring-1 focus-visible:ring-[#CAEB66]"
                   />
                 </FormField>
 
-                {/* About */}
                 <FormField
                   label="Tell Us About Yourself"
                   error={errors.about?.message}
@@ -327,26 +304,24 @@ export default function BeARider() {
                       required: "Please tell us about yourself",
                     })}
                     placeholder="Tell Us About Yourself"
-                    className="h-[32px] w-full rounded-[4px] border-[#D9E0E5] bg-white text-[11px] placeholder:text-[#A1A1AA] focus-visible:ring-1 focus-visible:ring-[#CAEB66]"
+                    className="h-8 w-full rounded-lg border-[#D9E0E5] bg-white text-[11px] placeholder:text-[#A1A1AA] focus-visible:ring-1 focus-visible:ring-[#CAEB66]"
                   />
                 </FormField>
 
-                {/* Submit */}
                 <Button
                   type="submit"
-                  className="mt-1 h-[29px] w-full cursor-pointer rounded-[4px] bg-[#CAEB66] px-3 text-[11px] font-medium text-black shadow-none hover:bg-[#CAEB66] hover:brightness-95"
+                  className="mt-1 h-7.25 w-full cursor-pointer rounded-lg bg-[#CAEB66] px-3 text-[11px] font-medium text-black shadow-none hover:bg-[#CAEB66] hover:brightness-95"
                 >
                   Submit
                 </Button>
               </form>
             </div>
 
-            {/* ================= RIGHT : IMAGE ================= */}
             <div className="hidden items-center justify-center md:flex">
               <img
                 src="/assets/agent-pending.png"
                 alt="Rider"
-                className="w-full max-w-[360px] object-contain"
+                className="w-full max-w-90 object-contain"
               />
             </div>
           </div>
@@ -356,18 +331,16 @@ export default function BeARider() {
   );
 }
 
-/* ================= FORM FIELD ================= */
-
 function FormField({ label, error, children }) {
   return (
     <div>
-      <label className="mb-[2px] block text-[11px] font-medium leading-[11px] text-[#18181B]">
+      <label className="mb-0.5 block text-[11px] font-medium leading-2.75 text-[#18181B]">
         {label}
       </label>
 
       {children}
 
-      {error && <p className="mt-[1px] text-[11px] text-red-500">{error}</p>}
+      {error && <p className="mt-px text-[11px] text-red-500">{error}</p>}
     </div>
   );
 }
