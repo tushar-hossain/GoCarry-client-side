@@ -1,11 +1,8 @@
 import { useEffect, useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useLoaderData, useLocation, useNavigate } from "react-router";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-
 import {
   Select,
   SelectContent,
@@ -16,6 +13,10 @@ import {
 import Swal from "sweetalert2";
 import useAuth from "@/hooks/useAuth";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
+import useAxiosPublic from "@/hooks/useAxiosPublic";
+import { useLocation, useNavigate } from "react-router";
+import { useQuery } from "@tanstack/react-query";
+import LoadingSpinner from "../Shared/Loading";
 
 // DELIVERY COST
 const calculateDeliveryCost = ({
@@ -84,18 +85,25 @@ const generateTrackingId = () => {
 };
 
 export default function SendParcel() {
-  const loaderData = useLoaderData();
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
   const location = useLocation();
   const editingParcel = location.state?.parcel;
   const isEditMode = Boolean(editingParcel?._id);
+  const axiosPublic = useAxiosPublic();
 
-  const warehouses = useMemo(
-    () => (Array.isArray(loaderData) ? loaderData : []),
-    [loaderData],
-  );
+  const {
+    data: warehouses = [],
+    isPending,
+    isError,
+  } = useQuery({
+    queryKey: ["warehouses"],
+    queryFn: async () => {
+      const response = await axiosPublic.get("/warehouses");
+      return response?.data?.data;
+    },
+  });
 
   const {
     register,
@@ -442,6 +450,18 @@ export default function SendParcel() {
       console.log("User returned to edit the parcel.");
     }
   };
+
+  if (isPending) {
+    return <LoadingSpinner />;
+  }
+
+  if (isError) {
+    return (
+      <div className="flex min-h-100 items-center justify-center">
+        <p className="text-sm text-red-500">Failed to load coverage data.</p>
+      </div>
+    );
+  }
 
   return (
     <section className="md:max-w-6xl mx-auto py-5">
