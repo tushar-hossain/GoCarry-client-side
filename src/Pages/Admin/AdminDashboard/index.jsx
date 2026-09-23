@@ -1,18 +1,38 @@
-import {
-  Users,
-  Bike,
-  Package,
-  Clock3,
-  Truck,
-  CheckCircle2,
-  UserPlus,
-  ArrowRight,
-} from "lucide-react";
+import { Users, Bike, Package, ArrowRight } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import LoadingSpinner from "@/Pages/Shared/Loading";
 import { Link } from "react-router";
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Legend,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
+
+const CustomBar = (props) => {
+  const { x, y, width, height } = props;
+
+  return (
+    <path
+      d={`
+        M ${x},${y + 12}
+        Q ${x},${y} ${x + 12},${y}
+        L ${x + width - 12},${y}
+        Q ${x + width},${y} ${x + width},${y + 12}
+        L ${x + width},${y + height}
+        L ${x},${y + height}
+        Z
+      `}
+      fill="#CAEB66"
+    />
+  );
+};
 
 const AdminDashboard = () => {
   const axiosSecure = useAxiosSecure();
@@ -36,6 +56,40 @@ const AdminDashboard = () => {
   const parcels = dashboard?.parcels || {};
   const payments = dashboard?.payments || {};
   const cashouts = dashboard?.cashouts || {};
+
+  const parcelChartData = [
+    {
+      label: "Parcels",
+      pending: parcels.pending || 0,
+      assigned: parcels.assigned || 0,
+      inTransit: parcels.inTransit || 0,
+      delivered: parcels.delivered || 0,
+    },
+  ];
+
+  const riderChartData = [
+    {
+      label: "Riders",
+      approved: riders.approved || 0,
+      pending: riders.pending || 0,
+      rejected: riders.rejected || 0,
+    },
+  ];
+
+  const cashoutData = [
+    {
+      name: "Pending",
+      amount: cashouts.pending || 0,
+    },
+    {
+      name: "Approved",
+      amount: cashouts.approved || 0,
+    },
+    {
+      name: "Paid",
+      amount: cashouts.paid || 0,
+    },
+  ];
 
   const cards = [
     {
@@ -96,39 +150,128 @@ const AdminDashboard = () => {
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
+        {/* Parcel Overview */}
         <div className="rounded-2xl bg-white p-5 shadow-sm">
           <div className="mb-5">
             <h2 className="font-semibold text-[#03373D]">Parcel Overview</h2>
-            <p className="mt-1 text-xs text-[#71717A]">
-              Current delivery status
-            </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
-            <Stat title="Pending" value={parcels.pending} icon={Clock3} />
-            <Stat title="Assigned" value={parcels.assigned} icon={UserPlus} />
-            <Stat title="In Transit" value={parcels.inTransit} icon={Truck} />
-            <Stat
-              title="Delivered"
-              value={parcels.delivered}
-              icon={CheckCircle2}
-            />
+          <div className="w-full min-w-0">
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart
+                data={parcelChartData}
+                margin={{
+                  top: 10,
+                  right: 10,
+                  left: 0,
+                  bottom: 10,
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+
+                <XAxis dataKey="label" tick={{ fontSize: 11 }} />
+
+                <YAxis allowDecimals={false} tick={{ fontSize: 11 }} />
+
+                <Tooltip />
+
+                <Legend
+                  wrapperStyle={{
+                    fontSize: "11px",
+                  }}
+                />
+
+                <Bar
+                  dataKey="pending"
+                  name="Pending"
+                  fill="#FACC15"
+                  radius={[6, 6, 0, 0]}
+                />
+
+                <Bar
+                  dataKey="assigned"
+                  name="Assigned"
+                  fill="#60A5FA"
+                  radius={[6, 6, 0, 0]}
+                />
+
+                <Bar
+                  dataKey="inTransit"
+                  name="In Transit"
+                  fill="#A78BFA"
+                  radius={[6, 6, 0, 0]}
+                />
+
+                <Bar
+                  dataKey="delivered"
+                  name="Delivered"
+                  fill="#4ADE80"
+                  radius={[6, 6, 0, 0]}
+                />
+              </BarChart>
+            </ResponsiveContainer>
           </div>
         </div>
 
+        {/* Rider Applications */}
         <div className="rounded-2xl bg-white p-5 shadow-sm">
           <div className="mb-5">
-            <h2 className="font-semibold text-[#03373D]">Rider Overview</h2>
+            <h2 className="font-semibold text-[#03373D]">Rider Applications</h2>
           </div>
 
-          <div className="grid grid-cols-3 gap-3">
-            <Stat
-              title="Approved"
-              value={riders.approved}
-              icon={CheckCircle2}
-            />
-            <Stat title="Pending" value={riders.pending} icon={Clock3} />
-            <Stat title="Rejected" value={riders.rejected} icon={Users} />
+          <div className="w-full min-w-0">
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart
+                data={riderChartData}
+                margin={{
+                  top: 5,
+                  right: 10,
+                  left: -20,
+                  bottom: 5,
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+
+                <XAxis dataKey="label" tick={{ fontSize: 11 }} />
+
+                <YAxis allowDecimals={false} tick={{ fontSize: 11 }} />
+
+                <Tooltip />
+
+                <Legend
+                  wrapperStyle={{
+                    fontSize: "11px",
+                  }}
+                />
+
+                <Bar
+                  dataKey="approved"
+                  name="Approved"
+                  fill="#4ADE80"
+                  radius={[10, 10, 0, 0]}
+                  animationDuration={1200}
+                  animationBegin={200}
+                />
+
+                <Bar
+                  dataKey="pending"
+                  name="Pending"
+                  fill="#FACC15"
+                  radius={[10, 10, 0, 0]}
+                  animationDuration={1400}
+                  animationBegin={400}
+                />
+
+                <Bar
+                  dataKey="rejected"
+                  name="Rejected"
+                  fill="#F87171"
+                  radius={[10, 10, 0, 0]}
+                  animationDuration={1600}
+                  animationBegin={600}
+                />
+              </BarChart>
+            </ResponsiveContainer>
           </div>
         </div>
       </div>
@@ -196,29 +339,54 @@ const AdminDashboard = () => {
 
       <div className="grid gap-6 lg:grid-cols-2">
         <div className="rounded-2xl bg-white p-5 shadow-sm">
-          <h2 className="font-semibold text-[#03373D]">Cashout Overview</h2>
+          <div className="mb-5">
+            <h2 className="font-semibold text-[#03373D]">Cashout Overview</h2>
+          </div>
 
-          <div className="mt-5 grid grid-cols-3 gap-3">
-            <div className="rounded-xl bg-yellow-50 p-4">
-              <p className="text-xs text-yellow-700">Pending</p>
-              <p className="mt-1 font-bold text-yellow-800">
-                TK{cashouts.pending || 0}
-              </p>
-            </div>
+          <div className="h-[260px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={cashoutData}
+                margin={{
+                  top: 10,
+                  right: 10,
+                  left: 0,
+                  bottom: 5,
+                }}
+              >
+                <CartesianGrid
+                  strokeDasharray="3 3"
+                  vertical={false}
+                  stroke="#E5E7EB"
+                />
 
-            <div className="rounded-xl bg-blue-50 p-4">
-              <p className="text-xs text-blue-700">Approved</p>
-              <p className="mt-1 font-bold text-blue-800">
-                TK{cashouts.approved || 0}
-              </p>
-            </div>
+                <XAxis
+                  dataKey="name"
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{
+                    fontSize: 11,
+                    fill: "#71717A",
+                  }}
+                />
 
-            <div className="rounded-xl bg-green-50 p-4">
-              <p className="text-xs text-green-700">Paid</p>
-              <p className="mt-1 font-bold text-green-800">
-                TK{cashouts.paid || 0}
-              </p>
-            </div>
+                <YAxis
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{
+                    fontSize: 11,
+                    fill: "#71717A",
+                  }}
+                />
+
+                <Tooltip
+                  cursor={{ fill: "#f5f7f7" }}
+                  formatter={(value) => [`TK ${value}`, "Amount"]}
+                />
+
+                <Bar dataKey="amount" shape={<CustomBar />} barSize={55} />
+              </BarChart>
+            </ResponsiveContainer>
           </div>
         </div>
 
@@ -247,18 +415,6 @@ const AdminDashboard = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
-};
-
-const Stat = ({ title, value, icon: Icon }) => {
-  return (
-    <div className="rounded-xl border border-gray-100 p-4">
-      <div className="flex items-center justify-between">
-        <p className="text-xs text-[#71717A]">{title}</p>
-        <Icon className="h-4 w-4 text-[#067A87]" />
-      </div>
-      <p className="mt-2 text-xl font-bold text-[#03373D]">{value || 0}</p>
     </div>
   );
 };

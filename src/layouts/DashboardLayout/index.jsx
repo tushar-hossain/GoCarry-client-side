@@ -16,6 +16,7 @@ import {
   UserRoundPlus,
   Motorbike,
   WalletCards,
+  Warehouse,
 } from "lucide-react";
 
 import {
@@ -124,6 +125,12 @@ const navigationItems = [
     url: "/dashboard/my-earnings",
     icon: WalletCards,
     roles: ["rider"],
+  },
+  {
+    title: "Warehouses",
+    url: "/dashboard/warehouses",
+    icon: Warehouse,
+    roles: ["admin"],
   },
 
   // COMMON

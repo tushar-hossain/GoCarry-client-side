@@ -36,6 +36,7 @@ import Services from "@/Pages/Services";
 import Blogs from "@/Pages/Blogs/indes";
 import Contact from "@/Pages/Contact";
 import FAQS from "@/Pages/FAQ";
+import Warehouses from "@/Pages/Admin/Warehouses";
 
 const router = createBrowserRouter([
   {
@@ -202,6 +203,14 @@ const router = createBrowserRouter([
         element: (
           <AdminRoute>
             <CashoutHistory />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "warehouses",
+        element: (
+          <AdminRoute>
+            <Warehouses />
           </AdminRoute>
         ),
       },
