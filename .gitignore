@@ -13,6 +13,7 @@ dist-ssr
 .env
 *.local
 .gitignore
+.firebase*
 
 # Editor directories and files
 .vscode/*

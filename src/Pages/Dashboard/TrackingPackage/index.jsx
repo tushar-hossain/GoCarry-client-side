@@ -26,8 +26,10 @@ import {
 } from "@/components/ui/table";
 import { useSearchParams } from "react-router";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
+import useAuth from "@/hooks/useAuth";
 
 export default function TrackingPackage() {
+  const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const [searchParams, setSearchParams] = useSearchParams();
   const urlTrackingId = searchParams.get("trackingId") || "";
@@ -59,7 +61,7 @@ export default function TrackingPackage() {
       return [];
     },
   });
-
+  console.log("user: ", user);
   const {
     data: trackingData = {},
     isPending: trackingPending,
@@ -72,8 +74,6 @@ export default function TrackingPackage() {
 
     queryFn: async () => {
       const response = await axiosSecure.get(`/tracking/${trackingId}`);
-
-      console.log("Tracking response:", response.data.data);
       return response?.data?.data || {};
     },
   });
