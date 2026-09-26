@@ -149,7 +149,7 @@ export default function ManageUsers() {
 
   if (isPending) {
     return (
-      <div className="flex min-h-[300px] items-center justify-center">
+      <div className="flex min-h-75 items-center justify-center">
         <p className="text-sm text-[#71717A]">Loading users...</p>
       </div>
     );
