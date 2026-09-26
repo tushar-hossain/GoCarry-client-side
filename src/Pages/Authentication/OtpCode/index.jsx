@@ -7,12 +7,17 @@ import useAxiosPublic from "@/hooks/useAxiosPublic";
 
 export default function OtpCode() {
   const [isLoading, setIsLoading] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(60);
+  const [timeLeft, setTimeLeft] = useState(0);
   const inputsRef = useRef([]);
   const location = useLocation();
   const navigate = useNavigate();
   const axiosPublic = useAxiosPublic();
-  const email = location.state?.email;
+  const email =
+    location.state?.email || sessionStorage.getItem("passwordResetEmail");
+  const expiresAt =
+    location.state?.expiresAt ||
+    Number(sessionStorage.getItem("passwordResetExpiresAt"));
+
   const {
     handleSubmit,
     setValue,
@@ -29,14 +34,27 @@ export default function OtpCode() {
   const otp = watch("otp");
 
   useEffect(() => {
-    if (timeLeft <= 0) return;
+    if (!expiresAt) {
+      navigate("/forgot-password");
+      return;
+    }
 
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => prev - 1);
-    }, 1000);
+    const updateTimer = () => {
+      const remaining = Math.max(0, Math.ceil((expiresAt - Date.now()) / 1000));
+
+      setTimeLeft(remaining);
+
+      if (remaining <= 0) {
+        clearInterval(timer);
+      }
+    };
+
+    updateTimer();
+
+    const timer = setInterval(updateTimer, 1000);
 
     return () => clearInterval(timer);
-  }, [timeLeft]);
+  }, [expiresAt, navigate]);
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);

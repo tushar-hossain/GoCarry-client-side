@@ -38,11 +38,15 @@ export default function ForgotPassword() {
           timer: 1500,
         });
 
-        navigate("/otp-code", {
-          state: {
-            email: data.email,
-          },
-        });
+        if (response.data.success) {
+          sessionStorage.setItem("passwordResetEmail", data.email);
+          sessionStorage.setItem(
+            "passwordResetExpiresAt",
+            response.data.expiresAt,
+          );
+
+          navigate("/otp-code");
+        }
       }
     } catch (error) {
       console.error(error);
