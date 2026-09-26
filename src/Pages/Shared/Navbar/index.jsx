@@ -24,6 +24,7 @@ const Navbar = () => {
   const { notifications } = useNotifications();
   const queryClient = useQueryClient();
   const [openNotifications, setOpenNotifications] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
   const navigate = useNavigate();
   const axiosSecure = useAxiosSecure();
   const notificationRef = useRef(null);
@@ -78,7 +79,11 @@ const Navbar = () => {
     (notification) => !notification.isRead,
   )?.length;
 
-  const handleSignOut = async () => {
+  const handleSignOut = () => {
+    setShowLogoutModal(true);
+  };
+
+  const confirmSignOut = async () => {
     try {
       await signOutUser();
 
@@ -92,9 +97,10 @@ const Navbar = () => {
         showConfirmButton: false,
       });
 
+      setShowLogoutModal(false);
       navigate("/login");
     } catch (error) {
-      console.error("Sign out failed:", error);
+      console.error(error);
 
       Swal.fire({
         icon: "error",
@@ -102,6 +108,10 @@ const Navbar = () => {
         text: "Please try again.",
       });
     }
+  };
+
+  const cancelSignOut = () => {
+    setShowLogoutModal(false);
   };
 
   return (
@@ -322,7 +332,7 @@ const Navbar = () => {
             </>
           ) : (
             <Link to="/login">
-              <button className=" w-20 h-10 cursor-pointer rounded-sm border border-[#dedede] bg-[#CAEB66] text-sm font-semibold">
+              <button className=" w-20 h-10 cursor-pointer rounded-sm border border-[#dedede] bg-[#CAEB66] text-sm font-semibold transition hover:bg-[#CAEB66]">
                 Sign In
               </button>
             </Link>
@@ -409,7 +419,7 @@ const Navbar = () => {
               ) : (
                 <Link
                   to="/login"
-                  className="flex h-11 flex-1 items-center justify-center rounded-[10px] border border-[#dedede] text-sm font-semibold"
+                  className="flex h-9 flex-1 items-center justify-center rounded-[10px] border border-[#dedede] text-sm font-semibold bg-[#CAEB66] transition hover:bg-[#CAEB66]"
                 >
                   Sign In
                 </Link>
@@ -418,6 +428,38 @@ const Navbar = () => {
           </div>
         )}
       </nav>
+
+      {showLogoutModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+          <div className="w-full max-w-sm rounded-xl bg-white p-6 shadow-xl">
+            <h3 className="text-lg font-semibold text-[#03373D]">
+              Are you sure you want to logout?
+            </h3>
+
+            <p className="mt-2 text-sm text-gray-500">
+              You will be signed out of your account.
+            </p>
+
+            <div className="mt-6 flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={cancelSignOut}
+                className="cursor-pointer rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 transition hover:bg-gray-100"
+              >
+                No
+              </button>
+
+              <button
+                type="button"
+                onClick={confirmSignOut}
+                className="cursor-pointer rounded-lg bg-[#CAEB66] px-4 py-2 text-sm font-medium text-black transition hover:bg-[#CAEB66]"
+              >
+                Yes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 };

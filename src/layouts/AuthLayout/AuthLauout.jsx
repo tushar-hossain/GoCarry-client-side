@@ -1,9 +1,19 @@
-import { Outlet } from "react-router";
+import { Link, Outlet } from "react-router";
 
 export default function AuthLauout() {
   return (
     <section className="md:max-w-6xl mx-auto lg:pt-8">
       <div className="h-auto md:h-[90vh] w-full mx-auto lg:rounded-3xl bg-white p-5">
+        <div>
+          {/* Logo */}
+          <Link
+            to="/"
+            className="flex shrink-0 items-center"
+            aria-label="GoCarry Home"
+          >
+            <img className="w-30" src="/assets/favicon.svg" alt="logo" />
+          </Link>
+        </div>
         <div className="flex lg:items-center flex-col-reverse md:flex-row h-full w-full mx-auto">
           {/* Login Form */}
           <div className="flex w-full flex-1 items-start justify-center overflow-y-auto bg-white px-6 py-6 md:w-[53%] md:px-8 md:py-0">
