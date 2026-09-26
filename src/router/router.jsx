@@ -37,6 +37,9 @@ import Blogs from "@/Pages/Blogs/indes";
 import Contact from "@/Pages/Contact";
 import FAQS from "@/Pages/FAQ";
 import Warehouses from "@/Pages/Admin/Warehouses";
+import ForgotPassword from "@/Pages/Authentication/ForgotPassword";
+import OtpCode from "@/Pages/Authentication/OtpCode";
+import ResetPassword from "@/Pages/Authentication/ResetPassword";
 
 const router = createBrowserRouter([
   {
@@ -112,6 +115,18 @@ const router = createBrowserRouter([
       {
         path: "register",
         Component: Register,
+      },
+      {
+        path: "forgot-password",
+        Component: ForgotPassword,
+      },
+      {
+        path: "otp-code",
+        Component: OtpCode,
+      },
+      {
+        path: "reset-password",
+        Component: ResetPassword,
       },
     ],
   },
