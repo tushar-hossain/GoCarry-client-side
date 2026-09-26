@@ -27,9 +27,11 @@ import {
 import { useSearchParams } from "react-router";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import useAuth from "@/hooks/useAuth";
+import useUserRole from "@/hooks/useUserRol";
 
 export default function TrackingPackage() {
   const { user } = useAuth();
+  const { role } = useUserRole();
   const axiosSecure = useAxiosSecure();
   const [searchParams, setSearchParams] = useSearchParams();
   const urlTrackingId = searchParams.get("trackingId") || "";
@@ -41,9 +43,11 @@ export default function TrackingPackage() {
     isError: parcelsIsError,
     error: parcelsError,
   } = useQuery({
-    queryKey: ["all-parcels"],
+    queryKey: ["all-parcels", role, user?.email],
     queryFn: async () => {
-      const response = await axiosSecure.get("/parcels");
+      const endpoint =
+        role === "admin" ? "/parcels" : `/parcels?email=${user?.email}`;
+      const response = await axiosSecure.get(endpoint);
       const responseData = response?.data;
 
       if (Array.isArray(responseData)) {
@@ -60,8 +64,9 @@ export default function TrackingPackage() {
 
       return [];
     },
+    enabled: !!role && !!user?.email,
   });
-  console.log("user: ", user);
+
   const {
     data: trackingData = {},
     isPending: trackingPending,

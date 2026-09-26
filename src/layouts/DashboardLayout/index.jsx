@@ -36,6 +36,7 @@ import useUserRole from "@/hooks/useUserRol";
 import useAuth from "@/hooks/useAuth";
 import LoadingSpinner from "@/Pages/Shared/Loading";
 import Swal from "sweetalert2";
+import { useState } from "react";
 
 const navigationItems = [
   {
@@ -146,13 +147,18 @@ export default function UserDashboardLayout() {
   const location = useLocation();
   const { user, signOutUser } = useAuth();
   const { role, roleLoading } = useUserRole();
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
   const navigate = useNavigate();
 
   if (roleLoading) {
     return <LoadingSpinner />;
   }
 
-  const handleSignOut = async () => {
+  const handleSignOut = () => {
+    setShowLogoutModal(true);
+  };
+
+  const confirmSignOut = async () => {
     try {
       await signOutUser();
 
@@ -166,15 +172,21 @@ export default function UserDashboardLayout() {
         showConfirmButton: false,
       });
 
+      setShowLogoutModal(false);
       navigate("/login");
     } catch (error) {
       console.error(error);
+
       Swal.fire({
         icon: "error",
         title: "Sign out failed",
         text: "Please try again.",
       });
     }
+  };
+
+  const cancelSignOut = () => {
+    setShowLogoutModal(false);
   };
 
   const isActive = (url) => {
@@ -283,6 +295,38 @@ export default function UserDashboardLayout() {
             </div>
           </SidebarFooter>
         </Sidebar>
+
+        {showLogoutModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+            <div className="w-full max-w-sm rounded-xl bg-white p-6 shadow-xl">
+              <h3 className="text-lg font-semibold text-[#03373D]">
+                Are you sure you want to logout?
+              </h3>
+
+              <p className="mt-2 text-sm text-gray-500">
+                You will be signed out of your account.
+              </p>
+
+              <div className="mt-6 flex justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={cancelSignOut}
+                  className="cursor-pointer rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 transition hover:bg-gray-100"
+                >
+                  No
+                </button>
+
+                <button
+                  type="button"
+                  onClick={confirmSignOut}
+                  className="cursor-pointer rounded-lg bg-[#CAEB66] px-4 py-2 text-sm font-medium text-black transition hover:bg-[#CAEB66]"
+                >
+                  Yes
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* MAIN CONTENT */}
         <SidebarInset className="min-w-0 bg-[#eef0f1]">
